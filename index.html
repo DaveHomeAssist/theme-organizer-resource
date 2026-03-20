@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theme Organizer Resource</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Italiana&family=VT323&family=Cinzel:wght@400;700&family=Exo+2:wght@900&family=Libre+Caslon+Display&family=Poiret+One&family=Major+Mono+Display&family=Fraunces:ital,wght@1,100&family=Oxanium:wght@800&family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono&family=Bebas+Neue&family=Libre+Baskerville:ital@1&family=Rajdhani:wght@600&family=Bodoni+Moda:ital,wght@1,400&family=Syncopate:wght@700&family=Spectral:ital,wght@1,300&family=Unbounded:wght@900&family=Anton&family=Josefin+Sans:wght@100;300&family=IM+Fell+English:ital@1&family=Playfair+Display+SC:wght@400&family=Courier+Prime:ital@0;1&family=Permanent+Marker&family=Courier+Prime&display=swap');
+  :root{
+    --bg:#0c0f14;
+    --canvas:#11151d;
+    --panel:#171c25;
+    --panel-2:#1d2430;
+    --soft:#131821;
+    --line:#273140;
+    --line-strong:#344155;
+    --text:#eef3f9;
+    --text-2:#b6c1d1;
+    --muted:#8c98ab;
+    --accent:#8b5cf6;
+    --accent-2:#22c55e;
+    --warn:#f59e0b;
+    --danger:#ef4444;
+    --focus:#a78bfa;
+    --shadow-soft:0 8px 24px rgba(0,0,0,0.24);
+    --shadow-panel:0 16px 36px rgba(0,0,0,0.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  a{color:inherit}
+  button,input,select,textarea{font:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .app{max-width:1560px;margin:0 auto;padding:20px 24px 40px}
+  .topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}
+  .title-wrap h1{margin:0 0 6px;font-size:28px;line-height:1.05}
+  .title-wrap p{margin:0;color:var(--text-2);max-width:820px;font-size:14px;line-height:1.5}
+  .link-row{display:flex;gap:10px;flex-wrap:wrap}
+  .link-btn,.ghost-btn,.primary-btn,.icon-btn{
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--text);
+    border-radius:12px;
+    padding:10px 14px;
+    text-decoration:none;
+    transition:background .15s,border-color .15s,transform .15s;
+  }
+  .link-btn:hover,.ghost-btn:hover,.primary-btn:hover,.icon-btn:hover{background:var(--panel-2);border-color:#42506b}
+  .primary-btn{background:var(--accent);border-color:transparent}
+  .primary-btn:hover{background:#7c3aed}
+  .ghost-btn{background:transparent;color:var(--text-2)}
+  .toolbar{position:sticky;top:0;z-index:10;background:rgba(12,15,20,0.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.04);padding:10px 0 14px}
+  .toolbar-grid{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr)) auto auto;gap:10px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .field input,.field select,.notes-box{
+    min-height:44px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#121823;
+    color:var(--text);
+    padding:10px 12px;
+  }
+  .field input::placeholder,.notes-box::placeholder{color:var(--muted)}
+  .toolbar-actions{display:flex;gap:10px;align-items:end}
+  .toolbar-stack{display:flex;gap:10px;flex-wrap:wrap}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;align-items:start}
+  .summary{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 12px;
+    color:var(--text-2);
+    font-size:12px;
+  }
+  .stat strong{color:var(--text)}
+  .groups{display:flex;flex-direction:column;gap:14px}
+  .group{
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(23,26,33,0.92);
+    overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+  .group-header{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    padding:14px 16px;
+    background:linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.01));
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .group-header h2{margin:0;font-size:16px}
+  .group-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
+  .group-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:36px;
+    min-height:36px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--soft);
+    color:var(--muted);
+    font-size:18px;
+    line-height:1;
+  }
+  .group.collapsed .cards{display:none}
+  .group-count{
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:11px;
+    color:var(--muted);
+  }
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:14px}
+  .card{
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:linear-gradient(180deg,#10151d,#0d1219);
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-height:220px;
+    box-shadow:var(--shadow-soft);
+    transition:border-color .15s,transform .15s,background .15s;
+  }
+  .card:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+  .card.active{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px rgba(139,92,246,0.25),var(--shadow-soft)}
+  .card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .code{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .name{font-size:17px;font-weight:700;line-height:1.15}
+  .desc{font-size:13px;line-height:1.5;color:var(--text-2)}
+  .tag-row,.meta-row{display:flex;gap:6px;flex-wrap:wrap}
+  .action-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  .tag,.meta-pill,.status-pill{
+    border-radius:999px;
+    padding:5px 8px;
+    font-size:11px;
+    line-height:1;
+    border:1px solid var(--line);
+  }
+  .tag{background:rgba(255,255,255,0.02);color:var(--muted);border-color:rgba(255,255,255,0.06)}
+  .meta-pill{background:rgba(139,92,246,0.08);color:#cbbfff;border-color:rgba(139,92,246,0.18)}
+  .status-pill.status-unreviewed{background:rgba(255,255,255,0.04);color:var(--muted)}
+  .status-pill.status-shortlist{background:rgba(34,197,94,0.14);color:#9bf4b7;border-color:rgba(34,197,94,0.22)}
+  .status-pill.status-maybe{background:rgba(245,158,11,0.12);color:#ffd68a;border-color:rgba(245,158,11,0.2)}
+  .status-pill.status-archive{background:rgba(239,68,68,0.12);color:#ffb1b1;border-color:rgba(239,68,68,0.2)}
+  .swatch-row{display:flex;gap:8px;flex-wrap:wrap}
+  .swatch{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 8px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.02);
+    font-size:11px;
+    color:var(--muted);
+  }
+  .swatch-chip{
+    width:12px;
+    height:12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.14);
+    flex:0 0 auto;
+  }
+  .action-row{margin-top:auto}
+  .preview{
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--soft);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .preview-surface{
+    padding:12px;
+    min-height:132px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .preview-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .preview-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    opacity:.88;
+  }
+  .preview-logo{
+    width:16px;
+    height:16px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .preview-chip{
+    padding:4px 7px;
+    border-radius:999px;
+    font-size:10px;
+    line-height:1;
+    border:1px solid rgba(255,255,255,0.12);
+    opacity:.9;
+  }
+  .preview-title{
+    font-size:18px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:-.03em;
+  }
+  .preview-body{
+    font-size:11px;
+    line-height:1.45;
+    max-width:26ch;
+    opacity:.88;
+  }
+  .preview-row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .preview-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:28px;
+    padding:0 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .preview-card{
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.10);
+    font-size:10px;
+    opacity:.94;
+  }
+  .preview-large .preview-surface{
+    min-height:360px;
+    padding:24px;
+    gap:16px;
+  }
+  .preview-large .preview-title{font-size:40px;line-height:.95;letter-spacing:-.04em}
+  .preview-large .preview-body{font-size:14px;line-height:1.6;max-width:46ch}
+  .preview-large .preview-brand{font-size:11px}
+  .preview-large .preview-chip{font-size:11px;padding:5px 9px}
+  .preview-large .preview-btn{min-height:34px;padding:0 14px;font-size:12px}
+  .preview-large .preview-card{padding:12px 14px;font-size:12px}
+  .preview-kicker{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    opacity:.78;
+    font-weight:700;
+  }
+  .preview-subtitle{
+    font-size:18px;
+    line-height:1.15;
+    opacity:.94;
+    max-width:34ch;
+  }
+  .preview-copy{
+    display:grid;
+    gap:8px;
+  }
+  .preview-copy p{
+    margin:0;
+    font-size:13px;
+    line-height:1.65;
+    max-width:48ch;
+  }
+  .preview-meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .preview-stat{
+    padding:8px 10px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.12);
+    font-size:11px;
+    line-height:1.2;
+  }
+  .preview-type-specimen{
+    display:grid;
+    gap:8px;
+    padding:14px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.10);
+    background:rgba(255,255,255,0.05);
+  }
+  .specimen-xl{
+    font-size:32px;
+    line-height:0.98;
+    letter-spacing:-0.04em;
+    font-weight:800;
+  }
+  .specimen-lg{
+    font-size:20px;
+    line-height:1.15;
+    font-weight:650;
+  }
+  .specimen-md{
+    font-size:14px;
+    line-height:1.6;
+  }
+  .preview-font-note{
+    font-size:11px;
+    line-height:1.4;
+    color:var(--text-2);
+  }
+  .preview-editor{
+    display:grid;
+    gap:10px;
+  }
+  .preview-editor textarea{
+    width:100%;
+    min-height:72px;
+    resize:vertical;
+  }
+  .preview-editor input,
+  .preview-editor textarea{
+    background:#121823;
+    color:var(--text);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 12px;
+  }
+  .preview-editor-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .preset-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .preset-row button{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--text-2);
+    border-radius:999px;
+    padding:8px 10px;
+    font-size:11px;
+    line-height:1;
+  }
+  .preview-copy-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .preview-copy-head strong{
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text);
+  }
+  .preview-copy-head span{
+    font-size:11px;
+    color:var(--muted);
+  }
+  .action-row button{
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--text);
+    border-radius:10px;
+    padding:10px 10px;
+    font-size:12px;
+    min-height:40px;
+    width:100%;
+  }
+  .action-row button.secondary{color:var(--muted)}
+  .action-row button.shortlisted{background:rgba(34,197,94,0.16);border-color:rgba(34,197,94,0.25);color:#b0ffc8}
+  .detail{
+    position:sticky;
+    top:88px;
+    border:1px solid var(--line-strong);
+    border-radius:18px;
+    background:linear-gradient(180deg,var(--panel),#141923);
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    box-shadow:var(--shadow-panel);
+  }
+  .detail h3{margin:0;font-size:18px}
+  .detail p{margin:0;color:var(--text-2);font-size:13px;line-height:1.55}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .detail-wide{grid-column:1 / -1}
+  .detail-box{
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:14px;
+    background:rgba(255,255,255,0.015);
+    padding:10px;
+  }
+  .detail-box label{display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .notes-box{width:100%;min-height:140px;resize:vertical}
+  .empty{padding:40px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+  .mini-list{display:flex;flex-wrap:wrap;gap:6px}
+  .footer-note{margin-top:10px;color:var(--muted);font-size:12px}
+  .compare{
+    margin:0 0 14px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(23,26,33,0.92);
+    overflow:hidden;
+  }
+  .compare[hidden]{display:none}
+  .compare-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .compare-header h2{margin:0;font-size:16px}
+  .compare-header p{margin:4px 0 0;color:var(--muted);font-size:12px}
+  .compare-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .compare-grid{
+    display:grid;
+    grid-template-columns:160px repeat(auto-fit,minmax(180px,1fr));
+    gap:0;
+    overflow:auto;
+    border-top:1px solid rgba(255,255,255,0.04);
+  }
+  .compare-label,.compare-cell{
+    padding:12px;
+    border-top:1px solid rgba(255,255,255,0.05);
+    border-right:1px solid rgba(255,255,255,0.05);
+    min-height:56px;
+  }
+  .compare-label{
+    background:#151b24;
+    color:var(--text-2);
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .compare-cell{background:rgba(255,255,255,0.01)}
+  .compare-theme{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .compare-theme strong{display:block;font-size:14px}
+  .compare-theme button{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--muted);
+    border-radius:10px;
+    padding:6px 8px;
+    font-size:11px;
+  }
+  .inline-input{
+    width:100%;
+    min-height:46px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel);
+    color:var(--text);
+    padding:10px 12px;
+  }
+  .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .detail-actions .ghost-btn:first-child,
+  .action-row button[data-action="select"]{background:var(--panel-2);color:var(--text)}
+  .action-row button[data-action="shortlist"],
+  #detailShortlist{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.18)}
+  .action-row button[data-action="compare"],
+  #detailCompare,
+  #detailArchive{background:transparent;color:var(--text-2)}
+  @media (max-width: 1100px){
+    .layout{grid-template-columns:1fr}
+    .detail{position:static}
+    .toolbar-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width: 760px){
+    .topbar{flex-direction:column}
+    .toolbar-grid{grid-template-columns:1fr}
+    .detail-grid{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="title-wrap">
+      <h1>Theme Organizer Resource</h1>
+      <p>Companion organizer for the 30-theme gallery. This turns the visual library into a decision tool: search, group, shortlist, annotate, and export a working theme set without overwriting the original theme browser.</p>
+    </div>
+    <div class="link-row">
+      <a class="link-btn" href="./themes_sortable_30.html" target="_blank" rel="noreferrer noopener">Open Original Gallery</a>
+      <button id="exportState" class="ghost-btn" type="button">Export Organizer JSON</button>
+      <button id="copyShortlist" class="ghost-btn" type="button">Copy Shortlist</button>
+      <button id="importState" class="ghost-btn" type="button">Import JSON</button>
+      <input id="importFile" type="file" accept="application/json" hidden>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-grid">
+      <div class="field">
+        <label for="search">Search</label>
+        <input id="search" type="search" placeholder="Search name, description, tags, family, best fit">
+      </div>
+      <div class="field">
+        <label for="familyFilter">Family</label>
+        <select id="familyFilter"></select>
+      </div>
+      <div class="field">
+        <label for="moodFilter">Mood</label>
+        <select id="moodFilter"></select>
+      </div>
+      <div class="field">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter"></select>
+      </div>
+      <div class="field">
+        <label for="sortBy">Sort</label>
+        <select id="sortBy">
+          <option value="family">Family</option>
+          <option value="name">Name</option>
+          <option value="mood">Mood</option>
+          <option value="style">Style</option>
+          <option value="color">Color</option>
+          <option value="status">Status</option>
+        </select>
+      </div>
+      <div class="toolbar-actions">
+        <button id="groupToggle" class="ghost-btn" type="button">Grouped</button>
+        <button id="shortlistToggle" class="ghost-btn" type="button">All Themes</button>
+        <button id="clearFilters" class="ghost-btn" type="button">Clear Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+  <section id="comparePanel" class="compare" hidden></section>
+
+  <div class="layout">
+    <main>
+      <div id="groups" class="groups"></div>
+    </main>
+    <aside class="detail" id="detail"></aside>
+  </div>
+</div>
+
+<script>
+const THEME_DATA = [
+  { id:'t1', code:'t1', name:'Instrument Grade', description:'Deep violet · indigo-black · cold cyan.', tags:['dark','futuristic','tech','purple','cold','minimal'], family:'Product / System UI', bestFor:['dashboard','developer-tool','precision-ui'] },
+  { id:'t2', code:'t2', name:'Editorial Serif', description:'Cream stock · ink black · burnt sienna.', tags:['light','warm','editorial','luxury','gold','minimal'], family:'Editorial / Reading-first', bestFor:['editorial','magazine','portfolio'] },
+  { id:'t3', code:'t3', name:'Brutalist Raw', description:'Signal yellow · pure black.', tags:['light','brutalist','maximal','monochrome','minimal'], family:'Brutalist / Experimental', bestFor:['poster','statement-landing','art-project'] },
+  { id:'t4', code:'t4', name:'Organic Botanical', description:'Forest dark · sage green · leaf.', tags:['dark','nature','organic','green','warm'], family:'Nature / Organic / Wellness', bestFor:['wellness','retreat','eco-brand'] },
+  { id:'t5', code:'t5', name:'Luxury Minimal', description:'Warm white · antique gold.', tags:['light','luxury','minimal','gold','warm','editorial'], family:'Luxury / Glass / Premium', bestFor:['premium-brand','studio','editorial-commerce'] },
+  { id:'t6', code:'t6', name:'Retro Terminal', description:'CRT black · phosphor green.', tags:['dark','retro','tech','green','cold','minimal','futuristic'], family:'Product / System UI', bestFor:['developer-tool','terminal-ui','retro-tech'] },
+  { id:'t7', code:'t7', name:'Hyper Color', description:'Magenta · violet · electric blue.', tags:['dark','maximal','futuristic','purple','multicolor','neon'], family:'Color Systems / Maximalist Pop', bestFor:['music','campaign','interactive-art'] },
+  { id:'t8', code:'t8', name:'Arctic Glass', description:'Ice white · sky blue · frosted.', tags:['light','cold','blue','minimal','luxury'], family:'Luxury / Glass / Premium', bestFor:['saas','premium-ui','finance'] },
+  { id:'t9', code:'t9', name:'Dark Academia', description:'Walnut brown · aged gold.', tags:['dark','warm','editorial','luxury','gold','cultural','retro'], family:'Editorial / Reading-first', bestFor:['essay','archive','literary-brand'] },
+  { id:'t10', code:'t10', name:'Neon Noir', description:'Near-black · crimson neon · cyan.', tags:['dark','futuristic','red','neon','cold','maximal'], family:'Brutalist / Experimental', bestFor:['nightlife','music','cyber-brand'] },
+  { id:'t11', code:'t11', name:'Japanese Wabi', description:'Warm rice paper · ink brown.', tags:['light','warm','minimal','organic','cultural','gold'], family:'Heritage / Cultural Reference', bestFor:['craft','hospitality','calm-brand'] },
+  { id:'t12', code:'t12', name:'Industrial Steel', description:'Dark iron · hazard orange.', tags:['dark','brutalist','tech','red','warm','monochrome'], family:'Product / System UI', bestFor:['ops-tool','industrial-brand','data-ui'] },
+  { id:'t13', code:'t13', name:'Powder Pastel', description:'Petal pink · periwinkle · blush.', tags:['light','minimal','organic','warm','multicolor'], family:'Color Systems / Maximalist Pop', bestFor:['lifestyle','beauty','friendly-brand'] },
+  { id:'t14', code:'t14', name:'Soviet Constructivist', description:'Propaganda red · pure black.', tags:['light','brutalist','maximal','red','geometric','cultural'], family:'Heritage / Cultural Reference', bestFor:['poster','exhibition','campaign'] },
+  { id:'t15', code:'t15', name:'Copper Patina', description:'Deep teal-black · oxidised green.', tags:['dark','nature','cold','green','minimal','organic'], family:'Luxury / Glass / Premium', bestFor:['boutique-brand','gallery','craft'] },
+  { id:'t16', code:'t16', name:'Vaporwave', description:'Midnight purple · hot pink · cyan.', tags:['dark','retro','futuristic','purple','neon','cold','maximal'], family:'Color Systems / Maximalist Pop', bestFor:['music','youth-brand','experimental'] },
+  { id:'t17', code:'t17', name:'Swiss Modernist', description:'Off-white · signal red · black.', tags:['light','minimal','brutalist','geometric','red','editorial'], family:'Editorial / Reading-first', bestFor:['editorial','portfolio','type-led-ui'] },
+  { id:'t18', code:'t18', name:'Deep Sea', description:'Abyssal black · bioluminescent teal.', tags:['dark','cold','blue','nature','minimal'], family:'Nature / Organic / Wellness', bestFor:['science','oceanic-brand','immersive-ui'] },
+  { id:'t19', code:'t19', name:'Aged Manuscript', description:'Vellum · sepia · ink.', tags:['light','warm','editorial','gold','cultural','retro','luxury'], family:'Heritage / Cultural Reference', bestFor:['archive','museum','storytelling'] },
+  { id:'t20', code:'t20', name:'Chromatic Burst', description:'Full-spectrum conic · near black.', tags:['dark','maximal','futuristic','multicolor','neon'], family:'Color Systems / Maximalist Pop', bestFor:['festival','campaign','motion-first-brand'] },
+  { id:'t21', code:'t21', name:'Bauhaus', description:'Warm linen · signal red · black.', tags:['light','geometric','minimal','brutalist','red','cultural'], family:'Heritage / Cultural Reference', bestFor:['design-system','poster','education'] },
+  { id:'t22', code:'t22', name:'Memphis', description:'White · polka dot primary.', tags:['light','maximal','retro','multicolor','geometric'], family:'Color Systems / Maximalist Pop', bestFor:['playful-brand','kids-culture','creative-ui'] },
+  { id:'t23', code:'t23', name:'Cyberpunk City', description:'Void black · acid yellow · magenta.', tags:['dark','futuristic','neon','maximal','tech','geometric'], family:'Brutalist / Experimental', bestFor:['gaming','music','sci-fi-brand'] },
+  { id:'t24', code:'t24', name:'Mid-Century', description:'Harvest wheat · forest · burnt clay.', tags:['light','warm','retro','organic','geometric','gold'], family:'Heritage / Cultural Reference', bestFor:['interiors','hospitality','lifestyle'] },
+  { id:'t25', code:'t25', name:'Islamic Geometric', description:'Deep aubergine · gold tessellation.', tags:['dark','cultural','geometric','luxury','gold','warm'], family:'Heritage / Cultural Reference', bestFor:['pattern-system','cultural-brand','premium-site'] },
+  { id:'t26', code:'t26', name:'Hygge', description:'Parchment · candlelight amber.', tags:['light','warm','minimal','organic','gold'], family:'Nature / Organic / Wellness', bestFor:['home','wellness','cozy-commerce'] },
+  { id:'t27', code:'t27', name:'Glitch', description:'Pure black · corrupt cyan · red.', tags:['dark','tech','futuristic','neon','cold','maximal','monochrome'], family:'Brutalist / Experimental', bestFor:['prototype','music','digital-art'] },
+  { id:'t28', code:'t28', name:'Raw Concrete', description:'Brutalist grey · ash white.', tags:['dark','minimal','brutalist','monochrome','cold'], family:'Brutalist / Experimental', bestFor:['architecture','portfolio','system-ui'] },
+  { id:'t29', code:'t29', name:'Tropical Lush', description:'Canopy dark · jade · papaya.', tags:['dark','nature','organic','green','warm','maximal'], family:'Nature / Organic / Wellness', bestFor:['travel','hospitality','food-brand'] },
+  { id:'t30', code:'t30', name:'Art Nouveau', description:'Ivory · antique gold · vine.', tags:['light','warm','editorial','luxury','gold','organic','cultural'], family:'Heritage / Cultural Reference', bestFor:['craft','luxury-brand','event-site'] },
+  { id:'p1', code:'p1', name:'Garden OS', description:'Soil brown · leaf green · sun straw.', tags:['light','nature','organic','green','warm','project-theme'], family:'Project-Derived / House Systems', bestFor:['garden-os','operations-guide','planner'] },
+  { id:'p2', code:'p2', name:'Trailkeeper Field Log', description:'Evergreen dark · trail tan · moss.', tags:['dark','nature','minimal','green','project-theme'], family:'Project-Derived / House Systems', bestFor:['trailkeeper','field-log','backcountry-ui'] },
+  { id:'p3', code:'p3', name:'Prompt Lab Core', description:'Slate dark · violet signal · cloud text.', tags:['dark','tech','minimal','purple','project-theme'], family:'Project-Derived / House Systems', bestFor:['prompt-lab','experiments','prompt-ui'] },
+  { id:'p4', code:'p4', name:'Estate II Halloween', description:'Midnight plum · ember orange · ghost cream.', tags:['dark','maximal','retro','orange','purple','project-theme'], family:'Project-Derived / House Systems', bestFor:['estate-ii-deploy','event-landing','seasonal-campaign'] },
+  { id:'p5', code:'p5', name:'Park Rave Flyer', description:'Night black · rave yellow · hot magenta.', tags:['dark','maximal','neon','multicolor','project-theme'], family:'Project-Derived / House Systems', bestFor:['park-rave-005','flyer','music-campaign'] },
+  { id:'p6', code:'p6', name:'Dave HomeAssist', description:'Porch white · trust navy · service gold.', tags:['light','minimal','luxury','blue','gold','project-theme'], family:'Project-Derived / House Systems', bestFor:['dave-homeassist','service-site','home-services'] },
+  { id:'p7', code:'p7', name:'Festival Atlas Routeboard', description:'Night charcoal · route amber · map cream.', tags:['dark','geometric','minimal','gold','project-theme'], family:'Project-Derived / House Systems', bestFor:['festival-atlas','routeboard','planning-ui'] },
+  { id:'p8', code:'p8', name:'MetaGrid Signal', description:'Signal black · matrix cyan · node lime.', tags:['dark','tech','futuristic','green','blue','project-theme'], family:'Project-Derived / House Systems', bestFor:['metagrid','simulator','signal-ui'] },
+  { id:'u5', code:'u-t5', name:'Solar Minimal', description:'Warm white · sand · golden hour.', tags:['light','minimal','warm','clean','airy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['portfolio','studio','personal-brand'] },
+  { id:'u6', code:'u-t6', name:'Midnight Ink', description:'Deep navy · charcoal · silver edge.', tags:['dark','professional','cool','bold','sleek','user-import'], family:'Dark / Professional / Editorial', bestFor:['agency','tech','saas'] },
+  { id:'u7', code:'u-t7', name:'Terracotta Clay', description:'Burnt orange · dusty rose · warm beige.', tags:['warm','earthy','feminine','soft','artisan','user-import'], family:'Nature / Organic / Wellness', bestFor:['lifestyle','beauty','ceramics'] },
+  { id:'u8', code:'u-t8', name:'Arctic Glass', description:'Ice white · pale blue · frosted steel.', tags:['light','cool','clean','minimal','modern','user-import'], family:'Minimal / Clean / Neutral', bestFor:['fintech','saas','medical'] },
+  { id:'u9', code:'u-t9', name:'Neon District', description:'Pitch black · electric violet · hot pink.', tags:['dark','neon','loud','cyber','bold','user-import'], family:'Dark / Cyber / Expressive', bestFor:['nightlife','music','gaming'] },
+  { id:'u10', code:'u-t10', name:'Harvest Field', description:'Amber · wheat · deep brown.', tags:['warm','earthy','rustic','natural','cozy','user-import'], family:'Nature / Organic / Wellness', bestFor:['food','farm-to-table','brewery'] },
+  { id:'u11', code:'u-t11', name:'Obsidian Edge', description:'Pure black · graphite · matte silver.', tags:['dark','luxury','minimal','sleek','premium','user-import'], family:'Dark / Luxury / Premium', bestFor:['fashion','automotive','high-end-brand'] },
+  { id:'u12', code:'u-t12', name:'Bloom Studio', description:'Soft blush · lilac · cream.', tags:['light','feminine','soft','floral','airy','user-import'], family:'Soft / Pastel / Creative', bestFor:['wedding','florist','boutique'] },
+  { id:'u13', code:'u-t13', name:'Deep Jungle', description:'Midnight green · moss · aged gold.', tags:['dark','nature','rich','moody','organic','user-import'], family:'Nature / Organic / Wellness', bestFor:['eco-brand','adventure','resort'] },
+  { id:'u14', code:'u-t14', name:'Carbon Lab', description:'Dark grey · electric blue · white data.', tags:['dark','tech','data','modern','sharp','user-import'], family:'Dark / Tech / Data', bestFor:['developer-tool','analytics','saas'] },
+  { id:'u15', code:'u-t15', name:'Ivory Press', description:'Off-white · warm grey · serif black.', tags:['light','editorial','clean','classic','neutral','user-import'], family:'Minimal / Editorial / Clean', bestFor:['publishing','magazine','blog'] },
+  { id:'u16', code:'u-t16', name:'Copper Works', description:'Deep charcoal · copper · rust amber.', tags:['dark','industrial','warm','craft','bold','user-import'], family:'Industrial / Craft / Bold', bestFor:['maker','workshop','brewery'] },
+  { id:'u17', code:'u-t17', name:'Lagoon Drift', description:'Teal · seafoam · bleached white.', tags:['light','coastal','fresh','cool','calm','user-import'], family:'Coastal / Fresh / Airy', bestFor:['travel','wellness','spa'] },
+  { id:'u18', code:'u-t18', name:'Red Room', description:'Deep crimson · ash black · warm white.', tags:['dark','bold','dramatic','luxury','rich','user-import'], family:'Dark / Luxury / Premium', bestFor:['restaurant','theatre','fashion'] },
+  { id:'u19', code:'u-t19', name:'Chalk Loft', description:'Warm white · linen · light oak.', tags:['light','neutral','airy','organic','cozy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['interior-design','lifestyle','studio'] },
+  { id:'u20', code:'u-t20', name:'Plasma Wave', description:'Void black · cyan · magenta pulse.', tags:['dark','neon','futuristic','vibrant','tech','user-import'], family:'Dark / Cyber / Expressive', bestFor:['gaming','streaming','event'] },
+  { id:'u21', code:'u-t21', name:'Gilt Archive', description:'Ivory · antique gold · warm shadow.', tags:['light','luxury','classic','ornate','warm','user-import'], family:'Classic / Luxury / Heritage', bestFor:['law-firm','finance','heritage-brand'] },
+  { id:'u22', code:'u-t22', name:'Storm System', description:'Slate grey · steel · cold white.', tags:['dark','neutral','strong','corporate','clean','user-import'], family:'Dark / Professional / Editorial', bestFor:['corporate','logistics','b2b'] },
+  { id:'u23', code:'u-t23', name:'Citrus Drop', description:'Bright white · lemon · lime zest.', tags:['light','vibrant','fresh','playful','bold','user-import'], family:'Soft / Pastel / Creative', bestFor:['food-brand','startup','app'] },
+  { id:'u24', code:'u-t24', name:'Velvet Underground', description:'Deep plum · burgundy · dusty mauve.', tags:['dark','moody','rich','feminine','dramatic','user-import'], family:'Dark / Luxury / Premium', bestFor:['beauty','music','editorial'] }
+];
+
+const STORAGE_KEY = 'theme-organizer-state-v1';
+const groupDescriptions = {
+  'Product / System UI':'Utility-led themes for interfaces, dashboards, tools, and precise product surfaces.',
+  'Editorial / Reading-first':'Typography-led themes for reading, publishing, storytelling, and portfolio presentation.',
+  'Brutalist / Experimental':'High-contrast or concept-heavy themes that work best when you want deliberate friction or visual edge.',
+  'Nature / Organic / Wellness':'Biophilic, calm, tactile, or ambient themes for hospitality, wellness, travel, and earthy brands.',
+  'Heritage / Cultural Reference':'Historically or culturally anchored themes that need more intentional handling and clearer context.',
+  'Luxury / Glass / Premium':'Polished, premium, clean themes suited to finance, boutique brands, or high-end presentation.',
+  'Color Systems / Maximalist Pop':'Chroma-first, high-energy themes for campaigns, music, youth brands, and expressive launches.',
+  'Project-Derived / House Systems':'Themes pulled from active local projects so the organizer can compare house styles against the gallery set.',
+  'Minimal / Clean / Neutral':'Quiet, airy, neutral systems for portfolio, product, and general-purpose brand surfaces.',
+  'Dark / Professional / Editorial':'Controlled dark themes built for polished presentation, B2B products, and studio work.',
+  'Dark / Cyber / Expressive':'Neon, nightlife, and future-leaning themes with stronger contrast and energy.',
+  'Dark / Luxury / Premium':'Heavy, polished, premium dark systems for fashion, editorial, and high-end brand work.',
+  'Soft / Pastel / Creative':'Lighter, friendlier systems with softer edges for boutique and expressive brands.',
+  'Dark / Tech / Data':'Technical dark systems for product, analytics, and developer-facing tools.',
+  'Minimal / Editorial / Clean':'Content-first light systems that lean publishing, writing, and reading-first.',
+  'Industrial / Craft / Bold':'Warm, material-heavy systems for maker brands, workshops, and tactile products.',
+  'Coastal / Fresh / Airy':'Open, cool, breathable systems for travel, wellness, and calm service surfaces.',
+  'Classic / Luxury / Heritage':'Traditional high-trust light systems for heritage, legal, finance, and formal brands.'
+};
+
+const state = loadState();
+let selectedId = state.selectedId || THEME_DATA[0].id;
+let groupMode = true;
+let shortlistOnly = false;
+state.compareIds = Array.isArray(state.compareIds) ? state.compareIds.slice(0,4) : [];
+state.collapsedFamilies = state.collapsedFamilies && typeof state.collapsedFamilies === 'object' ? state.collapsedFamilies : {};
+state.previewCopy = state.previewCopy && typeof state.previewCopy === 'object' ? state.previewCopy : {};
+
+const searchEl = document.getElementById('search');
+const familyFilterEl = document.getElementById('familyFilter');
+const moodFilterEl = document.getElementById('moodFilter');
+const statusFilterEl = document.getElementById('statusFilter');
+const sortByEl = document.getElementById('sortBy');
+const summaryEl = document.getElementById('summary');
+const groupsEl = document.getElementById('groups');
+const detailEl = document.getElementById('detail');
+const groupToggleEl = document.getElementById('groupToggle');
+const shortlistToggleEl = document.getElementById('shortlistToggle');
+const exportStateEl = document.getElementById('exportState');
+const copyShortlistEl = document.getElementById('copyShortlist');
+const importStateEl = document.getElementById('importState');
+const importFileEl = document.getElementById('importFile');
+const clearFiltersEl = document.getElementById('clearFilters');
+const comparePanelEl = document.getElementById('comparePanel');
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function persistState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function getRecord(theme) {
+  return state[theme.id] || { status:'unreviewed', note:'', project:'', fit:'', selected:false };
+}
+
+function setRecord(themeId, patch) {
+  state[themeId] = { ...getRecord({ id: themeId }), ...patch };
+  state.selectedId = selectedId;
+  persistState();
+}
+
+function getCompareThemes() {
+  return state.compareIds
+    .map(id => THEME_DATA.find(theme => theme.id === id))
+    .filter(Boolean);
+}
+
+function toggleCompare(themeId) {
+  const ids = new Set(state.compareIds);
+  if (ids.has(themeId)) {
+    ids.delete(themeId);
+  } else {
+    if (ids.size >= 4) {
+      const first = state.compareIds[0];
+      ids.delete(first);
+    }
+    ids.add(themeId);
+  }
+  state.compareIds = [...ids];
+  persistState();
+}
+
+function uniqueValues(fn) {
+  return [...new Set(THEME_DATA.flatMap(fn))].filter(Boolean).sort((a,b) => a.localeCompare(b));
+}
+
+function buildSelect(el, label, values) {
+  el.innerHTML = '';
+  const base = document.createElement('option');
+  base.value = '';
+  base.textContent = `All ${label}`;
+  el.appendChild(base);
+  values.forEach(value => {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = value;
+    el.appendChild(opt);
+  });
+}
+
+buildSelect(familyFilterEl, 'families', uniqueValues(theme => [theme.family]));
+buildSelect(moodFilterEl, 'moods', uniqueValues(theme => theme.tags.filter(tag => ['dark','light','warm','cold','minimal','maximal','retro','futuristic'].includes(tag))));
+buildSelect(statusFilterEl, 'statuses', ['unreviewed','shortlist','maybe','archive']);
+
+function primaryMood(theme) {
+  return theme.tags.find(tag => ['dark','light'].includes(tag)) || '';
+}
+function primaryStyle(theme) {
+  return theme.tags.find(tag => ['editorial','tech','nature','luxury','brutalist','geometric','organic','cultural'].includes(tag)) || '';
+}
+function primaryColor(theme) {
+  return theme.tags.find(tag => ['purple','green','red','blue','gold','neon','monochrome','multicolor'].includes(tag)) || '';
+}
+
+function paletteParts(theme) {
+  return theme.description.split('·').map(part => part.trim()).filter(Boolean);
+}
+
+function colorForToken(token) {
+  const value = token.toLowerCase();
+  const pairs = [
+    ['violet', '#7c3aed'],
+    ['indigo', '#4338ca'],
+    ['cyan', '#22d3ee'],
+    ['cream', '#f5e9cf'],
+    ['ink black', '#111111'],
+    ['black', '#111111'],
+    ['sienna', '#b45309'],
+    ['yellow', '#facc15'],
+    ['forest', '#14532d'],
+    ['sage', '#7c9a6d'],
+    ['leaf', '#4ade80'],
+    ['white', '#f5f5f4'],
+    ['gold', '#d4a017'],
+    ['green', '#22c55e'],
+    ['magenta', '#ec4899'],
+    ['blue', '#3b82f6'],
+    ['sky', '#60a5fa'],
+    ['walnut', '#5b3a29'],
+    ['brown', '#7c5a3c'],
+    ['crimson', '#dc2626'],
+    ['rice paper', '#f4ead3'],
+    ['orange', '#f97316'],
+    ['pink', '#f472b6'],
+    ['periwinkle', '#a5b4fc'],
+    ['teal', '#0f766e'],
+    ['red', '#ef4444'],
+    ['linen', '#ede0c8'],
+    ['aubergine', '#4c1d95'],
+    ['amber', '#f59e0b'],
+    ['grey', '#6b7280'],
+    ['gray', '#6b7280'],
+    ['jade', '#10b981'],
+    ['papaya', '#fb923c'],
+    ['ivory', '#f8f4e8'],
+    ['vine', '#3f6212'],
+    ['conic', '#8b5cf6'],
+    ['spectrum', '#ec4899'],
+    ['frosted', '#dbeafe'],
+    ['steel', '#64748b'],
+    ['phosphor', '#84cc16']
+  ];
+  const match = pairs.find(([needle]) => value.includes(needle));
+  if (match) return match[1];
+  if (value.includes('dark')) return '#1f2937';
+  if (value.includes('light')) return '#e5e7eb';
+  if (value.includes('warm')) return '#f59e0b';
+  if (value.includes('cold')) return '#38bdf8';
+  return '#6b7280';
+}
+
+function paletteSwatches(theme) {
+  return paletteParts(theme).map(part => `
+    <span class="swatch">
+      <span class="swatch-chip" style="background:${colorForToken(part)}"></span>
+      <span>${part}</span>
+    </span>
+  `).join('');
+}
+
+function defaultPreviewCopy(theme) {
+  return {
+    headline: theme.name,
+    subtitle: theme.description,
+    body: `${theme.bestFor[0] || 'Flexible system'} interface with ${primaryMood(theme) || 'mixed'} energy and ${primaryColor(theme) || 'neutral'} accent behavior.`
+  };
+}
+
+function getPreviewCopy(theme) {
+  return { ...defaultPreviewCopy(theme), ...(state.previewCopy[theme.id] || {}) };
+}
+
+function setPreviewCopy(themeId, patch) {
+  state.previewCopy[themeId] = { ...(state.previewCopy[themeId] || defaultPreviewCopy(THEME_DATA.find(theme => theme.id === themeId) || { name:'', description:'', bestFor:[], tags:[] })), ...patch };
+  persistState();
+}
+
+function resetPreviewCopy(themeId) {
+  delete state.previewCopy[themeId];
+  persistState();
+}
+
+function previewPreset(theme, record, mode) {
+  const project = record.project?.trim() || 'Project';
+  if (mode === 'pitch') {
+    return {
+      headline: `${project} in ${theme.name}`,
+      subtitle: `${theme.family} direction tuned for ${theme.bestFor[0] || 'presentation'}`,
+      body: `${project} uses the ${theme.name} system to push a ${primaryMood(theme) || 'mixed'} mood with ${primaryColor(theme) || 'neutral'} emphasis and a ${primaryStyle(theme) || 'flexible'} typographic character.`
+    };
+  }
+  if (mode === 'portfolio') {
+    return {
+      headline: `${project} Case Study`,
+      subtitle: `${theme.name} for ${theme.bestFor[0] || 'editorial presentation'}`,
+      body: `A presentation-first layout showing how ${project} would read with the ${theme.name} visual language, using the gallery typography and palette cues from this theme.`
+    };
+  }
+  if (mode === 'product') {
+    return {
+      headline: `${project} Dashboard`,
+      subtitle: `${theme.name} for ${theme.bestFor.includes('dashboard') ? 'dashboard UI' : 'product surfaces'}`,
+      body: `This preview reframes ${theme.name} as a working product surface so you can judge display weight, supporting copy, and action clarity before committing it to build work.`
+    };
+  }
+  return defaultPreviewCopy(theme);
+}
+
+function luminance(hex) {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map(ch => ch + ch).join('') : clean;
+  const rgb = [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16) / 255).map(v => (
+    v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+  ));
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function pickText(bg) {
+  return luminance(bg) > 0.42 ? '#0b1020' : '#f5f7fb';
+}
+
+function mix(hexA, hexB, weight = 0.5) {
+  const parse = (hex) => {
+    const clean = hex.replace('#', '');
+    const full = clean.length === 3 ? clean.split('').map(ch => ch + ch).join('') : clean;
+    return [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16));
+  };
+  const [a1, a2, a3] = parse(hexA);
+  const [b1, b2, b3] = parse(hexB);
+  const mixChannel = (a, b) => Math.round(a + (b - a) * weight).toString(16).padStart(2, '0');
+  return `#${mixChannel(a1, b1)}${mixChannel(a2, b2)}${mixChannel(a3, b3)}`;
+}
+
+function themeTokens(theme) {
+  const parts = paletteParts(theme);
+  const colors = parts.length ? parts.map(colorForToken) : ['#1f2937', '#8b5cf6', '#38bdf8'];
+  const dark = theme.tags.includes('dark');
+  const background = dark ? (colors[0] || '#111827') : mix(colors[0] || '#f5f5f4', '#ffffff', 0.6);
+  const surface = dark ? mix(background, '#1f2937', 0.25) : mix(background, '#ffffff', 0.5);
+  const accent = colors[1] || colors[0] || '#8b5cf6';
+  const accentAlt = colors[2] || colors[1] || accent;
+  const text = pickText(background);
+  const muted = dark ? mix(text, background, 0.45) : mix(text, background, 0.58);
+  const border = dark ? mix(background, '#ffffff', 0.18) : mix(background, '#111827', 0.12);
+  const radius = theme.tags.includes('brutalist') ? '6px' : theme.tags.includes('luxury') ? '18px' : '12px';
+  const gradient = theme.tags.includes('maximal') || theme.tags.includes('neon')
+    ? `linear-gradient(135deg, ${background}, ${mix(accent, accentAlt, 0.45)})`
+    : background;
+  const type = typeProfile(theme);
+  return { background, surface, accent, accentAlt, text, muted, border, radius, gradient, ...type };
+}
+
+function typeProfile(theme) {
+  const profiles = {
+    t1:  { displayFont:"'DM Mono', monospace", bodyFont:"'DM Mono', monospace", displayWeight:500, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: DM Mono for both signal text and theme label.' },
+    t2:  { displayFont:"'Playfair Display', serif", bodyFont:"'Libre Baskerville', serif", displayWeight:700, bodyWeight:400, displaySpacing:'-0.02em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Playfair Display headline with Libre Baskerville label styling.' },
+    t3:  { displayFont:"'Bebas Neue', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'-0.03em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: Bebas Neue display with Space Mono supporting text.' },
+    t4:  { displayFont:"'Cormorant Garamond', serif", bodyFont:"'Cormorant Garamond', serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.05em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Cormorant Garamond for the organic display voice.' },
+    t5:  { displayFont:"'Cormorant Garamond', serif", bodyFont:"'Cormorant Garamond', serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.12em', bodySpacing:'0em', displayTransform:'uppercase', note:'Original gallery: Cormorant Garamond luxury serif treatment.' },
+    t6:  { displayFont:"'Space Mono', monospace", bodyFont:"'Space Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.1em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: Space Mono terminal treatment.' },
+    t7:  { displayFont:"'Syne', sans-serif", bodyFont:"'Syne', sans-serif", displayWeight:800, bodyWeight:700, displaySpacing:'0.03em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Syne high-energy display sans.' },
+    t8:  { displayFont:"'DM Mono', monospace", bodyFont:"'DM Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: DM Mono cold precision aesthetic.' },
+    t9:  { displayFont:"'Playfair Display', serif", bodyFont:"'Libre Baskerville', serif", displayWeight:400, bodyWeight:400, displaySpacing:'-0.01em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Playfair Display with Libre Baskerville italic labeling.' },
+    t10: { displayFont:"'Bebas Neue', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: Bebas Neue neon display with Space Mono label.' },
+    t11: { displayFont:"'Spectral', serif", bodyFont:"'Spectral', serif", displayWeight:300, bodyWeight:300, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Spectral italic restraint for Wabi.' },
+    t12: { displayFont:"'Rajdhani', sans-serif", bodyFont:"'Courier Prime', monospace", displayWeight:600, bodyWeight:400, displaySpacing:'0.1em', bodySpacing:'0.01em', displayTransform:'uppercase', note:'Original gallery: Rajdhani label with Courier Prime support.' },
+    t13: { displayFont:"'Josefin Sans', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.18em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Original gallery: Josefin Sans airy pastel treatment.' },
+    t14: { displayFont:"'Anton', sans-serif", bodyFont:"'Courier Prime', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'-0.02em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: Anton constructivist display with Courier Prime support.' },
+    t15: { displayFont:"'Italiana', sans-serif", bodyFont:"'Italiana', sans-serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Italiana refined premium lettering.' },
+    t16: { displayFont:"'Josefin Sans', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.16em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: Josefin Sans vaporwave spacing treatment.' },
+    t17: { displayFont:"'Josefin Sans', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.12em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Original gallery: Josefin Sans swiss-modern label system.' },
+    t18: { displayFont:"'Rajdhani', sans-serif", bodyFont:"'Rajdhani', sans-serif", displayWeight:600, bodyWeight:600, displaySpacing:'0.12em', bodySpacing:'0.01em', displayTransform:'uppercase', note:'Original gallery: Rajdhani geometric oceanic treatment.' },
+    t19: { displayFont:"'IM Fell English', serif", bodyFont:"'IM Fell English', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: IM Fell English manuscript voice.' },
+    t20: { displayFont:"'Unbounded', sans-serif", bodyFont:"'Unbounded', sans-serif", displayWeight:900, bodyWeight:900, displaySpacing:'0.04em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: Unbounded maximal display weight.' },
+    t21: { displayFont:"'Poiret One', sans-serif", bodyFont:"'Poiret One', sans-serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.16em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: Poiret One bauhaus label style.' },
+    t22: { displayFont:"'Oxanium', sans-serif", bodyFont:"'Oxanium', sans-serif", displayWeight:800, bodyWeight:800, displaySpacing:'0.06em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: Oxanium punchy playful display.' },
+    t23: { displayFont:"'Oxanium', sans-serif", bodyFont:"'Oxanium', sans-serif", displayWeight:800, bodyWeight:800, displaySpacing:'0.12em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Original gallery: Oxanium cyberpunk display system.' },
+    t24: { displayFont:"'Fraunces', serif", bodyFont:"'Fraunces', serif", displayWeight:100, bodyWeight:100, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Fraunces italic mid-century softness.' },
+    t25: { displayFont:"'Cinzel', serif", bodyFont:"'Cinzel', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.14em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Original gallery: Cinzel geometric heritage display.' },
+    t26: { displayFont:"'Fraunces', serif", bodyFont:"'Fraunces', serif", displayWeight:100, bodyWeight:100, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Fraunces cozy serif treatment.' },
+    t27: { displayFont:"'Major Mono Display', monospace", bodyFont:"'VT323', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.03em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Major Mono Display with VT323 glitch support.' },
+    t28: { displayFont:"'Poiret One', sans-serif", bodyFont:"'Poiret One', sans-serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.22em', bodySpacing:'0.04em', displayTransform:'uppercase', note:'Original gallery: Poiret One raw-concrete label style.' },
+    t29: { displayFont:"'Libre Caslon Display', serif", bodyFont:"'Libre Caslon Display', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.03em', bodySpacing:'0em', displayTransform:'none', note:'Original gallery: Libre Caslon Display tropical serif.' },
+    t30: { displayFont:"'Playfair Display SC', serif", bodyFont:"'Playfair Display SC', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.1em', bodySpacing:'0.02em', displayTransform:'none', note:'Original gallery: Playfair Display SC art nouveau small caps.' },
+    p1:  { displayFont:"'Fraunces', serif", bodyFont:"'DM Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0em', bodySpacing:'0.04em', displayTransform:'none', note:'Project theme: Garden OS uses Fraunces + DM Mono.' },
+    p2:  { displayFont:"'Libre Caslon Display', serif", bodyFont:"'DM Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.02em', bodySpacing:'0.03em', displayTransform:'none', note:'Project theme: Trailkeeper field-journal treatment.' },
+    p3:  { displayFont:"'Unbounded', sans-serif", bodyFont:"'DM Mono', monospace", displayWeight:900, bodyWeight:400, displaySpacing:'0.03em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: Prompt Lab product/experiment surface.' },
+    p4:  { displayFont:"'Bebas Neue', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.05em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: Estate II seasonal campaign treatment.' },
+    p5:  { displayFont:"'Anton', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.03em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: Park Rave flyer energy.' },
+    p6:  { displayFont:"'Cormorant Garamond', serif", bodyFont:"'DM Mono', monospace", displayWeight:300, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: Dave HomeAssist trust + service polish.' },
+    p7:  { displayFont:"'Rajdhani', sans-serif", bodyFont:"'DM Mono', monospace", displayWeight:600, bodyWeight:400, displaySpacing:'0.1em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: Festival Atlas route-planning system.' },
+    p8:  { displayFont:"'Oxanium', sans-serif", bodyFont:"'DM Mono', monospace", displayWeight:800, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Project theme: MetaGrid signal/technical interface.' },
+    u5:  { displayFont:"'Poiret One', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:400, bodyWeight:300, displaySpacing:'0.08em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: minimal light portfolio system.' },
+    u6:  { displayFont:"'Playfair Display', serif", bodyFont:"'Libre Baskerville', serif", displayWeight:700, bodyWeight:400, displaySpacing:'-0.01em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: dark professional editorial system.' },
+    u7:  { displayFont:"'Fraunces', serif", bodyFont:"'Cormorant Garamond', serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.02em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: warm earthy artisan system.' },
+    u8:  { displayFont:"'DM Mono', monospace", bodyFont:"'DM Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: cool minimal product system.' },
+    u9:  { displayFont:"'Oxanium', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:800, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Imported theme: cyber nightlife system.' },
+    u10: { displayFont:"'Fraunces', serif", bodyFont:"'Fraunces', serif", displayWeight:100, bodyWeight:100, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: harvest and rustic warmth.' },
+    u11: { displayFont:"'Cinzel', serif", bodyFont:"'DM Mono', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'0.12em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Imported theme: dark premium brand system.' },
+    u12: { displayFont:"'Josefin Sans', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.12em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: soft boutique creative system.' },
+    u13: { displayFont:"'Libre Caslon Display', serif", bodyFont:"'Libre Caslon Display', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.02em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: moody organic resort system.' },
+    u14: { displayFont:"'Rajdhani', sans-serif", bodyFont:"'Courier Prime', monospace", displayWeight:600, bodyWeight:400, displaySpacing:'0.1em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: dark tech/data system.' },
+    u15: { displayFont:"'Playfair Display', serif", bodyFont:"'Libre Baskerville', serif", displayWeight:400, bodyWeight:400, displaySpacing:'-0.01em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: clean editorial publishing system.' },
+    u16: { displayFont:"'Anton', sans-serif", bodyFont:"'Courier Prime', monospace", displayWeight:400, bodyWeight:400, displaySpacing:'-0.01em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: industrial craft bold system.' },
+    u17: { displayFont:"'Rajdhani', sans-serif", bodyFont:"'Rajdhani', sans-serif", displayWeight:600, bodyWeight:600, displaySpacing:'0.08em', bodySpacing:'0.01em', displayTransform:'uppercase', note:'Imported theme: coastal fresh airy system.' },
+    u18: { displayFont:"'Cinzel', serif", bodyFont:"'Playfair Display', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: dramatic dark luxury system.' },
+    u19: { displayFont:"'Fraunces', serif", bodyFont:"'Fraunces', serif", displayWeight:100, bodyWeight:100, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: airy neutral interior system.' },
+    u20: { displayFont:"'Unbounded', sans-serif", bodyFont:"'Space Mono', monospace", displayWeight:900, bodyWeight:400, displaySpacing:'0.04em', bodySpacing:'0.03em', displayTransform:'uppercase', note:'Imported theme: futuristic event/system theme.' },
+    u21: { displayFont:"'Playfair Display SC', serif", bodyFont:"'Libre Baskerville', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0.08em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: classic light luxury heritage system.' },
+    u22: { displayFont:"'Josefin Sans', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:300, bodyWeight:300, displaySpacing:'0.12em', bodySpacing:'0.02em', displayTransform:'uppercase', note:'Imported theme: dark corporate editorial system.' },
+    u23: { displayFont:"'Syne', sans-serif", bodyFont:"'Josefin Sans', sans-serif", displayWeight:800, bodyWeight:300, displaySpacing:'0.03em', bodySpacing:'0.02em', displayTransform:'none', note:'Imported theme: bright playful startup system.' },
+    u24: { displayFont:"'Playfair Display', serif", bodyFont:"'Playfair Display', serif", displayWeight:400, bodyWeight:400, displaySpacing:'0em', bodySpacing:'0em', displayTransform:'none', note:'Imported theme: moody editorial beauty system.' }
+  };
+  return profiles[theme.id] || {
+    displayFont:"'DM Mono', monospace",
+    bodyFont:"'DM Mono', monospace",
+    displayWeight:400,
+    bodyWeight:400,
+    displaySpacing:'0.04em',
+    bodySpacing:'0em',
+    displayTransform:'none',
+    note:'Fallback constrained to original gallery font families only.'
+  };
+}
+
+function previewMarkup(theme, large = false) {
+  const t = themeTokens(theme);
+  const copy = getPreviewCopy(theme);
+  const body = copy.body;
+  if (large) {
+    return `
+      <div class="preview preview-large">
+      <div class="preview-surface" style="background:${t.gradient};color:${t.text};font-family:${t.fontStyle}">
+        <div class="preview-top">
+          <div class="preview-brand">
+            <span class="preview-logo" style="background:${t.accent}"></span>
+              <span>${theme.family}</span>
+          </div>
+          <span class="preview-chip" style="background:${t.surface};color:${t.text};border-color:${t.border}">${primaryStyle(theme) || 'mixed'}</span>
+        </div>
+        <div class="preview-kicker">${theme.code} · ${primaryMood(theme) || 'mixed mood'} · ${primaryColor(theme) || 'neutral accent'}</div>
+        <div class="preview-title" style="font-family:${t.displayFont};font-weight:${t.displayWeight};letter-spacing:${t.displaySpacing};text-transform:${t.displayTransform}">${escapeHtml(copy.headline)}</div>
+        <div class="preview-subtitle" style="color:${t.muted};font-family:${t.bodyFont};font-weight:${t.bodyWeight};letter-spacing:${t.bodySpacing}">${escapeHtml(copy.subtitle)}</div>
+        <div class="preview-copy" style="color:${t.muted};font-family:${t.bodyFont};font-weight:${t.bodyWeight};letter-spacing:${t.bodySpacing}">
+          <p>${escapeHtml(body)}</p>
+          <p>This larger inspection view is for reading the font personality, heading scale, supporting text size, and spacing rhythm before you shortlist the theme.</p>
+        </div>
+        <div class="preview-meta">
+          <span class="preview-btn" style="background:${t.accent};color:${pickText(t.accent)};border-color:${t.accent}">Primary Action</span>
+          <span class="preview-btn" style="background:${t.surface};color:${t.text};border-color:${t.border}">Secondary</span>
+          <span class="preview-stat" style="background:${t.surface};color:${t.text};border-color:${t.border}">Body 14px / 1.6</span>
+          <span class="preview-stat" style="background:${t.surface};color:${t.text};border-color:${t.border}">Display 40px</span>
+        </div>
+        <div class="preview-type-specimen" style="color:${t.text};border-color:${t.border};background:${t.surface}">
+          <div class="specimen-xl" style="font-family:${t.displayFont};font-weight:${t.displayWeight};letter-spacing:${t.displaySpacing};text-transform:${t.displayTransform}">Type Specimen</div>
+          <div class="specimen-lg" style="color:${t.muted};font-family:${t.displayFont};font-weight:${Math.max(600, t.displayWeight - 50)};letter-spacing:${t.displaySpacing}">Readable hierarchy with a strong display voice</div>
+          <div class="specimen-md" style="color:${t.muted};font-family:${t.bodyFont};font-weight:${t.bodyWeight};letter-spacing:${t.bodySpacing}">The quick brown fox jumps over the lazy dog. 0123456789. Use this section to judge letterforms, spacing, body readability, and whether the theme feels editorial, product-like, luxurious, or experimental.</div>
+        </div>
+        <div class="preview-font-note">${t.note}</div>
+        <div class="preview-card" style="background:${t.surface};color:${t.text};border-color:${t.border}">
+          Sample card · ${theme.family}
+        </div>
+      </div>
+    </div>
+    `;
+  }
+  return `
+    <div class="preview ${large ? 'preview-large' : ''}">
+      <div class="preview-surface" style="background:${t.gradient};color:${t.text}">
+        <div class="preview-top">
+          <div class="preview-brand">
+            <span class="preview-logo" style="background:${t.accent}"></span>
+            <span>${theme.name}</span>
+          </div>
+          <span class="preview-chip" style="background:${t.surface};color:${t.text};border-color:${t.border}">${primaryStyle(theme) || 'mixed'}</span>
+        </div>
+        <div class="preview-title" style="font-family:${t.displayFont};font-weight:${t.displayWeight};letter-spacing:${t.displaySpacing};text-transform:${t.displayTransform}">${escapeHtml(copy.headline)}</div>
+        <div class="preview-body" style="color:${t.muted};font-family:${t.bodyFont};font-weight:${t.bodyWeight};letter-spacing:${t.bodySpacing}">${escapeHtml(body)}</div>
+        <div class="preview-row">
+          <span class="preview-btn" style="background:${t.accent};color:${pickText(t.accent)};border-color:${t.accent}">Primary</span>
+          <span class="preview-btn" style="background:${t.surface};color:${t.text};border-color:${t.border}">Secondary</span>
+        </div>
+        <div class="preview-card" style="background:${t.surface};color:${t.text};border-color:${t.border}">
+          Sample card · ${theme.family}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function sortThemes(themes) {
+  const sortBy = sortByEl.value;
+  return [...themes].sort((a,b) => {
+    if (sortBy === 'name') return a.name.localeCompare(b.name);
+    if (sortBy === 'mood') return primaryMood(a).localeCompare(primaryMood(b)) || a.name.localeCompare(b.name);
+    if (sortBy === 'style') return primaryStyle(a).localeCompare(primaryStyle(b)) || a.name.localeCompare(b.name);
+    if (sortBy === 'color') return primaryColor(a).localeCompare(primaryColor(b)) || a.name.localeCompare(b.name);
+    if (sortBy === 'status') return getRecord(a).status.localeCompare(getRecord(b).status) || a.name.localeCompare(b.name);
+    return a.family.localeCompare(b.family) || a.name.localeCompare(b.name);
+  });
+}
+
+function filterThemes() {
+  const query = searchEl.value.trim().toLowerCase();
+  const family = familyFilterEl.value;
+  const mood = moodFilterEl.value;
+  const status = statusFilterEl.value;
+  return THEME_DATA.filter(theme => {
+    const record = getRecord(theme);
+    const haystack = [
+      theme.name,
+      theme.description,
+      theme.family,
+      ...theme.tags,
+      ...theme.bestFor,
+      record.note || ''
+    ].join(' ').toLowerCase();
+    if (query && !haystack.includes(query)) return false;
+    if (family && theme.family !== family) return false;
+    if (mood && !theme.tags.includes(mood)) return false;
+    if (status && record.status !== status) return false;
+    if (shortlistOnly && record.status !== 'shortlist') return false;
+    return true;
+  });
+}
+
+function renderSummary(visible) {
+  const shortlistCount = THEME_DATA.filter(theme => getRecord(theme).status === 'shortlist').length;
+  const maybeCount = THEME_DATA.filter(theme => getRecord(theme).status === 'maybe').length;
+  const archiveCount = THEME_DATA.filter(theme => getRecord(theme).status === 'archive').length;
+  const compareCount = getCompareThemes().length;
+  summaryEl.innerHTML = `
+    <div class="stat"><strong>${visible.length}</strong> visible</div>
+    <div class="stat"><strong>${THEME_DATA.length}</strong> total themes</div>
+    <div class="stat"><strong>${shortlistCount}</strong> shortlisted</div>
+    <div class="stat"><strong>${maybeCount}</strong> maybe</div>
+    <div class="stat"><strong>${archiveCount}</strong> archived</div>
+    <div class="stat"><strong>${compareCount}</strong> in compare</div>
+  `;
+}
+
+function renderCompare() {
+  const themes = getCompareThemes();
+  if (!themes.length) {
+    comparePanelEl.hidden = true;
+    comparePanelEl.innerHTML = '';
+    return;
+  }
+  const rows = [
+    ['Theme', theme => `
+      <div class="compare-theme">
+        <div>
+          <div class="code">${theme.code}</div>
+          <strong>${theme.name}</strong>
+        </div>
+        <button type="button" data-remove-compare="${theme.id}">Remove</button>
+      </div>
+    `],
+    ['Family', theme => theme.family],
+    ['Description', theme => theme.description],
+    ['Primary Mood', theme => primaryMood(theme) || 'n/a'],
+    ['Primary Style', theme => primaryStyle(theme) || 'n/a'],
+    ['Primary Color', theme => primaryColor(theme) || 'n/a'],
+    ['Best For', theme => theme.bestFor.map(item => `<span class="meta-pill">${item}</span>`).join('')],
+    ['Status', theme => `<span class="status-pill status-${getRecord(theme).status}">${labelize(getRecord(theme).status)}</span>`],
+    ['Project', theme => escapeHtml(getRecord(theme).project || '—')],
+    ['Fit', theme => escapeHtml(getRecord(theme).fit || '—')],
+    ['Note', theme => escapeHtml(getRecord(theme).note || '—')]
+  ];
+  comparePanelEl.hidden = false;
+  comparePanelEl.innerHTML = `
+    <div class="compare-header">
+      <div>
+        <h2>Compare Tray</h2>
+        <p>Side-by-side view for up to four themes. Use it to narrow a shortlist before moving to implementation.</p>
+      </div>
+      <div class="compare-actions">
+        <button id="clearCompare" class="ghost-btn" type="button">Clear Compare</button>
+      </div>
+    </div>
+    <div class="compare-grid">
+      ${rows.map(([label, renderValue]) => `
+        <div class="compare-label">${label}</div>
+        ${themes.map(theme => `<div class="compare-cell">${renderValue(theme)}</div>`).join('')}
+      `).join('')}
+    </div>
+  `;
+  comparePanelEl.querySelectorAll('[data-remove-compare]').forEach(button => {
+    button.addEventListener('click', () => {
+      toggleCompare(button.dataset.removeCompare);
+      render();
+    });
+  });
+  comparePanelEl.querySelector('#clearCompare')?.addEventListener('click', () => {
+    state.compareIds = [];
+    persistState();
+    render();
+  });
+}
+
+function renderDetail(theme) {
+  if (!theme) {
+    detailEl.innerHTML = '<div class="empty">Select a theme to inspect its family, notes, status, and use-case fit.</div>';
+    return;
+  }
+  const record = getRecord(theme);
+  detailEl.innerHTML = `
+    <div>
+      <div class="code">${theme.code}</div>
+      <h3>${theme.name}</h3>
+      <p>${theme.description}</p>
+    </div>
+    ${previewMarkup(theme, true)}
+    <div class="detail-box">
+      <div class="preview-copy-head">
+        <strong>Preview Copy Studio</strong>
+        <span>Live text controls for the large preview</span>
+      </div>
+      <div class="preview-editor">
+        <div class="preset-row">
+          <button id="presetDefault" type="button">Theme Default</button>
+          <button id="presetPitch" type="button">Project Pitch</button>
+          <button id="presetPortfolio" type="button">Portfolio</button>
+          <button id="presetProduct" type="button">Product Hero</button>
+        </div>
+        <input id="previewHeadline" type="text" placeholder="Preview headline" value="${escapeAttr(getPreviewCopy(theme).headline)}">
+        <input id="previewSubtitle" type="text" placeholder="Preview subtitle" value="${escapeAttr(getPreviewCopy(theme).subtitle)}">
+        <textarea id="previewBody" placeholder="Preview body copy">${escapeHtml(getPreviewCopy(theme).body)}</textarea>
+        <div class="preview-editor-actions">
+          <button id="resetPreviewCopy" class="ghost-btn" type="button">Reset Preview Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="swatch-row">${paletteSwatches(theme)}</div>
+    <div class="mini-list">${theme.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+    <div class="detail-grid">
+      <div class="detail-box">
+        <label>Family</label>
+        <div>${theme.family}</div>
+      </div>
+      <div class="detail-box">
+        <label>Status</label>
+        <select id="detailStatus">
+          ${['unreviewed','shortlist','maybe','archive'].map(value => `<option value="${value}" ${record.status === value ? 'selected' : ''}>${labelize(value)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="detail-box">
+        <label>Primary Mood</label>
+        <div>${primaryMood(theme) || 'n/a'}</div>
+      </div>
+      <div class="detail-box">
+        <label>Primary Style</label>
+        <div>${primaryStyle(theme) || 'n/a'}</div>
+      </div>
+      <div class="detail-box detail-wide">
+        <label>Project / Use Case</label>
+        <input id="detailProject" class="inline-input" type="text" placeholder="Assign to project or experiment" value="${escapeAttr(record.project || '')}">
+      </div>
+      <div class="detail-box">
+        <label>Fit</label>
+        <select id="detailFit">
+          ${['','strong','possible','stretch'].map(value => `<option value="${value}" ${record.fit === value ? 'selected' : ''}>${value ? labelize(value) : 'Unset'}</option>`).join('')}
+        </select>
+      </div>
+      <div class="detail-box">
+        <label>Compare</label>
+        <div>${state.compareIds.includes(theme.id) ? 'In compare tray' : 'Not in compare tray'}</div>
+      </div>
+    </div>
+    <div class="detail-box">
+      <label>Best For</label>
+      <div class="mini-list">${theme.bestFor.map(item => `<span class="meta-pill">${item}</span>`).join('')}</div>
+    </div>
+    <div class="detail-box">
+      <label>Organizer Note</label>
+      <textarea id="detailNote" class="notes-box" placeholder="Why use this theme? What should it map to? Risks? Comparables?">${escapeHtml(record.note || '')}</textarea>
+    </div>
+    <div class="detail-actions">
+      <button id="detailCompare" class="ghost-btn" type="button">${state.compareIds.includes(theme.id) ? 'Remove From Compare' : 'Add To Compare'}</button>
+      <button id="detailShortlist" class="ghost-btn" type="button">${record.status === 'shortlist' ? 'Unshortlist' : 'Mark Shortlist'}</button>
+      <button id="detailArchive" class="ghost-btn" type="button">Archive</button>
+    </div>
+    <div class="footer-note">Families and organizer structure were derived from the current theme gallery plus agent review. The original visual browsing file remains unchanged.</div>
+  `;
+  detailEl.querySelector('#detailStatus').addEventListener('change', (event) => {
+    setRecord(theme.id, { status: event.target.value });
+    render();
+  });
+  detailEl.querySelector('#detailNote').addEventListener('input', (event) => {
+    setRecord(theme.id, { note: event.target.value });
+  });
+  detailEl.querySelector('#previewHeadline').addEventListener('input', (event) => {
+    setPreviewCopy(theme.id, { headline: event.target.value });
+    render();
+  });
+  detailEl.querySelector('#previewSubtitle').addEventListener('input', (event) => {
+    setPreviewCopy(theme.id, { subtitle: event.target.value });
+    render();
+  });
+  detailEl.querySelector('#previewBody').addEventListener('input', (event) => {
+    setPreviewCopy(theme.id, { body: event.target.value });
+    render();
+  });
+  detailEl.querySelector('#presetDefault').addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'default'));
+    render();
+  });
+  detailEl.querySelector('#presetPitch').addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'pitch'));
+    render();
+  });
+  detailEl.querySelector('#presetPortfolio').addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'portfolio'));
+    render();
+  });
+  detailEl.querySelector('#presetProduct').addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'product'));
+    render();
+  });
+  detailEl.querySelector('#resetPreviewCopy').addEventListener('click', () => {
+    resetPreviewCopy(theme.id);
+    render();
+  });
+  detailEl.querySelector('#detailProject').addEventListener('input', (event) => {
+    setRecord(theme.id, { project: event.target.value });
+    renderCompare();
+  });
+  detailEl.querySelector('#detailFit').addEventListener('change', (event) => {
+    setRecord(theme.id, { fit: event.target.value });
+    renderCompare();
+  });
+  detailEl.querySelector('#detailCompare').addEventListener('click', () => {
+    toggleCompare(theme.id);
+    render();
+  });
+  detailEl.querySelector('#detailShortlist').addEventListener('click', () => {
+    setRecord(theme.id, { status: record.status === 'shortlist' ? 'unreviewed' : 'shortlist' });
+    render();
+  });
+  detailEl.querySelector('#detailArchive').addEventListener('click', () => {
+    setRecord(theme.id, { status: 'archive' });
+    render();
+  });
+}
+
+function labelize(value) {
+  return value.replace(/_/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase());
+}
+
+function escapeHtml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replaceAll('"', '&quot;');
+}
+
+function themeCard(theme) {
+  const record = getRecord(theme);
+  const isActive = selectedId === theme.id;
+  const statusClass = `status-${record.status}`;
+  return `
+    <article class="card ${isActive ? 'active' : ''}" data-theme-id="${theme.id}">
+      <div class="card-top">
+        <div>
+          <div class="code">${theme.code}</div>
+          <div class="name">${theme.name}</div>
+        </div>
+        <span class="status-pill ${statusClass}">${labelize(record.status)}</span>
+      </div>
+      <div class="desc">${theme.description}</div>
+      ${previewMarkup(theme)}
+      <div class="swatch-row">${paletteSwatches(theme)}</div>
+      <div class="meta-row">
+        <span class="meta-pill">${theme.family}</span>
+        <span class="meta-pill">${primaryStyle(theme) || 'mixed'}</span>
+      </div>
+      <div class="tag-row">${theme.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+      ${record.note ? `<div class="desc">Note: ${escapeHtml(record.note).slice(0, 120)}</div>` : ''}
+      <div class="action-row">
+        <button type="button" data-action="select">${isActive ? 'Selected' : 'Inspect'}</button>
+        <button type="button" data-action="shortlist" class="${record.status === 'shortlist' ? 'shortlisted' : 'secondary'}">${record.status === 'shortlist' ? 'Shortlisted' : 'Shortlist'}</button>
+        <button type="button" data-action="maybe" class="secondary">Maybe</button>
+        <button type="button" data-action="compare" class="secondary">${state.compareIds.includes(theme.id) ? 'In Compare' : 'Compare'}</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderCards(themes) {
+  if (!themes.length) {
+    groupsEl.innerHTML = '<div class="empty">No themes match this view. Try clearing a filter or switching out of shortlist mode.</div>';
+    return;
+  }
+
+  if (!groupMode) {
+    groupsEl.innerHTML = `<section class="group"><div class="group-header"><div><h2>All Matching Themes</h2><p>Flat list for scanning, sorting, and shortlisting.</p></div><div class="group-count">${themes.length}</div></div><div class="cards">${themes.map(themeCard).join('')}</div></section>`;
+    bindCardActions();
+    return;
+  }
+
+  const grouped = themes.reduce((acc, theme) => {
+    (acc[theme.family] ||= []).push(theme);
+    return acc;
+  }, {});
+
+  groupsEl.innerHTML = Object.entries(grouped).map(([family, familyThemes]) => `
+    <section class="group ${state.collapsedFamilies[family] ? 'collapsed' : ''}" data-family="${escapeAttr(family)}">
+      <div class="group-header">
+        <div>
+          <h2>${family}</h2>
+          <p>${groupDescriptions[family] || 'Theme family'}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="group-count">${familyThemes.length}</div>
+          <button type="button" class="group-toggle" data-toggle-family="${escapeAttr(family)}">${state.collapsedFamilies[family] ? '+' : '−'}</button>
+        </div>
+      </div>
+      <div class="cards">${familyThemes.map(themeCard).join('')}</div>
+    </section>
+  `).join('');
+  bindCardActions();
+  groupsEl.querySelectorAll('[data-toggle-family]').forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const family = button.dataset.toggleFamily;
+      state.collapsedFamilies[family] = !state.collapsedFamilies[family];
+      persistState();
+      render();
+    });
+  });
+}
+
+function bindCardActions() {
+  groupsEl.querySelectorAll('.card').forEach(card => {
+    const id = card.dataset.themeId;
+    const theme = THEME_DATA.find(item => item.id === id);
+    card.addEventListener('click', (event) => {
+      const action = event.target.closest('[data-action]')?.dataset.action;
+      if (action === 'shortlist') {
+        const current = getRecord(theme).status;
+        setRecord(id, { status: current === 'shortlist' ? 'unreviewed' : 'shortlist' });
+        render();
+        return;
+      }
+      if (action === 'maybe') {
+        setRecord(id, { status: 'maybe' });
+        render();
+        return;
+      }
+      if (action === 'compare') {
+        toggleCompare(id);
+        render();
+        return;
+      }
+      selectedId = id;
+      state.selectedId = id;
+      persistState();
+      render();
+    });
+  });
+}
+
+function render() {
+  const visible = sortThemes(filterThemes());
+  const selected = THEME_DATA.find(theme => theme.id === selectedId) || visible[0] || THEME_DATA[0];
+  if (selected) selectedId = selected.id;
+  renderSummary(visible);
+  renderCompare();
+  renderCards(visible);
+  renderDetail(selected);
+  groupToggleEl.textContent = groupMode ? 'Grouped' : 'Flat List';
+  shortlistToggleEl.textContent = shortlistOnly ? 'Shortlist Only' : 'All Themes';
+}
+
+function exportState() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    compareIds: state.compareIds,
+    selectedId,
+    themes: THEME_DATA.map(theme => ({
+      id: theme.id,
+      name: theme.name,
+      family: theme.family,
+      tags: theme.tags,
+      bestFor: theme.bestFor,
+      ...getRecord(theme)
+    }))
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'theme-organizer-state.json';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+async function copyShortlist() {
+  const shortlist = THEME_DATA
+    .filter(theme => getRecord(theme).status === 'shortlist')
+    .map(theme => {
+      const record = getRecord(theme);
+      return [
+        `${theme.name} (${theme.code})`,
+        `Family: ${theme.family}`,
+        `Best for: ${theme.bestFor.join(', ')}`,
+        record.project ? `Project: ${record.project}` : '',
+        record.fit ? `Fit: ${record.fit}` : '',
+        record.note ? `Note: ${record.note}` : ''
+      ].filter(Boolean).join('\n');
+    })
+    .join('\n\n');
+  const text = shortlist || 'No shortlisted themes yet.';
+  try {
+    await navigator.clipboard.writeText(text);
+    copyShortlistEl.textContent = 'Copied';
+    setTimeout(() => { copyShortlistEl.textContent = 'Copy Shortlist'; }, 1200);
+  } catch {
+    window.prompt('Copy shortlist text', text);
+  }
+}
+
+function importState(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      const importedThemes = Array.isArray(parsed) ? parsed : parsed.themes;
+      if (!Array.isArray(importedThemes)) throw new Error('Invalid shape');
+      importedThemes.forEach(item => {
+        if (!item?.id) return;
+        setRecord(item.id, {
+          status: item.status || 'unreviewed',
+          note: item.note || '',
+          project: item.project || '',
+          fit: item.fit || ''
+        });
+      });
+      state.compareIds = Array.isArray(parsed.compareIds) ? parsed.compareIds.slice(0,4) : state.compareIds;
+      if (parsed.selectedId) selectedId = parsed.selectedId;
+      persistState();
+      render();
+    } catch {
+      window.alert('Could not import organizer JSON.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearFilters() {
+  searchEl.value = '';
+  familyFilterEl.value = '';
+  moodFilterEl.value = '';
+  statusFilterEl.value = '';
+  sortByEl.value = 'family';
+  shortlistOnly = false;
+  groupMode = true;
+  render();
+}
+
+searchEl.addEventListener('input', render);
+familyFilterEl.addEventListener('change', render);
+moodFilterEl.addEventListener('change', render);
+statusFilterEl.addEventListener('change', render);
+sortByEl.addEventListener('change', render);
+groupToggleEl.addEventListener('click', () => { groupMode = !groupMode; render(); });
+shortlistToggleEl.addEventListener('click', () => { shortlistOnly = !shortlistOnly; render(); });
+exportStateEl.addEventListener('click', exportState);
+copyShortlistEl.addEventListener('click', copyShortlist);
+importStateEl.addEventListener('click', () => importFileEl.click());
+importFileEl.addEventListener('change', (event) => {
+  const file = event.target.files?.[0];
+  if (file) importState(file);
+  event.target.value = '';
+});
+clearFiltersEl.addEventListener('click', clearFilters);
+
+render();
+</script>
+</body>
+</html>
