@@ -64,6 +64,53 @@
   .field input::placeholder,.notes-box::placeholder{color:var(--muted)}
   .toolbar-actions{display:flex;gap:10px;align-items:end}
   .toolbar-stack{display:flex;gap:10px;flex-wrap:wrap}
+  .toolbar-actions{flex-wrap:wrap;justify-content:flex-end}
+  .jump-nav{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:10px 0 14px;
+  }
+  .jump-nav a{
+    display:inline-flex;
+    align-items:center;
+    min-height:32px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.02);
+    color:var(--text-2);
+    text-decoration:none;
+    font-size:11px;
+    line-height:1;
+  }
+  .workspace{
+    margin:0 0 14px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(23,26,33,0.92);
+    overflow:hidden;
+  }
+  .workspace-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.01));
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .workspace-header h2{margin:0;font-size:16px}
+  .workspace-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
+  .workspace-body{padding:14px}
+  .workspace-empty{
+    padding:18px;
+    border:1px dashed rgba(255,255,255,0.08);
+    border-radius:14px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .workspace-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;align-items:start}
   .summary{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
   .stat{
@@ -108,6 +155,7 @@
     line-height:1;
   }
   .group.collapsed .cards{display:none}
+  .group.focus-hidden{display:none}
   .group-count{
     border:1px solid var(--line);
     border-radius:999px;
@@ -349,6 +397,42 @@
     gap:8px;
     flex-wrap:wrap;
   }
+  .preview-tip{
+    display:grid;
+    gap:10px;
+    padding:12px 14px;
+    border:1px solid rgba(139,92,246,0.24);
+    border-radius:14px;
+    background:linear-gradient(180deg,rgba(139,92,246,0.12),rgba(139,92,246,0.05));
+  }
+  .preview-tip strong{
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .preview-tip p{
+    margin:0;
+    font-size:12px;
+    line-height:1.55;
+    color:var(--text-2);
+  }
+  .preview-tip-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .preview-tip-actions button{
+    border:1px solid rgba(255,255,255,0.08);
+    background:rgba(255,255,255,0.04);
+    color:var(--text);
+    border-radius:999px;
+    padding:8px 10px;
+    font-size:11px;
+    line-height:1;
+  }
+  .preview-tip-actions button:last-child{
+    color:var(--text-2);
+  }
   .preset-row{
     display:flex;
     gap:8px;
@@ -475,6 +559,21 @@
     padding:6px 8px;
     font-size:11px;
   }
+  .compare-preview-cell{
+    min-width:220px;
+  }
+  .compare-preview-cell .preview{
+    min-width:180px;
+  }
+  .compare-preview-cell .preview-surface{
+    min-height:150px;
+  }
+  .compare-preview-cell .preview-title{
+    font-size:20px;
+  }
+  .compare-preview-cell .preview-body{
+    max-width:28ch;
+  }
   .inline-input{
     width:100%;
     min-height:46px;
@@ -553,12 +652,16 @@
       <div class="toolbar-actions">
         <button id="groupToggle" class="ghost-btn" type="button">Grouped</button>
         <button id="shortlistToggle" class="ghost-btn" type="button">All Themes</button>
+        <button id="viewModeToggle" class="ghost-btn" type="button">Selection Mode</button>
         <button id="clearFilters" class="ghost-btn" type="button">Clear Filters</button>
+        <button id="resetView" class="ghost-btn" type="button">Reset View</button>
       </div>
     </div>
   </div>
 
   <div class="summary" id="summary"></div>
+  <nav id="jumpNav" class="jump-nav"></nav>
+  <section id="workspacePanel" class="workspace"></section>
   <section id="comparePanel" class="compare" hidden></section>
 
   <div class="layout">
@@ -609,26 +712,26 @@ const THEME_DATA = [
   { id:'p6', code:'p6', name:'Dave HomeAssist', description:'Porch white · trust navy · service gold.', tags:['light','minimal','luxury','blue','gold','project-theme'], family:'Project-Derived / House Systems', bestFor:['dave-homeassist','service-site','home-services'] },
   { id:'p7', code:'p7', name:'Festival Atlas Routeboard', description:'Night charcoal · route amber · map cream.', tags:['dark','geometric','minimal','gold','project-theme'], family:'Project-Derived / House Systems', bestFor:['festival-atlas','routeboard','planning-ui'] },
   { id:'p8', code:'p8', name:'MetaGrid Signal', description:'Signal black · matrix cyan · node lime.', tags:['dark','tech','futuristic','green','blue','project-theme'], family:'Project-Derived / House Systems', bestFor:['metagrid','simulator','signal-ui'] },
-  { id:'u5', code:'u-t5', name:'Solar Minimal', description:'Warm white · sand · golden hour.', tags:['light','minimal','warm','clean','airy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['portfolio','studio','personal-brand'] },
-  { id:'u6', code:'u-t6', name:'Midnight Ink', description:'Deep navy · charcoal · silver edge.', tags:['dark','professional','cool','bold','sleek','user-import'], family:'Dark / Professional / Editorial', bestFor:['agency','tech','saas'] },
-  { id:'u7', code:'u-t7', name:'Terracotta Clay', description:'Burnt orange · dusty rose · warm beige.', tags:['warm','earthy','feminine','soft','artisan','user-import'], family:'Nature / Organic / Wellness', bestFor:['lifestyle','beauty','ceramics'] },
-  { id:'u8', code:'u-t8', name:'Arctic Glass', description:'Ice white · pale blue · frosted steel.', tags:['light','cool','clean','minimal','modern','user-import'], family:'Minimal / Clean / Neutral', bestFor:['fintech','saas','medical'] },
-  { id:'u9', code:'u-t9', name:'Neon District', description:'Pitch black · electric violet · hot pink.', tags:['dark','neon','loud','cyber','bold','user-import'], family:'Dark / Cyber / Expressive', bestFor:['nightlife','music','gaming'] },
-  { id:'u10', code:'u-t10', name:'Harvest Field', description:'Amber · wheat · deep brown.', tags:['warm','earthy','rustic','natural','cozy','user-import'], family:'Nature / Organic / Wellness', bestFor:['food','farm-to-table','brewery'] },
-  { id:'u11', code:'u-t11', name:'Obsidian Edge', description:'Pure black · graphite · matte silver.', tags:['dark','luxury','minimal','sleek','premium','user-import'], family:'Dark / Luxury / Premium', bestFor:['fashion','automotive','high-end-brand'] },
-  { id:'u12', code:'u-t12', name:'Bloom Studio', description:'Soft blush · lilac · cream.', tags:['light','feminine','soft','floral','airy','user-import'], family:'Soft / Pastel / Creative', bestFor:['wedding','florist','boutique'] },
-  { id:'u13', code:'u-t13', name:'Deep Jungle', description:'Midnight green · moss · aged gold.', tags:['dark','nature','rich','moody','organic','user-import'], family:'Nature / Organic / Wellness', bestFor:['eco-brand','adventure','resort'] },
-  { id:'u14', code:'u-t14', name:'Carbon Lab', description:'Dark grey · electric blue · white data.', tags:['dark','tech','data','modern','sharp','user-import'], family:'Dark / Tech / Data', bestFor:['developer-tool','analytics','saas'] },
-  { id:'u15', code:'u-t15', name:'Ivory Press', description:'Off-white · warm grey · serif black.', tags:['light','editorial','clean','classic','neutral','user-import'], family:'Minimal / Editorial / Clean', bestFor:['publishing','magazine','blog'] },
-  { id:'u16', code:'u-t16', name:'Copper Works', description:'Deep charcoal · copper · rust amber.', tags:['dark','industrial','warm','craft','bold','user-import'], family:'Industrial / Craft / Bold', bestFor:['maker','workshop','brewery'] },
-  { id:'u17', code:'u-t17', name:'Lagoon Drift', description:'Teal · seafoam · bleached white.', tags:['light','coastal','fresh','cool','calm','user-import'], family:'Coastal / Fresh / Airy', bestFor:['travel','wellness','spa'] },
-  { id:'u18', code:'u-t18', name:'Red Room', description:'Deep crimson · ash black · warm white.', tags:['dark','bold','dramatic','luxury','rich','user-import'], family:'Dark / Luxury / Premium', bestFor:['restaurant','theatre','fashion'] },
-  { id:'u19', code:'u-t19', name:'Chalk Loft', description:'Warm white · linen · light oak.', tags:['light','neutral','airy','organic','cozy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['interior-design','lifestyle','studio'] },
-  { id:'u20', code:'u-t20', name:'Plasma Wave', description:'Void black · cyan · magenta pulse.', tags:['dark','neon','futuristic','vibrant','tech','user-import'], family:'Dark / Cyber / Expressive', bestFor:['gaming','streaming','event'] },
-  { id:'u21', code:'u-t21', name:'Gilt Archive', description:'Ivory · antique gold · warm shadow.', tags:['light','luxury','classic','ornate','warm','user-import'], family:'Classic / Luxury / Heritage', bestFor:['law-firm','finance','heritage-brand'] },
-  { id:'u22', code:'u-t22', name:'Storm System', description:'Slate grey · steel · cold white.', tags:['dark','neutral','strong','corporate','clean','user-import'], family:'Dark / Professional / Editorial', bestFor:['corporate','logistics','b2b'] },
-  { id:'u23', code:'u-t23', name:'Citrus Drop', description:'Bright white · lemon · lime zest.', tags:['light','vibrant','fresh','playful','bold','user-import'], family:'Soft / Pastel / Creative', bestFor:['food-brand','startup','app'] },
-  { id:'u24', code:'u-t24', name:'Velvet Underground', description:'Deep plum · burgundy · dusty mauve.', tags:['dark','moody','rich','feminine','dramatic','user-import'], family:'Dark / Luxury / Premium', bestFor:['beauty','music','editorial'] }
+  { id:'u5', code:'u-t5', name:'Solar Minimal', description:'Warm white · dune sand · golden-hour amber tuned for airy editorial portfolios and polished studio landing pages.', tags:['light','minimal','warm','clean','airy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['portfolio','studio-site','personal-brand','consultant-landing'] },
+  { id:'u6', code:'u-t6', name:'Midnight Ink', description:'Deep navy · charcoal · silver edge with a restrained editorial contrast for high-trust dark presentations.', tags:['dark','professional','cool','bold','sleek','user-import'], family:'Dark / Professional / Editorial', bestFor:['agency-site','tech-brand','saas','consulting-deck'] },
+  { id:'u7', code:'u-t7', name:'Terracotta Clay', description:'Burnt orange · dusty rose · warm beige with handcrafted softness suited to tactile lifestyle and artisan work.', tags:['warm','earthy','feminine','soft','artisan','user-import'], family:'Nature / Organic / Wellness', bestFor:['lifestyle-brand','beauty','ceramics','wellness-shop'] },
+  { id:'u8', code:'u-t8', name:'Arctic Glass', description:'Ice white · pale blue · frosted steel for clean, low-friction product surfaces and premium trust-driven interfaces.', tags:['light','cool','clean','minimal','modern','user-import'], family:'Minimal / Clean / Neutral', bestFor:['fintech','saas','medical','premium-dashboard'] },
+  { id:'u9', code:'u-t9', name:'Neon District', description:'Pitch black · electric violet · hot pink with nightlife energy and loud cyber contrast for expressive launches.', tags:['dark','neon','loud','cyber','bold','user-import'], family:'Dark / Cyber / Expressive', bestFor:['nightlife','music-campaign','gaming','streetwear-launch'] },
+  { id:'u10', code:'u-t10', name:'Harvest Field', description:'Amber · wheat · deep brown with grounded rural warmth for food, seasonal campaigns, and slow-brand storytelling.', tags:['warm','earthy','rustic','natural','cozy','user-import'], family:'Nature / Organic / Wellness', bestFor:['food-brand','farm-to-table','brewery','seasonal-event'] },
+  { id:'u11', code:'u-t11', name:'Obsidian Edge', description:'Pure black · graphite · matte silver with luxury restraint and automotive-grade sharpness.', tags:['dark','luxury','minimal','sleek','premium','user-import'], family:'Dark / Luxury / Premium', bestFor:['fashion','automotive','high-end-brand','premium-landing'] },
+  { id:'u12', code:'u-t12', name:'Bloom Studio', description:'Soft blush · lilac · cream with floral delicacy for boutique, wedding, and feminine creative brands.', tags:['light','feminine','soft','floral','airy','user-import'], family:'Soft / Pastel / Creative', bestFor:['wedding','florist','boutique','beauty-editorial'] },
+  { id:'u13', code:'u-t13', name:'Deep Jungle', description:'Midnight green · moss · aged gold with moody resort depth and organic luxury undertones.', tags:['dark','nature','rich','moody','organic','user-import'], family:'Nature / Organic / Wellness', bestFor:['eco-brand','adventure','resort','boutique-hospitality'] },
+  { id:'u14', code:'u-t14', name:'Carbon Lab', description:'Dark grey · electric blue · white data contrast built for dashboards, control rooms, and technical tooling.', tags:['dark','tech','data','modern','sharp','user-import'], family:'Dark / Tech / Data', bestFor:['developer-tool','analytics','saas','monitoring-ui'] },
+  { id:'u15', code:'u-t15', name:'Ivory Press', description:'Off-white · warm grey · serif black with publication calm and reading-first pacing.', tags:['light','editorial','clean','classic','neutral','user-import'], family:'Minimal / Editorial / Clean', bestFor:['publishing','magazine','blog','case-study-site'] },
+  { id:'u16', code:'u-t16', name:'Copper Works', description:'Deep charcoal · copper · rust amber with industrial heft for workshops, craft brands, and maker culture.', tags:['dark','industrial','warm','craft','bold','user-import'], family:'Industrial / Craft / Bold', bestFor:['maker-brand','workshop','brewery','fabrication-studio'] },
+  { id:'u17', code:'u-t17', name:'Lagoon Drift', description:'Teal · seafoam · bleached white with clean coastal air and lightweight wellness-friendly softness.', tags:['light','coastal','fresh','cool','calm','user-import'], family:'Coastal / Fresh / Airy', bestFor:['travel','wellness','spa','hospitality-site'] },
+  { id:'u18', code:'u-t18', name:'Red Room', description:'Deep crimson · ash black · warm white for dramatic hospitality, theatre, and high-emotion editorial scenes.', tags:['dark','bold','dramatic','luxury','rich','user-import'], family:'Dark / Luxury / Premium', bestFor:['restaurant','theatre','fashion-editorial','cocktail-bar'] },
+  { id:'u19', code:'u-t19', name:'Chalk Loft', description:'Warm white · linen · light oak with architectural quiet and lifestyle-studio clarity.', tags:['light','neutral','airy','organic','cozy','user-import'], family:'Minimal / Clean / Neutral', bestFor:['interior-design','lifestyle-brand','studio','home-goods'] },
+  { id:'u20', code:'u-t20', name:'Plasma Wave', description:'Void black · cyan · magenta pulse for streaming, event, and hype-driven digital surfaces.', tags:['dark','neon','futuristic','vibrant','tech','user-import'], family:'Dark / Cyber / Expressive', bestFor:['gaming','streaming','event-site','launch-countdown'] },
+  { id:'u21', code:'u-t21', name:'Gilt Archive', description:'Ivory · antique gold · warm shadow with heritage trust and ceremonial polish.', tags:['light','luxury','classic','ornate','warm','user-import'], family:'Classic / Luxury / Heritage', bestFor:['law-firm','finance','heritage-brand','museum-site'] },
+  { id:'u22', code:'u-t22', name:'Storm System', description:'Slate grey · steel · cold white with disciplined B2B seriousness and operational clarity.', tags:['dark','neutral','strong','corporate','clean','user-import'], family:'Dark / Professional / Editorial', bestFor:['corporate','logistics','b2b','operations-portal'] },
+  { id:'u23', code:'u-t23', name:'Citrus Drop', description:'Bright white · lemon · lime zest with energetic startup brightness and food-app immediacy.', tags:['light','vibrant','fresh','playful','bold','user-import'], family:'Soft / Pastel / Creative', bestFor:['food-brand','startup','app-ui','creator-campaign'] },
+  { id:'u24', code:'u-t24', name:'Velvet Underground', description:'Deep plum · burgundy · dusty mauve with moody editorial glamour and boutique music-scene tension.', tags:['dark','moody','rich','feminine','dramatic','user-import'], family:'Dark / Luxury / Premium', bestFor:['beauty-editorial','music-brand','editorial','night-event'] }
 ];
 
 const STORAGE_KEY = 'theme-organizer-state-v1';
@@ -654,9 +757,11 @@ const groupDescriptions = {
 };
 
 const state = loadState();
-let selectedId = state.selectedId || THEME_DATA[0].id;
-let groupMode = true;
-let shortlistOnly = false;
+let selectedId = state.selectedId || 't27';
+state.ui = state.ui && typeof state.ui === 'object' ? state.ui : {};
+let groupMode = typeof state.ui.groupMode === 'boolean' ? state.ui.groupMode : true;
+let shortlistOnly = typeof state.ui.shortlistOnly === 'boolean' ? state.ui.shortlistOnly : false;
+let viewMode = state.ui.viewMode || 'selection';
 state.compareIds = Array.isArray(state.compareIds) ? state.compareIds.slice(0,4) : [];
 state.collapsedFamilies = state.collapsedFamilies && typeof state.collapsedFamilies === 'object' ? state.collapsedFamilies : {};
 state.previewCopy = state.previewCopy && typeof state.previewCopy === 'object' ? state.previewCopy : {};
@@ -676,7 +781,11 @@ const copyShortlistEl = document.getElementById('copyShortlist');
 const importStateEl = document.getElementById('importState');
 const importFileEl = document.getElementById('importFile');
 const clearFiltersEl = document.getElementById('clearFilters');
+const resetViewEl = document.getElementById('resetView');
 const comparePanelEl = document.getElementById('comparePanel');
+const jumpNavEl = document.getElementById('jumpNav');
+const workspacePanelEl = document.getElementById('workspacePanel');
+const viewModeToggleEl = document.getElementById('viewModeToggle');
 
 function loadState() {
   try {
@@ -687,7 +796,21 @@ function loadState() {
 }
 
 function persistState() {
+  state.ui = {
+    groupMode,
+    shortlistOnly,
+    viewMode,
+    previewHintDismissed: !!state.ui.previewHintDismissed
+  };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function buildCollapsedFamilies(expandedThemeId = selectedId) {
+  const families = [...new Set(THEME_DATA.map(theme => theme.family))];
+  const collapsed = Object.fromEntries(families.map(family => [family, true]));
+  const activeTheme = THEME_DATA.find(theme => theme.id === expandedThemeId);
+  if (activeTheme) collapsed[activeTheme.family] = false;
+  return collapsed;
 }
 
 function getRecord(theme) {
@@ -839,6 +962,12 @@ function setPreviewCopy(themeId, patch) {
 function resetPreviewCopy(themeId) {
   delete state.previewCopy[themeId];
   persistState();
+}
+
+function shouldShowPreviewNudge(theme) {
+  if (!theme) return false;
+  if (state.ui.previewHintDismissed) return false;
+  return !state.previewCopy[theme.id];
 }
 
 function previewPreset(theme, record, mode) {
@@ -1100,6 +1229,31 @@ function renderSummary(visible) {
   `;
 }
 
+function renderJumpNav(themes) {
+  const families = [...new Set(themes.map(theme => theme.family))];
+  jumpNavEl.innerHTML = families.map(family => `
+    <a href="#family-${slugify(family)}">${family}</a>
+  `).join('');
+}
+
+function renderWorkspace() {
+  const shortlist = THEME_DATA.filter(theme => getRecord(theme).status === 'shortlist');
+  workspacePanelEl.innerHTML = `
+    <div class="workspace-header">
+      <div>
+        <h2>Shortlist Workspace</h2>
+        <p>Your current finalists. Use this area as the top-of-page decision board.</p>
+      </div>
+      <div class="group-count">${shortlist.length}</div>
+    </div>
+    <div class="workspace-body">
+      ${shortlist.length
+        ? `<div class="workspace-cards">${shortlist.map(themeCard).join('')}</div>`
+        : `<div class="workspace-empty">No shortlisted themes yet. Mark any theme as shortlist and it will surface here automatically.</div>`}
+    </div>
+  `;
+}
+
 function renderCompare() {
   const themes = getCompareThemes();
   if (!themes.length) {
@@ -1117,6 +1271,7 @@ function renderCompare() {
         <button type="button" data-remove-compare="${theme.id}">Remove</button>
       </div>
     `],
+    ['Preview', theme => `<div class="compare-preview-cell">${previewMarkup(theme)}</div>`],
     ['Family', theme => theme.family],
     ['Description', theme => theme.description],
     ['Primary Mood', theme => primaryMood(theme) || 'n/a'],
@@ -1172,6 +1327,17 @@ function renderDetail(theme) {
       <p>${theme.description}</p>
     </div>
     ${previewMarkup(theme, true)}
+    ${shouldShowPreviewNudge(theme) ? `
+      <div class="preview-tip">
+        <strong>Preview Modes</strong>
+        <p>The large preview is live-editable. Start with a preset to see this theme as a project pitch, portfolio case study, or product hero before you shortlist it.</p>
+        <div class="preview-tip-actions">
+          <button id="previewTipPitch" type="button">Try Pitch Mode</button>
+          <button id="previewTipProduct" type="button">Try Product Hero</button>
+          <button id="dismissPreviewTip" type="button">Dismiss Hint</button>
+        </div>
+      </div>
+    ` : ''}
     <div class="detail-box">
       <div class="preview-copy-head">
         <strong>Preview Copy Studio</strong>
@@ -1282,6 +1448,19 @@ function renderDetail(theme) {
     resetPreviewCopy(theme.id);
     render();
   });
+  detailEl.querySelector('#previewTipPitch')?.addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'pitch'));
+    render();
+  });
+  detailEl.querySelector('#previewTipProduct')?.addEventListener('click', () => {
+    setPreviewCopy(theme.id, previewPreset(theme, record, 'product'));
+    render();
+  });
+  detailEl.querySelector('#dismissPreviewTip')?.addEventListener('click', () => {
+    state.ui.previewHintDismissed = true;
+    persistState();
+    render();
+  });
   detailEl.querySelector('#detailProject').addEventListener('input', (event) => {
     setRecord(theme.id, { project: event.target.value });
     renderCompare();
@@ -1306,6 +1485,10 @@ function renderDetail(theme) {
 
 function labelize(value) {
   return value.replace(/_/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase());
+}
+
+function slugify(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 function escapeHtml(value) {
@@ -1369,7 +1552,7 @@ function renderCards(themes) {
   }, {});
 
   groupsEl.innerHTML = Object.entries(grouped).map(([family, familyThemes]) => `
-    <section class="group ${state.collapsedFamilies[family] ? 'collapsed' : ''}" data-family="${escapeAttr(family)}">
+    <section id="family-${slugify(family)}" class="group ${state.collapsedFamilies[family] ? 'collapsed' : ''} ${viewMode === 'focus' && !familyThemes.some(theme => theme.id === selectedId) ? 'focus-hidden' : ''}" data-family="${escapeAttr(family)}">
       <div class="group-header">
         <div>
           <h2>${family}</h2>
@@ -1427,14 +1610,19 @@ function bindCardActions() {
 
 function render() {
   const visible = sortThemes(filterThemes());
-  const selected = THEME_DATA.find(theme => theme.id === selectedId) || visible[0] || THEME_DATA[0];
+  const selected = THEME_DATA.find(theme => theme.id === selectedId) || visible[0] || THEME_DATA.find(theme => theme.id === 't27') || THEME_DATA[0];
   if (selected) selectedId = selected.id;
+  state.selectedId = selectedId;
+  persistState();
   renderSummary(visible);
+  renderJumpNav(visible);
+  renderWorkspace();
   renderCompare();
   renderCards(visible);
   renderDetail(selected);
   groupToggleEl.textContent = groupMode ? 'Grouped' : 'Flat List';
   shortlistToggleEl.textContent = shortlistOnly ? 'Shortlist Only' : 'All Themes';
+  viewModeToggleEl.textContent = viewMode === 'selection' ? 'Selection Mode' : viewMode === 'gallery' ? 'Gallery Mode' : 'Focus Mode';
 }
 
 function exportState() {
@@ -1519,7 +1707,16 @@ function clearFilters() {
   statusFilterEl.value = '';
   sortByEl.value = 'family';
   shortlistOnly = false;
+  persistState();
+  render();
+}
+
+function resetView() {
   groupMode = true;
+  viewMode = 'selection';
+  shortlistOnly = false;
+  state.collapsedFamilies = buildCollapsedFamilies(selectedId);
+  persistState();
   render();
 }
 
@@ -1530,6 +1727,10 @@ statusFilterEl.addEventListener('change', render);
 sortByEl.addEventListener('change', render);
 groupToggleEl.addEventListener('click', () => { groupMode = !groupMode; render(); });
 shortlistToggleEl.addEventListener('click', () => { shortlistOnly = !shortlistOnly; render(); });
+viewModeToggleEl.addEventListener('click', () => {
+  viewMode = viewMode === 'selection' ? 'gallery' : viewMode === 'gallery' ? 'focus' : 'selection';
+  render();
+});
 exportStateEl.addEventListener('click', exportState);
 copyShortlistEl.addEventListener('click', copyShortlist);
 importStateEl.addEventListener('click', () => importFileEl.click());
@@ -1539,6 +1740,11 @@ importFileEl.addEventListener('change', (event) => {
   event.target.value = '';
 });
 clearFiltersEl.addEventListener('click', clearFilters);
+resetViewEl.addEventListener('click', resetView);
+
+if (!Object.keys(state.collapsedFamilies).length) {
+  state.collapsedFamilies = buildCollapsedFamilies(selectedId);
+}
 
 render();
 </script>
