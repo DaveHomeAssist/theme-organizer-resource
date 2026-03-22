@@ -6,3 +6,5 @@ Static GitHub Pages build for the theme organizer and source gallery.
 - `themes_sortable_30.html`: original gallery
 - `webpage_themes_10.html`, `webpage_themes_11_20.html`, `webpage_themes_21_30.html`: source theme pages
 - `THEMES_THEME_ORGANIZER_VISUAL_SPEC.md`: visual design specification
+- `LET_IT_GROW_SPEC.md`: Let It Grow game + engine specification
+- `LET_IT_GROW_x_GARDEN_OS_MAPPING.md`: mapping of Let It Grow spec to existing Garden OS story-mode systems
