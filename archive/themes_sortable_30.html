@@ -1,0 +1,539 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=VT323&family=Cinzel:wght@400;700&family=Exo+2:wght@900&family=Libre+Caslon+Display&family=Poiret+One&family=Major+Mono+Display&family=Fraunces:ital,wght@1,100&family=Oxanium:wght@800&family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono&family=Bebas+Neue&family=Libre+Baskerville:ital@1&family=Rajdhani:wght@600&family=Bodoni+Moda:ital,wght@1,400&family=Syncopate:wght@700&family=Spectral:ital,wght@1,300&family=Unbounded:wght@900&family=Anton&family=Josefin+Sans:wght@100;300&family=IM+Fell+English:ital@1&family=Playfair+Display+SC:wght@400&family=Courier+Prime:ital@0;1&family=Permanent+Marker&family=Courier+Prime&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-background-secondary);font-family:var(--font-sans)}
+
+.controls{padding:1rem 0 0.75rem;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;background:var(--color-background-secondary);z-index:10;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:12px}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.row-label{font-size:10px;font-family:var(--font-mono);letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-tertiary);min-width:52px}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;user-select:none}
+.pill:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.pill.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.count{font-size:10px;margin-left:4px;opacity:0.5}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:2rem}
+.card{border-radius:10px;overflow:hidden;position:relative;height:180px;cursor:pointer;transition:transform 0.2s,opacity 0.2s}
+.card:hover{transform:translateY(-2px)}
+.card.hidden{display:none}
+.card-inner{width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 18px;position:relative;overflow:hidden}
+.theme-name{font-size:13px;font-weight:500;margin-bottom:3px;position:relative;z-index:2}
+.theme-desc{font-size:11px;opacity:0.7;line-height:1.5;position:relative;z-index:2}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px;position:relative;z-index:2}
+.ctag{font-size:9px;font-family:var(--font-mono);padding:1px 5px;border-radius:3px;background:rgba(0,0,0,0.25);color:rgba(255,255,255,0.7);letter-spacing:0.04em}
+.ctag.light{background:rgba(255,255,255,0.3);color:rgba(0,0,0,0.6)}
+
+.none-msg{display:none;padding:2rem;text-align:center;color:var(--color-text-tertiary);font-size:13px;grid-column:1/-1}
+.none-msg.show{display:block}
+
+/* ─── THEME BACKGROUNDS (same as before, condensed) ─── */
+.t1{background:#0A0A10}
+.t1 .card-inner::before{content:'< >';position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:28px;color:#9B59F5;text-shadow:0 0 40px #9B59F566;letter-spacing:8px}
+.t1 .card-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,#3D0EA822 0%,transparent 60%)}
+.t1 .theme-name{color:#B8D8FF;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.t1 .theme-desc{color:#6b6b8a}
+
+.t2{background:#F7F4EF}
+.t2 .card-inner::before{content:'The\AChronicle';white-space:pre;position:absolute;top:14px;left:18px;font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1a1208;line-height:1.1}
+.t2 .card-inner::after{content:'—';position:absolute;top:96px;left:18px;font-family:'Playfair Display',serif;font-size:20px;color:#C4713A}
+.t2 .theme-name{color:#1a1208;font-family:'Libre Baskerville',serif;font-style:italic;font-size:12px}
+.t2 .theme-desc{color:#6b5a3e}
+
+.t3{background:#EDEA00}
+.t3 .card-inner::before{content:'BRUTAL';position:absolute;top:-8px;left:-4px;font-family:'Bebas Neue',sans-serif;font-size:90px;color:#000;line-height:1;letter-spacing:-2px}
+.t3 .card-inner::after{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:#000}
+.t3 .theme-name{color:#000;font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.t3 .theme-desc{color:#333;font-family:'Space Mono',monospace;font-size:10px}
+
+.t4{background:#1C2B1A}
+.t4 .card-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,#3A5C2822 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,#7AAB5C11 0%,transparent 40%)}
+.t4 .theme-name{color:#C8E6B0;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;letter-spacing:.05em}
+.t4 .theme-desc{color:#7AAB5C}
+
+.t5{background:#FAFAF8;border:0.5px solid #E8E4DC}
+.t5 .card-inner::before{content:'M';position:absolute;top:10px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;font-style:italic;color:#C9A96E;opacity:.35}
+.t5 .theme-name{color:#2C2416;font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;letter-spacing:.15em;text-transform:uppercase}
+.t5 .theme-desc{color:#8C7A5E}
+
+.t6{background:#0D0D0D}
+.t6 .card-inner::before{content:'> SYSTEM ONLINE_';position:absolute;top:18px;left:14px;font-family:'Space Mono',monospace;font-size:11px;color:#00FF41;text-shadow:0 0 10px #00FF4188}
+.t6 .card-inner::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#00FF4106 3px,#00FF4106 4px)}
+.t6 .theme-name{color:#00FF41;font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-shadow:0 0 8px #00FF4166}
+.t6 .theme-desc{color:#00FF4177;font-family:'Space Mono',monospace;font-size:10px}
+
+.t7{background:#FF3CAC}
+.t7 .card-inner::before{content:'NOW';position:absolute;top:8px;left:10px;font-family:'Bebas Neue',sans-serif;font-size:80px;color:#fff;line-height:1;mix-blend-mode:overlay;opacity:.9}
+.t7 .card-inner::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FF3CAC 0%,#784BA0 50%,#2B86C5 100%);opacity:.85}
+.t7 .theme-name{color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;letter-spacing:.05em}
+.t7 .theme-desc{color:rgba(255,255,255,0.75)}
+
+.t8{background:#E8F4FF}
+.t8 .card-inner::before{content:'';position:absolute;top:16px;left:50%;transform:translateX(-50%);width:90px;height:90px;background:rgba(255,255,255,0.6);border-radius:50%;border:0.5px solid rgba(255,255,255,0.9);box-shadow:inset 0 0 30px rgba(180,220,255,0.4)}
+.t8 .card-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,0.8) 0%,transparent 60%)}
+.t8 .theme-name{color:#1A3A5C;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.t8 .theme-desc{color:#4A7A9B}
+
+.t9{background:#1E1712}
+.t9 .card-inner::before{content:'Ex\ALibris';white-space:pre;position:absolute;top:12px;left:18px;font-family:'Playfair Display',serif;font-size:28px;font-weight:400;font-style:italic;color:#C9A96E;line-height:1.15;opacity:.9}
+.t9 .card-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,#C9A96E0A 0%,transparent 50%)}
+.t9 .theme-name{color:#C9A96E;font-family:'Libre Baskerville',serif;font-style:italic;font-size:12px}
+.t9 .theme-desc{color:#7A6A50}
+
+.t10{background:#080810}
+.t10 .card-inner::before{content:'NOIR';position:absolute;top:14px;left:14px;font-family:'Bebas Neue',sans-serif;font-size:64px;color:transparent;-webkit-text-stroke:1px #FF2D6B;text-shadow:0 0 30px #FF2D6B88;letter-spacing:4px}
+.t10 .card-inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#FF2D6B,#00F5FF,transparent);opacity:.8}
+.t10 .theme-name{color:#FF2D6B;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 0 8px #FF2D6B88}
+.t10 .theme-desc{color:#4A4A6A;font-family:'Space Mono',monospace;font-size:10px}
+
+.t11{background:#F2EDE4}
+.t11 .card-inner::before{content:'侘寂';position:absolute;top:10px;right:16px;font-size:64px;color:#8B7355;opacity:.15;line-height:1}
+.t11 .card-inner::after{content:'';position:absolute;left:18px;top:18px;bottom:50px;width:1px;background:linear-gradient(to bottom,#8B735500,#8B7355,#8B735500)}
+.t11 .theme-name{color:#3D2B1F;font-family:'Spectral',serif;font-style:italic;font-size:14px;font-weight:300}
+.t11 .theme-desc{color:#8B7355}
+
+.t12{background:#1A1D21}
+.t12 .card-inner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 18px,#FFFFFF05 18px,#FFFFFF05 19px)}
+.t12 .card-inner::after{content:'///';position:absolute;top:16px;left:16px;font-family:'Courier Prime',monospace;font-size:32px;color:#FF6B00;letter-spacing:-4px;opacity:.9}
+.t12 .theme-name{color:#E8E8E8;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.t12 .theme-desc{color:#6B7280;font-family:'Courier Prime',monospace;font-size:10px}
+
+.t13{background:#FDF0F5}
+.t13 .card-inner::before{content:'';position:absolute;top:-20px;right:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#F9C0D8 0%,#F3A8C8 40%,transparent 70%);opacity:.5}
+.t13 .card-inner::after{content:'';position:absolute;bottom:40px;left:-10px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#C8D8F9 0%,transparent 70%);opacity:.5}
+.t13 .theme-name{color:#5C3A52;font-family:'Josefin Sans',sans-serif;font-size:12px;font-weight:100;letter-spacing:.25em;text-transform:uppercase}
+.t13 .theme-desc{color:#9B7A8A}
+
+.t14{background:#C8230C}
+.t14 .card-inner::before{content:'★';position:absolute;top:8px;right:14px;font-size:52px;color:#000;opacity:.2}
+.t14 .card-inner::after{content:'KONSTRUKT';position:absolute;top:16px;left:14px;font-family:'Anton',sans-serif;font-size:38px;color:#000;line-height:1;letter-spacing:-1px;transform:skewX(-4deg)}
+.t14 .theme-name{color:#000;font-family:'Syncopate',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.t14 .theme-desc{color:rgba(0,0,0,0.55);font-family:'Courier Prime',monospace;font-size:10px}
+
+.t15{background:#0D1F1E}
+.t15 .card-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 40% 30%,#2A5C4422 0%,transparent 60%)}
+.t15 .card-inner::after{content:'Cu';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:'Italiana',sans-serif;font-size:64px;color:#7AB89A;opacity:.2;line-height:1}
+.t15 .theme-name{color:#7AB89A;font-family:'Italiana',sans-serif;font-size:15px;letter-spacing:.08em}
+.t15 .theme-desc{color:#2E6B56}
+
+.t16{background:#0D0221}
+.t16 .card-inner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 20px,#FF71CE08 20px,#FF71CE08 21px)}
+.t16 .card-inner::after{content:'A E S T H E T I C';position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:100;letter-spacing:.4em;color:#FF71CE;white-space:nowrap;text-shadow:0 0 20px #FF71CE88}
+.t16 .theme-name{color:#01CDFE;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 0 10px #01CDFE88}
+.t16 .theme-desc{color:#B967FF}
+
+.t17{background:#F5F5F0}
+.t17 .card-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#E63329}
+.t17 .card-inner::after{content:'Helvetica\ANeue';white-space:pre;position:absolute;top:20px;left:18px;font-family:'Josefin Sans',sans-serif;font-weight:100;font-size:34px;color:#1A1A1A;line-height:1.1;letter-spacing:-1px}
+.t17 .theme-name{color:#1A1A1A;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:11px;letter-spacing:.15em;text-transform:uppercase}
+.t17 .theme-desc{color:#666}
+
+.t18{background:#020B18}
+.t18 .card-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,#003A6622 0%,transparent 50%)}
+.t18 .card-inner::after{content:'~';position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:72px;color:#0080AA;opacity:.25;font-family:'Bodoni Moda',serif;font-style:italic}
+.t18 .theme-name{color:#4DC8E8;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.t18 .theme-desc{color:#1E6A80}
+
+.t19{background:#E8D5A3}
+.t19 .card-inner::after{content:'"Veritas\Alux mea"';white-space:pre;position:absolute;top:14px;left:18px;font-family:'IM Fell English',serif;font-size:22px;font-style:italic;color:#4A3018;line-height:1.3;opacity:.9}
+.t19 .theme-name{color:#4A3018;font-family:'IM Fell English',serif;font-style:italic;font-size:13px}
+.t19 .theme-desc{color:#8B6A38}
+
+.t20{background:#0A0A0A}
+.t20 .card-inner::before{content:'';position:absolute;top:50%;left:30%;transform:translate(-50%,-60%);width:120px;height:120px;border-radius:50%;background:conic-gradient(from 0deg,#FF0040,#FF8000,#FFFF00,#00FF80,#0080FF,#8000FF,#FF0040);opacity:.15;filter:blur(2px)}
+.t20 .card-inner::after{content:'◎';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:56px;background:conic-gradient(from 0deg,#FF0040,#FF8000,#FFFF00,#00FF80,#0080FF,#8000FF,#FF0040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.8}
+.t20 .theme-name{color:#fff;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.t20 .theme-desc{color:#555}
+
+.t21{background:#F0EBE0}
+.t21 .card-inner::before{content:'';position:absolute;top:20px;left:20px;width:80px;height:80px;border-radius:50%;background:#E63329;opacity:.9}
+.t21 .card-inner::after{content:'';position:absolute;top:20px;left:44px;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid #1A1A1A;opacity:.15}
+.t21 .theme-name{color:#1A1A1A;font-family:'Poiret One',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+.t21 .theme-desc{color:#555}
+
+.t22{background:#FAFAFA}
+.t22 .card-inner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,#FF6B9D 2px,transparent 2px),radial-gradient(circle,#FFD93D 2px,transparent 2px),radial-gradient(circle,#6BCB77 2px,transparent 2px);background-size:30px 30px,45px 45px,60px 60px;background-position:0 0,15px 15px,30px 8px;opacity:.5}
+.t22 .card-inner::after{content:'';position:absolute;top:14px;left:14px;right:14px;height:4px;background:repeating-linear-gradient(90deg,#FF6B9D 0,#FF6B9D 12px,#FFD93D 12px,#FFD93D 24px,#6BCB77 24px,#6BCB77 36px,#4D96FF 36px,#4D96FF 48px)}
+.t22 .theme-name{color:#1A1A1A;font-family:'Oxanium',sans-serif;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.t22 .theme-desc{color:#555}
+
+.t23{background:#05000F}
+.t23 .card-inner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 2px,#FFFF0006 2px,#FFFF0006 3px)}
+.t23 .card-inner::after{content:'DYSTOPIA\A2049';white-space:pre;position:absolute;top:12px;left:14px;font-family:'Oxanium',sans-serif;font-size:28px;font-weight:800;color:#FFFF00;line-height:1.1;text-shadow:0 0 20px #FFFF0066,2px 0 0 #FF00FF44}
+.t23 .theme-name{color:#FF00FF;font-family:'Oxanium',sans-serif;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 0 10px #FF00FF88}
+.t23 .theme-desc{color:#FFFF0066}
+
+.t24{background:#E8D5A8}
+.t24 .card-inner::before{content:'';position:absolute;top:16px;right:20px;width:0;height:0;border-left:50px solid transparent;border-right:50px solid transparent;border-bottom:86px solid #2E5D4B;opacity:.85}
+.t24 .card-inner::after{content:'';position:absolute;top:62px;right:8px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:52px solid #C4713A;opacity:.7}
+.t24 .theme-name{color:#2E2010;font-family:'Fraunces',serif;font-style:italic;font-size:14px;font-weight:100}
+.t24 .theme-desc{color:#6B4E2A}
+
+.t25{background:#1A1228}
+.t25 .card-inner::before{content:'';position:absolute;inset:0;background-image:repeating-conic-gradient(from 0deg at 50% 50%,#C9A96E22 0deg 30deg,transparent 30deg 60deg);background-size:48px 48px;opacity:.6}
+.t25 .card-inner::after{content:'◆';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:56px;color:#C9A96E;opacity:.25}
+.t25 .theme-name{color:#C9A96E;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+.t25 .theme-desc{color:#6B5A3E}
+
+.t26{background:#F4EEE4}
+.t26 .card-inner::after{content:'';position:absolute;top:30px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#FF9A3C;opacity:.8;box-shadow:0 0 20px 8px #FF9A3C44}
+.t26 .theme-name{color:#4A3728;font-family:'Fraunces',serif;font-style:italic;font-size:14px;font-weight:100}
+.t26 .theme-desc{color:#8B7355}
+
+.t27{background:#080808}
+.t27 .card-inner::before{content:'ERR_';position:absolute;top:16px;left:14px;font-family:'VT323',monospace;font-size:52px;color:#fff;line-height:1;text-shadow:3px 0 #FF0040,-3px 0 #00FFFF;animation:glitch 2s steps(1) infinite}
+.t27 .card-inner::after{content:'';position:absolute;top:30%;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#00FFFF,#FF0040,transparent);opacity:.6;animation:scan 3s linear infinite}
+@keyframes glitch{0%,95%{text-shadow:3px 0 #FF0040,-3px 0 #00FFFF}96%{text-shadow:-4px 0 #FF0040,4px 0 #00FFFF}100%{text-shadow:3px 0 #FF0040,-3px 0 #00FFFF}}
+@keyframes scan{0%{top:10%}100%{top:95%}}
+.t27 .theme-name{color:#00FFFF;font-family:'Major Mono Display',monospace;font-size:10px;text-shadow:1px 0 #FF0040}
+.t27 .theme-desc{color:#333;font-family:'VT323',monospace}
+
+.t28{background:#2A2A2A}
+.t28 .card-inner::after{content:'◻';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:72px;color:#fff;opacity:.06;line-height:1}
+.t28 .theme-name{color:#D4D0C8;font-family:'Poiret One',sans-serif;font-size:13px;letter-spacing:.25em;text-transform:uppercase}
+.t28 .theme-desc{color:#666}
+
+.t29{background:#0A2218}
+.t29 .card-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,#1A5C2844 0%,transparent 50%),radial-gradient(ellipse at 80% 30%,#2A8C4422 0%,transparent 50%)}
+.t29 .card-inner::after{content:'✦';position:absolute;top:16px;right:20px;font-size:44px;color:#FFB347;opacity:.6;text-shadow:0 0 20px #FFB34788}
+.t29 .theme-name{color:#7AE8A0;font-family:'Libre Caslon Display',serif;font-size:14px;letter-spacing:.04em}
+.t29 .theme-desc{color:#2A7A4A}
+
+.t30{background:#F5F0E8}
+.t30 .card-inner::before{content:'';position:absolute;top:0;right:0;width:100px;height:160px;background:radial-gradient(ellipse at 80% 0%,#8B6914 0%,transparent 60%);opacity:.12}
+.t30 .card-inner::after{content:'ꭡ';position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:80px;color:#8B6914;opacity:.12;font-family:'Cinzel',serif}
+.t30 .theme-name{color:#3D2B0A;font-family:'Playfair Display SC',serif;font-size:12px;letter-spacing:.1em}
+.t30 .theme-desc{color:#8B6914}
+</style>
+
+<div class="controls">
+  <div class="filter-row">
+    <span class="row-label">Mood</span>
+    <span class="pill active" data-filter="mood" data-val="all">All <span class="count" id="total-count"></span></span>
+    <span class="pill" data-filter="mood" data-val="dark">Dark</span>
+    <span class="pill" data-filter="mood" data-val="light">Light</span>
+    <span class="pill" data-filter="mood" data-val="minimal">Minimal</span>
+    <span class="pill" data-filter="mood" data-val="maximal">Maximal</span>
+    <span class="pill" data-filter="mood" data-val="warm">Warm</span>
+    <span class="pill" data-filter="mood" data-val="cold">Cold</span>
+    <span class="pill" data-filter="mood" data-val="retro">Retro</span>
+    <span class="pill" data-filter="mood" data-val="futuristic">Futuristic</span>
+  </div>
+  <div class="filter-row">
+    <span class="row-label">Style</span>
+    <span class="pill" data-filter="style" data-val="editorial">Editorial</span>
+    <span class="pill" data-filter="style" data-val="tech">Tech</span>
+    <span class="pill" data-filter="style" data-val="nature">Nature</span>
+    <span class="pill" data-filter="style" data-val="luxury">Luxury</span>
+    <span class="pill" data-filter="style" data-val="brutalist">Brutalist</span>
+    <span class="pill" data-filter="style" data-val="geometric">Geometric</span>
+    <span class="pill" data-filter="style" data-val="organic">Organic</span>
+    <span class="pill" data-filter="style" data-val="cultural">Cultural</span>
+  </div>
+  <div class="filter-row">
+    <span class="row-label">Color</span>
+    <span class="pill" data-filter="color" data-val="purple">Purple</span>
+    <span class="pill" data-filter="color" data-val="green">Green</span>
+    <span class="pill" data-filter="color" data-val="red">Red</span>
+    <span class="pill" data-filter="color" data-val="blue">Blue</span>
+    <span class="pill" data-filter="color" data-val="gold">Gold</span>
+    <span class="pill" data-filter="color" data-val="neon">Neon</span>
+    <span class="pill" data-filter="color" data-val="monochrome">Monochrome</span>
+    <span class="pill" data-filter="color" data-val="multicolor">Multicolor</span>
+  </div>
+</div>
+
+<div class="grid" id="grid">
+  <div class="none-msg" id="none-msg">No themes match — try a different filter.</div>
+
+  <div class="card t1" data-tags="dark futuristic tech purple cold minimal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">tech</span><span class="ctag">purple</span></div>
+      <div class="theme-name">Instrument Grade</div>
+      <div class="theme-desc">Deep violet · indigo-black · cold cyan.</div>
+    </div>
+  </div>
+
+  <div class="card t2" data-tags="light warm editorial luxury gold minimal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">editorial</span><span class="ctag light">warm</span></div>
+      <div class="theme-name">Editorial Serif</div>
+      <div class="theme-desc">Cream stock · ink black · burnt sienna.</div>
+    </div>
+  </div>
+
+  <div class="card t3" data-tags="light brutalist maximal monochrome minimal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">brutalist</span><span class="ctag">maximal</span><span class="ctag">monochrome</span></div>
+      <div class="theme-name">Brutalist Raw</div>
+      <div class="theme-desc">Signal yellow · pure black.</div>
+    </div>
+  </div>
+
+  <div class="card t4" data-tags="dark nature organic green warm">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">nature</span><span class="ctag">green</span></div>
+      <div class="theme-name">Organic Botanical</div>
+      <div class="theme-desc">Forest dark · sage green · leaf.</div>
+    </div>
+  </div>
+
+  <div class="card t5" data-tags="light luxury minimal gold warm editorial">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">luxury</span><span class="ctag light">gold</span></div>
+      <div class="theme-name">Luxury Minimal</div>
+      <div class="theme-desc">Warm white · antique gold.</div>
+    </div>
+  </div>
+
+  <div class="card t6" data-tags="dark retro tech green cold minimal futuristic">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">retro</span><span class="ctag">green</span></div>
+      <div class="theme-name">Retro Terminal</div>
+      <div class="theme-desc">CRT black · phosphor green.</div>
+    </div>
+  </div>
+
+  <div class="card t7" data-tags="dark maximal futuristic purple multicolor neon">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">maximal</span><span class="ctag">neon</span><span class="ctag">multicolor</span></div>
+      <div class="theme-name">Hyper Color</div>
+      <div class="theme-desc">Magenta · violet · electric blue.</div>
+    </div>
+  </div>
+
+  <div class="card t8" data-tags="light cold blue minimal luxury">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">cold</span><span class="ctag light">blue</span></div>
+      <div class="theme-name">Arctic Glass</div>
+      <div class="theme-desc">Ice white · sky blue · frosted.</div>
+    </div>
+  </div>
+
+  <div class="card t9" data-tags="dark warm editorial luxury gold cultural retro">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">editorial</span><span class="ctag">gold</span></div>
+      <div class="theme-name">Dark Academia</div>
+      <div class="theme-desc">Walnut brown · aged gold.</div>
+    </div>
+  </div>
+
+  <div class="card t10" data-tags="dark futuristic red neon cold maximal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">neon</span><span class="ctag">red</span></div>
+      <div class="theme-name">Neon Noir</div>
+      <div class="theme-desc">Near-black · crimson neon · cyan.</div>
+    </div>
+  </div>
+
+  <div class="card t11" data-tags="light warm minimal organic cultural gold">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">minimal</span><span class="ctag light">cultural</span></div>
+      <div class="theme-name">Japanese Wabi</div>
+      <div class="theme-desc">Warm rice paper · ink brown.</div>
+    </div>
+  </div>
+
+  <div class="card t12" data-tags="dark brutalist tech red warm monochrome">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">brutalist</span><span class="ctag">red</span></div>
+      <div class="theme-name">Industrial Steel</div>
+      <div class="theme-desc">Dark iron · hazard orange.</div>
+    </div>
+  </div>
+
+  <div class="card t13" data-tags="light minimal organic warm multicolor">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">minimal</span><span class="ctag light">multicolor</span></div>
+      <div class="theme-name">Powder Pastel</div>
+      <div class="theme-desc">Petal pink · periwinkle · blush.</div>
+    </div>
+  </div>
+
+  <div class="card t14" data-tags="light brutalist maximal red geometric cultural">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">brutalist</span><span class="ctag">red</span><span class="ctag">cultural</span></div>
+      <div class="theme-name">Soviet Constructivist</div>
+      <div class="theme-desc">Propaganda red · pure black.</div>
+    </div>
+  </div>
+
+  <div class="card t15" data-tags="dark nature cold green minimal organic">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">nature</span><span class="ctag">green</span></div>
+      <div class="theme-name">Copper Patina</div>
+      <div class="theme-desc">Deep teal-black · oxidised green.</div>
+    </div>
+  </div>
+
+  <div class="card t16" data-tags="dark retro futuristic purple neon cold maximal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">retro</span><span class="ctag">purple</span></div>
+      <div class="theme-name">Vaporwave</div>
+      <div class="theme-desc">Midnight purple · hot pink · cyan.</div>
+    </div>
+  </div>
+
+  <div class="card t17" data-tags="light minimal brutalist geometric red editorial">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">minimal</span><span class="ctag light">red</span></div>
+      <div class="theme-name">Swiss Modernist</div>
+      <div class="theme-desc">Off-white · signal red · black.</div>
+    </div>
+  </div>
+
+  <div class="card t18" data-tags="dark cold blue nature minimal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">cold</span><span class="ctag">blue</span></div>
+      <div class="theme-name">Deep Sea</div>
+      <div class="theme-desc">Abyssal black · bioluminescent teal.</div>
+    </div>
+  </div>
+
+  <div class="card t19" data-tags="light warm editorial gold cultural retro luxury">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">editorial</span><span class="ctag light">gold</span></div>
+      <div class="theme-name">Aged Manuscript</div>
+      <div class="theme-desc">Vellum · sepia · ink.</div>
+    </div>
+  </div>
+
+  <div class="card t20" data-tags="dark maximal futuristic multicolor neon">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">maximal</span><span class="ctag">multicolor</span></div>
+      <div class="theme-name">Chromatic Burst</div>
+      <div class="theme-desc">Full-spectrum conic · near black.</div>
+    </div>
+  </div>
+
+  <div class="card t21" data-tags="light geometric minimal brutalist red cultural">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">geometric</span><span class="ctag light">red</span></div>
+      <div class="theme-name">Bauhaus</div>
+      <div class="theme-desc">Warm linen · signal red · black.</div>
+    </div>
+  </div>
+
+  <div class="card t22" data-tags="light maximal retro multicolor geometric">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">maximal</span><span class="ctag light">multicolor</span></div>
+      <div class="theme-name">Memphis</div>
+      <div class="theme-desc">White · polka dot primary.</div>
+    </div>
+  </div>
+
+  <div class="card t23" data-tags="dark futuristic neon maximal tech geometric">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">futuristic</span><span class="ctag">neon</span></div>
+      <div class="theme-name">Cyberpunk City</div>
+      <div class="theme-desc">Void black · acid yellow · magenta.</div>
+    </div>
+  </div>
+
+  <div class="card t24" data-tags="light warm retro organic geometric gold">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">warm</span><span class="ctag light">retro</span></div>
+      <div class="theme-name">Mid-Century</div>
+      <div class="theme-desc">Harvest wheat · forest · burnt clay.</div>
+    </div>
+  </div>
+
+  <div class="card t25" data-tags="dark cultural geometric luxury gold warm">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">cultural</span><span class="ctag">gold</span></div>
+      <div class="theme-name">Islamic Geometric</div>
+      <div class="theme-desc">Deep aubergine · gold tessellation.</div>
+    </div>
+  </div>
+
+  <div class="card t26" data-tags="light warm minimal organic gold">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">warm</span><span class="ctag light">minimal</span></div>
+      <div class="theme-name">Hygge</div>
+      <div class="theme-desc">Parchment · candlelight amber.</div>
+    </div>
+  </div>
+
+  <div class="card t27" data-tags="dark tech futuristic neon cold maximal monochrome">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">tech</span><span class="ctag">neon</span></div>
+      <div class="theme-name">Glitch</div>
+      <div class="theme-desc">Pure black · corrupt cyan · red.</div>
+    </div>
+  </div>
+
+  <div class="card t28" data-tags="dark minimal brutalist monochrome cold">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">minimal</span><span class="ctag">monochrome</span></div>
+      <div class="theme-name">Raw Concrete</div>
+      <div class="theme-desc">Brutalist grey · ash white.</div>
+    </div>
+  </div>
+
+  <div class="card t29" data-tags="dark nature organic green warm maximal">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag">dark</span><span class="ctag">nature</span><span class="ctag">green</span></div>
+      <div class="theme-name">Tropical Lush</div>
+      <div class="theme-desc">Canopy dark · jade · papaya.</div>
+    </div>
+  </div>
+
+  <div class="card t30" data-tags="light warm editorial luxury gold organic cultural">
+    <div class="card-inner">
+      <div class="card-tags"><span class="ctag light">light</span><span class="ctag light">editorial</span><span class="ctag light">gold</span></div>
+      <div class="theme-name">Art Nouveau</div>
+      <div class="theme-desc">Ivory · antique gold · vine.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const cards = document.querySelectorAll('.card[data-tags]');
+const noneMsg = document.getElementById('none-msg');
+const totalCount = document.getElementById('total-count');
+totalCount.textContent = cards.length;
+
+let active = { mood: 'all', style: null, color: null };
+
+function update() {
+  let visible = 0;
+  cards.forEach(card => {
+    const tags = card.dataset.tags.split(' ');
+    const moodOk = active.mood === 'all' || tags.includes(active.mood);
+    const styleOk = !active.style || tags.includes(active.style);
+    const colorOk = !active.color || tags.includes(active.color);
+    const show = moodOk && styleOk && colorOk;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  noneMsg.classList.toggle('show', visible === 0);
+  totalCount.textContent = active.mood === 'all' && !active.style && !active.color ? cards.length : visible;
+}
+
+document.querySelectorAll('.pill[data-filter]').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const f = pill.dataset.filter;
+    const v = pill.dataset.val;
+
+    if (f === 'mood') {
+      active.mood = v;
+      document.querySelectorAll('[data-filter="mood"]').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    } else {
+      const key = f;
+      if (active[key] === v) {
+        active[key] = null;
+        pill.classList.remove('active');
+      } else {
+        if (active[key]) {
+          document.querySelector(`[data-filter="${f}"][data-val="${active[key]}"]`)?.classList.remove('active');
+        }
+        active[key] = v;
+        pill.classList.add('active');
+      }
+    }
+    update();
+  });
+});
+update();
+</script>

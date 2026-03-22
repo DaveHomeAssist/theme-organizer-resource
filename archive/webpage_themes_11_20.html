@@ -1,0 +1,155 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Courier+Prime:ital@0;1&family=Anton&family=Josefin+Sans:wght@100;300&family=IM+Fell+English:ital@1&family=Rajdhani:wght@600&family=Bodoni+Moda:ital,wght@1,400&family=Syncopate:wght@700&family=Spectral:ital,wght@1,300&family=Unbounded:wght@900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-background-secondary)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1rem 0}
+.card{border-radius:10px;overflow:hidden;position:relative;height:180px;cursor:pointer;transition:transform 0.2s}
+.card:hover{transform:translateY(-2px)}
+.card-inner{width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 18px;position:relative;overflow:hidden}
+.theme-name{font-size:13px;font-weight:500;margin-bottom:3px;position:relative;z-index:2}
+.theme-desc{font-size:11px;opacity:0.7;line-height:1.5;position:relative;z-index:2}
+
+/* 11. JAPANESE WABI */
+.t11{background:#F2EDE4}
+.t11 .card-inner::before{content:'侘寂';position:absolute;top:10px;right:16px;font-size:64px;color:#8B7355;opacity:0.15;line-height:1}
+.t11 .card-inner::after{content:'';position:absolute;left:18px;top:18px;bottom:50px;width:1px;background:linear-gradient(to bottom,#8B735500,#8B7355,#8B735500)}
+.t11 .theme-name{color:#3D2B1F;font-family:'Spectral',serif;font-style:italic;font-size:14px;font-weight:300}
+.t11 .theme-desc{color:#8B7355;font-size:11px}
+
+/* 12. INDUSTRIAL STEEL */
+.t12{background:#1A1D21}
+.t12 .card-inner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 18px,#FFFFFF05 18px,#FFFFFF05 19px),repeating-linear-gradient(0deg,transparent,transparent 18px,#FFFFFF04 18px,#FFFFFF04 19px)}
+.t12 .card-inner::after{content:'///';position:absolute;top:16px;left:16px;font-family:'Courier Prime',monospace;font-size:32px;color:#FF6B00;letter-spacing:-4px;opacity:0.9}
+.t12 .theme-name{color:#E8E8E8;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+.t12 .theme-desc{color:#6B7280;font-family:'Courier Prime',monospace;font-size:10px}
+
+/* 13. POWDER PASTEL */
+.t13{background:#FDF0F5}
+.t13 .card-inner::before{content:'';position:absolute;top:-20px;right:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#F9C0D8 0%,#F3A8C8 40%,transparent 70%);opacity:0.5}
+.t13 .card-inner::after{content:'';position:absolute;bottom:40px;left:-10px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#C8D8F9 0%,transparent 70%);opacity:0.5}
+.t13 .theme-name{color:#5C3A52;font-family:'Josefin Sans',sans-serif;font-size:12px;font-weight:100;letter-spacing:0.25em;text-transform:uppercase}
+.t13 .theme-desc{color:#9B7A8A;font-size:11px}
+
+/* 14. SOVIET CONSTRUCTIVIST */
+.t14{background:#C8230C}
+.t14 .card-inner::before{content:'★';position:absolute;top:8px;right:14px;font-size:52px;color:#000;opacity:0.2}
+.t14 .card-inner::after{content:'KONSTRUKT';position:absolute;top:16px;left:14px;font-family:'Anton',sans-serif;font-size:38px;color:#000;line-height:1;letter-spacing:-1px;transform:skewX(-4deg)}
+.t14 .theme-name{color:#000;font-family:'Syncopate',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase}
+.t14 .theme-desc{color:rgba(0,0,0,0.55);font-family:'Courier Prime',monospace;font-size:10px}
+
+/* 15. COPPER PATINA */
+.t15{background:#0D1F1E}
+.t15 .card-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 40% 30%,#2A5C4422 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,#7AB89A11 0%,transparent 50%)}
+.t15 .card-inner::after{content:'Cu';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:'Italiana',sans-serif;font-size:64px;color:#7AB89A;opacity:0.2;line-height:1}
+.t15 .theme-name{color:#7AB89A;font-family:'Italiana',sans-serif;font-size:15px;letter-spacing:0.08em}
+.t15 .theme-desc{color:#2E6B56;font-size:11px}
+
+/* 16. VAPORWAVE */
+.t16{background:#0D0221}
+.t16 .card-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0D022100 40%,#1A043A 100%),repeating-linear-gradient(0deg,transparent,transparent 20px,#FF71CE08 20px,#FF71CE08 21px)}
+.t16 .card-inner::after{content:'A E S T H E T I C';position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:100;letter-spacing:0.4em;color:#FF71CE;white-space:nowrap;text-shadow:0 0 20px #FF71CE88}
+.t16 .theme-name{color:#01CDFE;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;text-shadow:0 0 10px #01CDFE88}
+.t16 .theme-desc{color:#B967FF;font-size:11px;text-shadow:0 0 8px #B967FF66}
+
+/* 17. SWISS MODERNIST */
+.t17{background:#F5F5F0}
+.t17 .card-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#E63329}
+.t17 .card-inner::after{content:'Helvetica\ANeue';white-space:pre;position:absolute;top:20px;left:18px;font-family:'Josefin Sans',sans-serif;font-weight:100;font-size:34px;color:#1A1A1A;line-height:1.1;letter-spacing:-1px}
+.t17 .theme-name{color:#1A1A1A;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:11px;letter-spacing:0.15em;text-transform:uppercase}
+.t17 .theme-desc{color:#666;font-size:11px}
+
+/* 18. DEEP SEA */
+.t18{background:#020B18}
+.t18 .card-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,#003A6622 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,#00567A11 0%,transparent 50%)}
+.t18 .card-inner::after{content:'~';position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:72px;color:#0080AA;opacity:0.25;font-family:'Bodoni Moda',serif;font-style:italic}
+.t18 .theme-name{color:#4DC8E8;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase}
+.t18 .theme-desc{color:#1E6A80;font-size:11px}
+
+/* 19. AGED MANUSCRIPT */
+.t19{background:#E8D5A3}
+.t19 .card-inner::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23C4A45A11'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23A0784022'/%3E%3C/svg%3E")}
+.t19 .card-inner::after{content:'"Veritas\Alux mea"';white-space:pre;position:absolute;top:14px;left:18px;font-family:'IM Fell English',serif;font-size:22px;font-style:italic;color:#4A3018;line-height:1.3;opacity:0.9}
+.t19 .theme-name{color:#4A3018;font-family:'IM Fell English',serif;font-style:italic;font-size:13px}
+.t19 .theme-desc{color:#8B6A38;font-size:11px}
+
+/* 20. CHROMATIC BURST */
+.t20{background:#0A0A0A}
+.t20 .card-inner::before{content:'';position:absolute;top:50%;left:30%;transform:translate(-50%,-60%);width:120px;height:120px;border-radius:50%;background:conic-gradient(from 0deg,#FF0040,#FF8000,#FFFF00,#00FF80,#0080FF,#8000FF,#FF0040);opacity:0.15;filter:blur(2px)}
+.t20 .card-inner::after{content:'◎';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:56px;background:conic-gradient(from 0deg,#FF0040,#FF8000,#FFFF00,#00FF80,#0080FF,#8000FF,#FF0040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.8}
+.t20 .theme-name{color:#fff;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase}
+.t20 .theme-desc{color:#555;font-size:11px}
+</style>
+<div class="grid">
+
+  <div class="card t11">
+    <div class="card-inner">
+      <div class="theme-name">Japanese Wabi</div>
+      <div class="theme-desc">Warm rice paper · ink brown. Imperfection as aesthetic principle.</div>
+    </div>
+  </div>
+
+  <div class="card t12">
+    <div class="card-inner">
+      <div class="theme-name">Industrial Steel</div>
+      <div class="theme-desc">Dark iron · hazard orange. Factory-floor utilitarian, built not designed.</div>
+    </div>
+  </div>
+
+  <div class="card t13">
+    <div class="card-inner">
+      <div class="theme-name">Powder Pastel</div>
+      <div class="theme-desc">Petal pink · periwinkle · blush. Soft collision of dusted spheres.</div>
+    </div>
+  </div>
+
+  <div class="card t14">
+    <div class="card-inner">
+      <div class="theme-name">Soviet Constructivist</div>
+      <div class="theme-desc">Propaganda red · pure black. Agitprop geometry, absolute conviction.</div>
+    </div>
+  </div>
+
+  <div class="card t15">
+    <div class="card-inner">
+      <div class="theme-name">Copper Patina</div>
+      <div class="theme-desc">Deep teal-black · oxidised green. Time-worn metal, chemical beauty.</div>
+    </div>
+  </div>
+
+  <div class="card t16">
+    <div class="card-inner">
+      <div class="theme-name">Vaporwave</div>
+      <div class="theme-desc">Midnight purple · hot pink · cyan. Mallsoft nostalgia, grid horizon.</div>
+    </div>
+  </div>
+
+  <div class="card t17">
+    <div class="card-inner">
+      <div class="theme-name">Swiss Modernist</div>
+      <div class="theme-desc">Off-white · signal red · black. Grid-locked, rule-governed, exact.</div>
+    </div>
+  </div>
+
+  <div class="card t18">
+    <div class="card-inner">
+      <div class="theme-name">Deep Sea</div>
+      <div class="theme-desc">Abyssal black · bioluminescent teal. Pressure, depth, cold light.</div>
+    </div>
+  </div>
+
+  <div class="card t19">
+    <div class="card-inner">
+      <div class="theme-name">Aged Manuscript</div>
+      <div class="theme-desc">Vellum · sepia · ink. Illuminated text, foxed edges, candlelit weight.</div>
+    </div>
+  </div>
+
+  <div class="card t20">
+    <div class="card-inner">
+      <div class="theme-name">Chromatic Burst</div>
+      <div class="theme-desc">Full-spectrum conic · near black. Every colour at once, disciplined by void.</div>
+    </div>
+  </div>
+
+</div>

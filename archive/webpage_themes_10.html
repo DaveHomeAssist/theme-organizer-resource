@@ -1,0 +1,363 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono&family=Bebas+Neue&family=Libre+Baskerville:ital@1&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--color-background-secondary); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 1rem 0;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 180px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); }
+
+.card-inner {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-bottom: 3px;
+  position: relative;
+  z-index: 2;
+}
+.theme-desc {
+  font-size: 11px;
+  opacity: 0.7;
+  line-height: 1.5;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── 1. INSTRUMENT GRADE ── */
+.t1 { background: #0A0A10; }
+.t1 .card-inner::before {
+  content: '< >';
+  position: absolute;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 28px;
+  color: #9B59F5;
+  text-shadow: 0 0 40px #9B59F566;
+  letter-spacing: 8px;
+}
+.t1 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 40%, #3D0EA822 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, #9B59F511 0%, transparent 50%);
+}
+.t1 .theme-name { color: #B8D8FF; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.t1 .theme-desc { color: #6b6b8a; font-family: 'DM Mono', monospace; }
+
+/* ── 2. EDITORIAL SERIF ── */
+.t2 { background: #F7F4EF; }
+.t2 .card-inner::before {
+  content: 'The\A Chronicle';
+  white-space: pre;
+  position: absolute;
+  top: 14px; left: 18px;
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1208;
+  line-height: 1.1;
+}
+.t2 .card-inner::after {
+  content: '—';
+  position: absolute;
+  top: 96px; left: 18px;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: #C4713A;
+}
+.t2 .theme-name { color: #1a1208; font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 12px; }
+.t2 .theme-desc { color: #6b5a3e; }
+
+/* ── 3. BRUTALIST RAW ── */
+.t3 { background: #EDEA00; }
+.t3 .card-inner::before {
+  content: 'BRUTAL';
+  position: absolute;
+  top: -8px; left: -4px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 90px;
+  color: #000;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.t3 .card-inner::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px; height: 100%;
+  background: #000;
+}
+.t3 .theme-name { color: #000; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+.t3 .theme-desc { color: #333; font-family: 'Space Mono', monospace; font-size: 10px; }
+
+/* ── 4. ORGANIC BOTANICAL ── */
+.t4 { background: #1C2B1A; }
+.t4 .card-inner::before {
+  content: '✦';
+  position: absolute;
+  top: 20px; right: 24px;
+  font-size: 40px;
+  color: #7AAB5C;
+  opacity: 0.5;
+}
+.t4 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, #3A5C2822 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, #7AAB5C11 0%, transparent 40%),
+    repeating-linear-gradient(120deg, transparent, transparent 40px, #7AAB5C08 40px, #7AAB5C08 41px);
+}
+.t4 .theme-name { color: #C8E6B0; font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 300; letter-spacing: 0.05em; }
+.t4 .theme-desc { color: #7AAB5C; font-family: 'Cormorant Garamond', serif; font-size: 12px; }
+
+/* ── 5. LUXURY MINIMAL ── */
+.t5 { background: #FAFAF8; border: 0.5px solid #E8E4DC; }
+.t5 .card-inner::before {
+  content: 'M';
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 300;
+  font-style: italic;
+  color: #C9A96E;
+  opacity: 0.35;
+  letter-spacing: -2px;
+}
+.t5 .card-inner::after {
+  content: '──────';
+  position: absolute;
+  top: 88px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #C9A96E;
+  opacity: 0.6;
+}
+.t5 .theme-name { color: #2C2416; font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
+.t5 .theme-desc { color: #8C7A5E; font-size: 11px; }
+
+/* ── 6. RETRO TERMINAL ── */
+.t6 { background: #0D0D0D; }
+.t6 .card-inner::before {
+  content: '> SYSTEM ONLINE_';
+  position: absolute;
+  top: 18px; left: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: #00FF41;
+  text-shadow: 0 0 10px #00FF4188;
+  animation: blink 1.2s step-end infinite;
+}
+.t6 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, #00FF4106 3px, #00FF4106 4px);
+  pointer-events: none;
+}
+@keyframes blink { 50% { opacity: 0.6; } }
+.t6 .theme-name { color: #00FF41; font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; text-shadow: 0 0 8px #00FF4166; }
+.t6 .theme-desc { color: #00FF4177; font-family: 'Space Mono', monospace; font-size: 10px; }
+
+/* ── 7. HYPER COLOR ── */
+.t7 { background: #FF3CAC; }
+.t7 .card-inner::before {
+  content: 'NOW';
+  position: absolute;
+  top: 8px; left: 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  color: #fff;
+  line-height: 1;
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+}
+.t7 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+  opacity: 0.85;
+}
+.t7 .theme-name { color: #fff; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.05em; }
+.t7 .theme-desc { color: rgba(255,255,255,0.75); font-size: 11px; }
+
+/* ── 8. ARCTIC GLASS ── */
+.t8 { background: #E8F4FF; }
+.t8 .card-inner::before {
+  content: '';
+  position: absolute;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 90px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  border: 0.5px solid rgba(255,255,255,0.9);
+  box-shadow: inset 0 0 30px rgba(180,220,255,0.4), 0 4px 24px rgba(100,160,220,0.15);
+}
+.t8 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.8) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(180,220,255,0.4) 0%, transparent 50%);
+}
+.t8 .theme-name { color: #1A3A5C; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.t8 .theme-desc { color: #4A7A9B; font-size: 11px; }
+
+/* ── 9. DARK ACADEMIA ── */
+.t9 { background: #1E1712; }
+.t9 .card-inner::before {
+  content: 'Ex\Alibris';
+  white-space: pre;
+  position: absolute;
+  top: 12px; left: 18px;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  font-style: italic;
+  color: #C9A96E;
+  line-height: 1.15;
+  opacity: 0.9;
+}
+.t9 .card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 20%, #C9A96E0A 0%, transparent 50%),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, #C9A96E06 80px, #C9A96E06 81px);
+}
+.t9 .theme-name { color: #C9A96E; font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 12px; }
+.t9 .theme-desc { color: #7A6A50; font-size: 11px; }
+
+/* ── 10. NEON NOIR ── */
+.t10 { background: #080810; }
+.t10 .card-inner::before {
+  content: 'NOIR';
+  position: absolute;
+  top: 14px; left: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: transparent;
+  -webkit-text-stroke: 1px #FF2D6B;
+  text-shadow: 0 0 30px #FF2D6B88, 0 0 60px #FF2D6B44;
+  line-height: 1;
+  letter-spacing: 4px;
+}
+.t10 .card-inner::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FF2D6B, #00F5FF, transparent);
+  opacity: 0.8;
+}
+.t10 .theme-name { color: #FF2D6B; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; text-shadow: 0 0 8px #FF2D6B88; }
+.t10 .theme-desc { color: #4A4A6A; font-family: 'Space Mono', monospace; font-size: 10px; }
+</style>
+
+<div class="grid">
+
+  <div class="card t1">
+    <div class="card-inner">
+      <div class="theme-name">Instrument Grade</div>
+      <div class="theme-desc">Deep violet · indigo-black · cold cyan. Scientific precision, bioluminescent detail.</div>
+    </div>
+  </div>
+
+  <div class="card t2">
+    <div class="card-inner">
+      <div class="theme-name">Editorial Serif</div>
+      <div class="theme-desc">Cream stock · ink black · burnt sienna. Magazine-grade typographic authority.</div>
+    </div>
+  </div>
+
+  <div class="card t3">
+    <div class="card-inner">
+      <div class="theme-name">Brutalist Raw</div>
+      <div class="theme-desc">Signal yellow · pure black. No apology, no decoration, no softness.</div>
+    </div>
+  </div>
+
+  <div class="card t4">
+    <div class="card-inner">
+      <div class="theme-name">Organic Botanical</div>
+      <div class="theme-desc">Forest dark · sage green · leaf. Living systems, grown not built.</div>
+    </div>
+  </div>
+
+  <div class="card t5">
+    <div class="card-inner">
+      <div class="theme-name">Luxury Minimal</div>
+      <div class="theme-desc">Warm white · antique gold. One idea per surface, nothing superfluous.</div>
+    </div>
+  </div>
+
+  <div class="card t6">
+    <div class="card-inner">
+      <div class="theme-name">Retro Terminal</div>
+      <div class="theme-desc">CRT black · phosphor green. Command-line nostalgia, live-system feel.</div>
+    </div>
+  </div>
+
+  <div class="card t7">
+    <div class="card-inner">
+      <div class="theme-name">Hyper Color</div>
+      <div class="theme-desc">Magenta · violet · electric blue. Gradient-saturated, full-velocity energy.</div>
+    </div>
+  </div>
+
+  <div class="card t8">
+    <div class="card-inner">
+      <div class="theme-name">Arctic Glass</div>
+      <div class="theme-desc">Ice white · sky blue · frosted. Glacial clarity, translucent surfaces.</div>
+    </div>
+  </div>
+
+  <div class="card t9">
+    <div class="card-inner">
+      <div class="theme-name">Dark Academia</div>
+      <div class="theme-desc">Walnut brown · aged gold. Library candlelight, weighted with knowledge.</div>
+    </div>
+  </div>
+
+  <div class="card t10">
+    <div class="card-inner">
+      <div class="theme-name">Neon Noir</div>
+      <div class="theme-desc">Near-black · crimson neon · cyan. Rain-slicked streets, high contrast shadows.</div>
+    </div>
+  </div>
+
+</div>
