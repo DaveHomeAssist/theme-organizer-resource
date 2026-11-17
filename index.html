@@ -59,7 +59,8 @@
   .primary-btn:hover{background:#814926}
   .ghost-btn{background:transparent;color:var(--text-2)}
   .toolbar{position:sticky;top:0;z-index:10;background:rgba(247,239,227,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(74,56,34,0.08);padding:10px 0 14px}
-  .toolbar-grid{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr)) auto auto;gap:10px;align-items:end}
+  .toolbar-grid{display:flex;flex-direction:column;gap:10px}
+  .toolbar-filters{display:grid;grid-template-columns:minmax(0,1fr) repeat(4,minmax(128px,168px));gap:10px;align-items:end}
   .field{display:flex;flex-direction:column;gap:6px}
   .field{min-width:0}
   .field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -72,9 +73,8 @@
     padding:10px 12px;
   }
   .field input::placeholder,.notes-box::placeholder{color:var(--muted)}
-  .toolbar-actions{display:flex;gap:10px;align-items:end}
+  .toolbar-actions{display:flex;gap:10px;align-items:end;flex-wrap:wrap;justify-content:flex-start}
   .toolbar-stack{display:flex;gap:10px;flex-wrap:wrap}
-  .toolbar-actions{flex-wrap:wrap;justify-content:flex-end}
   .jump-nav{
     display:flex;
     gap:8px;
@@ -535,7 +535,7 @@
   .compare-actions{display:flex;gap:8px;flex-wrap:wrap}
   .compare-grid{
     display:grid;
-    grid-template-columns:160px repeat(auto-fit,minmax(180px,1fr));
+    grid-template-columns:160px repeat(var(--compare-count, 1), minmax(180px, 1fr));
     gap:0;
     overflow:auto;
     border-top:1px solid rgba(110,84,50,0.08);
@@ -605,7 +605,7 @@
   @media (max-width: 1100px){
     .layout{grid-template-columns:1fr}
     .detail{position:static}
-    .toolbar-grid{grid-template-columns:1fr 1fr}
+    .toolbar-filters{grid-template-columns:1fr 1fr}
   }
   @media (max-width: 760px){
     .app{padding:16px 14px 28px}
@@ -623,7 +623,10 @@
       justify-content:center;
       min-width:0;
     }
-    .toolbar-grid{grid-template-columns:1fr}
+    .toolbar-filters{grid-template-columns:1fr}
+    .compare-grid{grid-template-columns:1fr;overflow:visible}
+    .compare-preview-cell,
+    .compare-preview-cell .preview{min-width:0}
     .toolbar-actions{justify-content:stretch}
     .toolbar-actions .ghost-btn,
     .toolbar-actions .primary-btn{
@@ -655,9 +658,10 @@
 
   <div class="toolbar">
     <div class="toolbar-grid">
+      <div class="toolbar-filters">
       <div class="field">
         <label for="search">Search</label>
-        <input id="search" type="search" placeholder="Search name, description, tags, family, best fit">
+        <input id="search" type="search" placeholder="Search themes">
       </div>
       <div class="field">
         <label for="familyFilter">Family</label>
@@ -681,6 +685,7 @@
           <option value="color">Color</option>
           <option value="status">Status</option>
         </select>
+      </div>
       </div>
       <div class="toolbar-actions">
         <button id="groupToggle" class="ghost-btn" type="button">Grouped</button>
@@ -1342,7 +1347,7 @@ function renderCompare() {
         <button id="clearCompare" class="ghost-btn" type="button">Clear Compare</button>
       </div>
     </div>
-    <div class="compare-grid">
+    <div class="compare-grid" style="--compare-count:${themes.length}">
       ${rows.map(([label, renderValue]) => `
         <div class="compare-label">${label}</div>
         ${themes.map(theme => `<div class="compare-cell">${renderValue(theme)}</div>`).join('')}
