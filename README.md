@@ -6,7 +6,7 @@ A browsable, filterable theme gallery and comparison tool for selecting and eval
 
 ## What it does
 
-- Browse 59 themes organized by family (gallery, project-derived, user imports)
+- Browse 58 themes organized by family (gallery, project-derived, user imports)
 - Filter by mood, family, status, tags, and free-text search
 - Compare up to 4 themes side-by-side in the comparison tray
 - Inspect typography, color tokens, and usage recommendations per theme
@@ -42,7 +42,8 @@ Each theme in `THEME_DATA` follows this shape:
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `string` | Unique identifier. Prefixes: `t` = gallery, `p` = project-derived, `u` = user import |
-| `code` | `string` | Short code for display and export |
+| `code` | `string` | Display code. Matches the id (`t1`, `p1`, `u5`) so the prefix stays with that source. User imports are not numbered as gallery themes. |
+| `repo` | `string` | Optional. Present on a project theme only when that repository exists on GitHub. |
 | `name` | `string` | Human-readable theme name |
 | `description` | `string` | One-line color description using `·` separator |
 | `tags` | `string[]` | Filterable tags (mood, temperature, style, density) |
@@ -65,7 +66,7 @@ These are stored in localStorage state, not in `THEME_DATA`:
 |--------|-------|--------|
 | `t` | `t1`–`t30` | Gallery themes (curated set) |
 | `p` | `p1`–`p8` | Project-derived themes (pulled from active repos) |
-| `u` | `u5`–`u24` | User-imported themes |
+| `u` | `u5`–`u24` | User-imported themes. Display code is `u5`–`u24`. The family name is the theme's own `family`, not the gallery theme that shares the number. |
 
 ### Theme families
 
@@ -93,14 +94,35 @@ These are stored in localStorage state, not in `THEME_DATA`:
 
 | ID | Name | Project |
 |----|------|---------|
-| `p1` | Garden OS | garden-os |
-| `p2` | Trailkeeper Field Log | trailkeeper |
-| `p3` | Prompt Lab Core | prompt-lab |
-| `p4` | Estate II Halloween | estate-ii-deploy |
-| `p5` | Park Rave Flyer | park-rave-005 |
-| `p6` | Dave HomeAssist | DaveHomeAssist.github.io |
-| `p7` | Festival Atlas Routeboard | festival-atlas |
-| `p8` | MetaGrid Signal | metagrid |
+| `p1` | Garden OS | [garden-os](https://github.com/DaveHomeAssist/garden-os) |
+| `p2` | Trailkeeper Field Log | [trailkeeper](https://github.com/DaveHomeAssist/trailkeeper) |
+| `p3` | Prompt Lab Core | [prompt-lab](https://github.com/DaveHomeAssist/prompt-lab) |
+| `p4` | Estate II Halloween | estate-ii-deploy (no public repository) |
+| `p5` | Park Rave Flyer | [park-rave-005](https://github.com/DaveHomeAssist/park-rave-005) |
+| `p6` | Dave HomeAssist | [DaveHomeAssist.github.io](https://github.com/DaveHomeAssist/DaveHomeAssist.github.io) |
+| `p7` | Festival Atlas Routeboard | [festival-atlas](https://github.com/DaveHomeAssist/festival-atlas) |
+| `p8` | MetaGrid Signal | [metagrid](https://github.com/DaveHomeAssist/metagrid) |
+
+`p4` stays unlinked. There is no `estate-ii-deploy` repository on the DaveHomeAssist account.
+
+## Color tokens
+
+`data/theme-tokens.json` is keyed by theme id. Each entry is lowercase hex:
+
+```json
+{
+  "t1": {
+    "bg": "#0a0a10",
+    "surface": "#161821",
+    "text": "#b8d8ff",
+    "accent": "#9b59f5",
+    "muted": "#6b6b8a",
+    "accent2": "#5ce1e6"
+  }
+}
+```
+
+`bg`, `surface`, `text`, and `accent` are required. `muted` and `accent2` are optional and used by the preview, the CSS custom properties, and the Tailwind `theme.extend.colors` snippet. `t1`–`t30` were read from `archive/themes_sortable_30.html`. `p1`–`p8` and `u5`–`u24` were authored from each theme's name and description. A theme with no entry, or a missing file, keeps the computed description palette and is not marked as a real token. `tools/validate_theme_tokens.py` checks the file against `THEME_DATA`.
 
 ## State persistence
 
@@ -125,6 +147,6 @@ Export and import buttons in the toolbar allow full state portability as JSON fi
 ## Stack
 
 - Vanilla HTML/CSS/JS (single file, no build step)
-- Google Fonts (Inter, Italiana, VT323, Cinzel, and 20+ theme-specific families)
+- Self-hosted Latin subsets in `fonts/` (`fonts.css`). Only families the previews and the page chrome use are included. Courier Prime is loaded once. Exo 2, Bodoni Moda, Syncopate, and Permanent Marker are not used, so they are not shipped.
 - GitHub Pages deployment
-- localStorage for persistence
+- localStorage for organizer state, plus filter query params (`q`, `family`, `mood`, `status`, `sort`, `shortlist`) so a filtered view can be shared and restored with back and forward
