@@ -6,9 +6,29 @@
 <title>Theme Organizer Resource</title>
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="preload" href="./fonts/dm-mono-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./fonts/dm-mono-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./fonts/libre-caslon-display-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="./fonts.css">
 <style>
+  @property --bg { syntax: "<color>"; inherits: true; initial-value: #efe5d6; }
+  @property --bg-top { syntax: "<color>"; inherits: true; initial-value: #fbf5ed; }
+  @property --bg-glow { syntax: "<color>"; inherits: true; initial-value: rgba(182, 145, 99, 0.14); }
+  @property --canvas { syntax: "<color>"; inherits: true; initial-value: #fffaf2; }
+  @property --panel { syntax: "<color>"; inherits: true; initial-value: #f7efe3; }
+  @property --panel-2 { syntax: "<color>"; inherits: true; initial-value: #eedfca; }
+  @property --soft { syntax: "<color>"; inherits: true; initial-value: #f2e7d8; }
+  @property --text { syntax: "<color>"; inherits: true; initial-value: #2f2419; }
+  @property --text-2 { syntax: "<color>"; inherits: true; initial-value: #5b4a39; }
+  @property --muted { syntax: "<color>"; inherits: true; initial-value: #705c48; }
+  @property --accent { syntax: "<color>"; inherits: true; initial-value: #9b5d33; }
+  @property --accent-fill { syntax: "<color>"; inherits: true; initial-value: #9b5d33; }
+  @property --on-accent { syntax: "<color>"; inherits: true; initial-value: #fffaf2; }
+  @property --line { syntax: "<color>"; inherits: true; initial-value: #d7c4ae; }
+  @property --line-strong { syntax: "<color>"; inherits: true; initial-value: #b6936b; }
+  @property --toolbar-bg { syntax: "<color>"; inherits: true; initial-value: rgba(247, 239, 227, 0.9); }
+  @property --surface-bg { syntax: "<color>"; inherits: true; initial-value: rgba(250, 243, 232, 0.96); }
+  @property --control-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.86); }
+  @property --focus { syntax: "<color>"; inherits: true; initial-value: #b9703f; }
   :root{
     --bg:#efe5d6;
     --canvas:#fffaf2;
@@ -22,17 +42,71 @@
     --muted:#705c48;
     --accent:#9b5d33;
     --accent-2:#5f7451;
+    --accent-fill:#9b5d33;
+    --on-accent:#fffaf2;
+    --accent-hover:#814926;
+    --accent-border:transparent;
     --warn:#b97a1d;
     --danger:#ab4b34;
     --focus:#b9703f;
+    --focus-contrast:#fffaf2;
     --shadow-soft:0 12px 28px rgba(72,49,24,0.08);
     --shadow-panel:0 22px 48px rgba(72,49,24,0.12);
+    --bg-glow:rgba(182,145,99,0.14);
+    --bg-top:#fbf5ed;
+    --control-bg:rgba(255,250,242,0.86);
+    --toolbar-bg:rgba(247,239,227,0.9);
+    --toolbar-line:rgba(74,56,34,0.08);
+    --chip-bg:rgba(255,250,242,0.78);
+    --surface-bg:rgba(250,243,232,0.96);
+    --header-grad:linear-gradient(180deg,rgba(255,255,255,0.66),rgba(236,222,202,0.7));
+    --hairline:rgba(110,84,50,0.08);
+    --hairline-strong:rgba(110,84,50,0.12);
+    --dashed:rgba(110,84,50,0.18);
+    --inset-highlight:rgba(255,255,255,0.42);
+    --card-grad:linear-gradient(180deg,#fffdf8,#f2e7d6);
+    --active-ring:rgba(155,93,51,0.24);
+    --tag-bg:rgba(255,250,242,0.82);
+    --tag-line:rgba(110,84,50,0.1);
+    --meta-bg:rgba(155,93,51,0.1);
+    --meta:#784521;
+    --meta-line:rgba(155,93,51,0.18);
+    --status-bg:rgba(255,250,242,0.86);
+    --ok-bg:rgba(95,116,81,0.12);
+    --ok:#41523a;
+    --ok-line:rgba(95,116,81,0.24);
+    --ok-bg-strong:rgba(95,116,81,0.14);
+    --ok-line-strong:rgba(95,116,81,0.2);
+    --warn-bg:rgba(185,122,29,0.12);
+    --warn-ink:#81520b;
+    --warn-line:rgba(185,122,29,0.24);
+    --danger-bg:rgba(171,75,52,0.1);
+    --danger-ink:#8d3c2a;
+    --danger-line:rgba(171,75,52,0.2);
+    --swatch-line:rgba(110,84,50,0.18);
+    --preview-inset:rgba(255,255,255,0.48);
+    --tip-line:rgba(155,93,51,0.22);
+    --tip-grad:linear-gradient(180deg,rgba(155,93,51,0.1),rgba(255,250,242,0.7));
+    --tip-btn-bg:rgba(255,250,242,0.76);
+    --detail-grad:linear-gradient(180deg,#fffaf3,var(--panel));
+    --detail-box-bg:rgba(255,250,242,0.72);
+    --compare-label-bg:#f1e3d1;
+    --compare-cell-bg:rgba(255,250,242,0.74);
+    --notice-bg:rgba(185,122,29,0.16);
+    --notice-ink:#5c3d08;
+    --scrim:rgba(47,36,25,0.46);
+  }
+  @media (prefers-reduced-motion: no-preference){
+    :root{
+      transition:--bg .18s ease,--bg-top .18s ease,--bg-glow .18s ease,--canvas .18s ease,--panel .18s ease,--panel-2 .18s ease,--soft .18s ease,--text .18s ease,--text-2 .18s ease,--muted .18s ease,--accent .18s ease,--accent-fill .18s ease,--on-accent .18s ease,--line .18s ease,--line-strong .18s ease,--toolbar-bg .18s ease,--surface-bg .18s ease,--control-bg .18s ease,--focus .18s ease;
+    }
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;overflow-x:hidden;background:
-    radial-gradient(circle at top left, rgba(182,145,99,0.14), transparent 32%),
-    linear-gradient(180deg,#fbf5ed 0%, var(--bg) 100%);
+    radial-gradient(circle at top left, var(--bg-glow), transparent 32%),
+    linear-gradient(180deg,var(--bg-top) 0%, var(--bg) 100%);
     color:var(--text);font-family:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  html[data-page-theme] :focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:0 0 0 4px var(--focus-contrast)}
   a{color:inherit}
   button,input,select,textarea{font:inherit}
   button{cursor:pointer}
@@ -49,7 +123,7 @@
   .link-row{display:flex;gap:10px;flex-wrap:wrap}
   .link-btn,.ghost-btn,.primary-btn,.icon-btn{
     border:1px solid var(--line);
-    background:rgba(255,250,242,0.86);
+    background:var(--control-bg);
     color:var(--text);
     border-radius:12px;
     padding:10px 14px;
@@ -57,10 +131,10 @@
     transition:background .15s,border-color .15s,transform .15s;
   }
   .link-btn:hover,.ghost-btn:hover,.primary-btn:hover,.icon-btn:hover{background:var(--panel-2);border-color:var(--line-strong)}
-  .primary-btn{background:var(--accent);border-color:transparent;color:#fffaf2}
-  .primary-btn:hover{background:#814926;color:#fffaf2}
+  .primary-btn{background:var(--accent-fill);border-color:var(--accent-border);color:var(--on-accent)}
+  .primary-btn:hover{background:var(--accent-hover);color:var(--on-accent)}
   .ghost-btn{background:transparent;color:var(--text-2)}
-  .toolbar{position:sticky;top:0;z-index:10;background:rgba(247,239,227,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(74,56,34,0.08);padding:10px 0 14px}
+  .toolbar{position:sticky;top:0;z-index:10;background:var(--toolbar-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--toolbar-line);padding:10px 0 14px}
   .toolbar-grid{display:flex;flex-direction:column;gap:10px}
   .toolbar-filters{display:grid;grid-template-columns:minmax(0,1fr) repeat(4,minmax(128px,168px));gap:10px;align-items:end}
   .field{display:flex;flex-direction:column;gap:6px}
@@ -90,7 +164,7 @@
     padding:0 10px;
     border-radius:999px;
     border:1px solid var(--line);
-    background:rgba(255,250,242,0.78);
+    background:var(--chip-bg);
     color:var(--text-2);
     text-decoration:none;
     font-size:11px;
@@ -100,7 +174,7 @@
     margin:0 0 14px;
     border:1px solid var(--line);
     border-radius:18px;
-    background:rgba(250,243,232,0.96);
+    background:var(--surface-bg);
     overflow:hidden;
   }
   .workspace-header{
@@ -109,15 +183,15 @@
     align-items:center;
     gap:12px;
     padding:14px 16px;
-    background:linear-gradient(180deg,rgba(255,255,255,0.66),rgba(236,222,202,0.7));
-    border-bottom:1px solid rgba(110,84,50,0.08);
+    background:var(--header-grad);
+    border-bottom:1px solid var(--hairline);
   }
   .workspace-header h2{margin:0;font-size:16px}
   .workspace-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
   .workspace-body{padding:14px}
   .workspace-empty{
     padding:18px;
-    border:1px dashed rgba(110,84,50,0.18);
+    border:1px dashed var(--dashed);
     border-radius:14px;
     color:var(--muted);
     font-size:13px;
@@ -125,7 +199,13 @@
   .workspace-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;align-items:start}
   .layout > *{min-width:0}
-  .summary{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+  .summary{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 14px}
+  .page-theme-reset{flex:0 0 auto;border-radius:999px;min-height:44px}
+  .page-theme-reset.is-active{background:var(--accent-fill);color:var(--on-accent);border-color:var(--accent-border)}
+  .page-theme-reset.is-active:hover{background:var(--accent-hover);color:var(--on-accent);border-color:var(--accent-border)}
+  @media (min-width: 761px){
+    .summary .page-theme-reset{display:none}
+  }
   .stat{
     background:var(--panel);
     border:1px solid var(--line);
@@ -139,9 +219,9 @@
   .group{
     border:1px solid var(--line);
     border-radius:18px;
-    background:rgba(250,243,232,0.96);
+    background:var(--surface-bg);
     overflow:hidden;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.42);
+    box-shadow:inset 0 1px 0 var(--inset-highlight);
   }
   .group-header{
     display:flex;
@@ -149,8 +229,8 @@
     gap:12px;
     align-items:center;
     padding:14px 16px;
-    background:linear-gradient(180deg,rgba(255,255,255,0.66),rgba(236,222,202,0.7));
-    border-bottom:1px solid rgba(110,84,50,0.08);
+    background:var(--header-grad);
+    border-bottom:1px solid var(--hairline);
   }
   .group-header h2{margin:0;font-size:16px}
   .group-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
@@ -180,7 +260,7 @@
   .card{
     border:1px solid var(--line);
     border-radius:16px;
-    background:linear-gradient(180deg,#fffdf8,#f2e7d6);
+    background:var(--card-grad);
     padding:14px;
     display:flex;
     flex-direction:column;
@@ -190,7 +270,7 @@
     transition:border-color .15s,transform .15s,background .15s;
   }
   .card:hover{border-color:var(--line-strong);transform:translateY(-1px)}
-  .card.active{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px rgba(155,93,51,0.24),var(--shadow-soft)}
+  .card.active{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--active-ring),var(--shadow-soft)}
   .card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
   .code{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .name{font-size:17px;font-weight:700;line-height:1.15}
@@ -208,12 +288,12 @@
     line-height:1;
     border:1px solid var(--line);
   }
-  .tag{background:rgba(255,250,242,0.82);color:var(--muted);border-color:rgba(110,84,50,0.1)}
-  .meta-pill{background:rgba(155,93,51,0.1);color:#784521;border-color:rgba(155,93,51,0.18)}
-  .status-pill.status-unreviewed{background:rgba(255,250,242,0.86);color:var(--muted)}
-  .status-pill.status-shortlist{background:rgba(95,116,81,0.12);color:#41523a;border-color:rgba(95,116,81,0.24)}
-  .status-pill.status-maybe{background:rgba(185,122,29,0.12);color:#81520b;border-color:rgba(185,122,29,0.24)}
-  .status-pill.status-archive{background:rgba(171,75,52,0.1);color:#8d3c2a;border-color:rgba(171,75,52,0.2)}
+  .tag{background:var(--tag-bg);color:var(--muted);border-color:var(--tag-line)}
+  .meta-pill{background:var(--meta-bg);color:var(--meta);border-color:var(--meta-line)}
+  .status-pill.status-unreviewed{background:var(--status-bg);color:var(--muted)}
+  .status-pill.status-shortlist{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-line)}
+  .status-pill.status-maybe{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+  .status-pill.status-archive{background:var(--danger-bg);color:var(--danger-ink);border-color:var(--danger-line)}
   .swatch-row{display:flex;gap:8px;flex-wrap:wrap}
   .swatch{
     display:flex;
@@ -222,7 +302,7 @@
     padding:6px 8px;
     border-radius:999px;
     border:1px solid var(--line);
-    background:rgba(255,250,242,0.82);
+    background:var(--tag-bg);
     font-size:11px;
     color:var(--muted);
   }
@@ -230,16 +310,16 @@
     width:12px;
     height:12px;
     border-radius:999px;
-    border:1px solid rgba(110,84,50,0.18);
+    border:1px solid var(--swatch-line);
     flex:0 0 auto;
   }
   .action-row{margin-top:auto}
   .preview{
-    border:1px solid rgba(110,84,50,0.12);
+    border:1px solid var(--hairline-strong);
     border-radius:14px;
     overflow:hidden;
     background:var(--soft);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.48);
+    box-shadow:inset 0 1px 0 var(--preview-inset);
   }
   .preview-surface{
     padding:12px;
@@ -414,9 +494,9 @@
     display:grid;
     gap:10px;
     padding:12px 14px;
-    border:1px solid rgba(155,93,51,0.22);
+    border:1px solid var(--tip-line);
     border-radius:14px;
-    background:linear-gradient(180deg,rgba(155,93,51,0.1),rgba(255,250,242,0.7));
+    background:var(--tip-grad);
   }
   .preview-tip strong{
     font-size:12px;
@@ -435,8 +515,8 @@
     flex-wrap:wrap;
   }
   .preview-tip-actions button{
-    border:1px solid rgba(110,84,50,0.12);
-    background:rgba(255,250,242,0.76);
+    border:1px solid var(--hairline-strong);
+    background:var(--tip-btn-bg);
     color:var(--text);
     border-radius:999px;
     padding:8px 10px;
@@ -488,13 +568,13 @@
     width:100%;
   }
   .action-row button.secondary{color:var(--muted)}
-  .action-row button.shortlisted{background:rgba(95,116,81,0.14);border-color:rgba(95,116,81,0.24);color:#41523a}
+  .action-row button.shortlisted{background:var(--ok-bg-strong);border-color:var(--ok-line);color:var(--ok)}
   .detail{
     position:sticky;
     top:88px;
     border:1px solid var(--line-strong);
     border-radius:18px;
-    background:linear-gradient(180deg,#fffaf3,var(--panel));
+    background:var(--detail-grad);
     padding:16px;
     display:flex;
     flex-direction:column;
@@ -506,9 +586,9 @@
   .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .detail-wide{grid-column:1 / -1}
   .detail-box{
-    border:1px solid rgba(110,84,50,0.1);
+    border:1px solid var(--tag-line);
     border-radius:14px;
-    background:rgba(255,250,242,0.72);
+    background:var(--detail-box-bg);
     padding:10px;
   }
   .detail-box label{display:block;margin-bottom:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -520,7 +600,7 @@
     margin:0 0 14px;
     border:1px solid var(--line);
     border-radius:18px;
-    background:rgba(250,243,232,0.96);
+    background:var(--surface-bg);
     overflow:hidden;
   }
   .compare[hidden]{display:none}
@@ -530,7 +610,7 @@
     align-items:center;
     gap:12px;
     padding:14px 16px;
-    border-bottom:1px solid rgba(110,84,50,0.08);
+    border-bottom:1px solid var(--hairline);
   }
   .compare-header h2{margin:0;font-size:16px}
   .compare-header p{margin:4px 0 0;color:var(--muted);font-size:12px}
@@ -540,23 +620,23 @@
     grid-template-columns:160px repeat(var(--compare-count, 1), minmax(180px, 1fr));
     gap:0;
     overflow:auto;
-    border-top:1px solid rgba(110,84,50,0.08);
+    border-top:1px solid var(--hairline);
   }
   .compare-label,.compare-cell{
     padding:12px;
-    border-top:1px solid rgba(110,84,50,0.08);
-    border-right:1px solid rgba(110,84,50,0.08);
+    border-top:1px solid var(--hairline);
+    border-right:1px solid var(--hairline);
     min-height:56px;
   }
   .compare-label{
-    background:#f1e3d1;
+    background:var(--compare-label-bg);
     color:var(--text-2);
     font-size:12px;
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:.08em;
   }
-  .compare-cell{background:rgba(255,250,242,0.74)}
+  .compare-cell{background:var(--compare-cell-bg)}
   .compare-theme{
     display:flex;
     justify-content:space-between;
@@ -600,7 +680,7 @@
   .detail-actions .ghost-btn:first-child,
   .action-row button[data-action="select"]{background:var(--panel-2);color:var(--text)}
   .action-row button[data-action="shortlist"],
-  #detailShortlist{background:rgba(95,116,81,0.12);border-color:rgba(95,116,81,0.2)}
+  #detailShortlist{background:var(--ok-bg);border-color:var(--ok-line-strong);color:var(--ok)}
   .action-row button[data-action="compare"],
   #detailCompare,
   #detailArchive{background:transparent;color:var(--text-2)}
@@ -656,8 +736,8 @@
     margin:0;
     padding:8px 12px;
     border-radius:12px;
-    background:rgba(185,122,29,0.16);
-    color:#5c3d08;
+    background:var(--notice-bg);
+    color:var(--notice-ink);
     font-size:13px;
   }
   .compare-notice[hidden]{display:none}
@@ -668,7 +748,7 @@
     position:fixed;
     inset:0;
     z-index:40;
-    background:rgba(47,36,25,0.46);
+    background:var(--scrim);
     display:flex;
     align-items:flex-start;
     justify-content:center;
@@ -732,6 +812,10 @@
     .detail-grid{grid-template-columns:1fr}
     .cards{grid-template-columns:1fr}
   }
+  @media (prefers-reduced-motion: reduce){
+    :root{transition:none}
+    *,*::before,*::after{transition:none !important;animation:none !important}
+  }
 </style>
 </head>
 <body>
@@ -740,7 +824,7 @@
   <header class="topbar">
     <div class="title-wrap">
       <h1>Theme Organizer Resource</h1>
-      <p>Companion organizer for the theme library. This turns the visual set into a decision tool: search, group, shortlist, annotate, compare, and export a working theme state without overwriting the original browsing archive.</p>
+      <p>Companion organizer for the theme library. This turns the visual set into a decision tool: search, group, shortlist, annotate, compare, and export a working theme state without overwriting the original browsing archive. Select a theme to try its colours across this page, then use Default Look to return.</p>
     </div>
     <div class="link-row">
       <a class="link-btn" href="./archive/themes_sortable_30.html" target="_blank" rel="noreferrer noopener">Open Original Gallery</a>
@@ -797,6 +881,7 @@
         <button id="viewModeToggle" class="ghost-btn" type="button">Selection Mode</button>
         <button id="clearFilters" class="ghost-btn" type="button">Clear Filters</button>
         <button id="resetView" class="ghost-btn" type="button">Reset View</button>
+        <button class="ghost-btn page-theme-reset" type="button" data-page-theme-reset>Default Look</button>
       </div>
     </div>
     <p id="compareNotice" class="compare-notice" role="status" aria-live="polite" hidden></p>
@@ -819,11 +904,11 @@
 <div id="helpOverlay" class="help-overlay" hidden>
   <div class="help-dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
     <h2 id="helpTitle">Keyboard shortcuts</h2>
-    <p>Shortcuts stay quiet while the cursor is in a field. Esc still leaves the field.</p>
+    <p>Shortcuts stay quiet while the cursor is in a field. Esc still leaves the field. Choosing a theme recolours the whole page, and that choice stays on this browser. Default Look, or Esc once search and this help are clear, restores the original palette. Light, dark, and theme preview follow onto the page while a theme is applied.</p>
     <div class="help-grid">
       <kbd>/</kbd><span>Focus search</span>
       <kbd>Cmd/Ctrl+K</kbd><span>Focus search</span>
-      <kbd>Esc</kbd><span>Clear search or blur the field. Closes this help.</span>
+      <kbd>Esc</kbd><span>Clear search or blur the field. Closes this help. Then restores the default page look.</span>
       <kbd>?</kbd><span>Show or hide this help</span>
       <kbd>J / K</kbd><span>Next or previous theme</span>
       <kbd>Arrows</kbd><span>Next or previous theme when the grid is focused</span>
@@ -840,7 +925,7 @@
       <kbd>I</kbd><span>Import</span>
       <kbd>Shift+S</kbd><span>Copy shortlist</span>
       <kbd>Shift+X</kbd><span>Copy CSS custom properties</span>
-      <kbd>D</kbd><span>Cycle light, dark, and theme preview</span>
+      <kbd>D</kbd><span>Cycle light, dark, and theme colours</span>
       <kbd>0</kbd><span>Clear filters</span>
       <kbd>R</kbd><span>Reset view</span>
     </div>
@@ -849,6 +934,7 @@
     </div>
   </div>
 </div>
+<p id="pageThemeLive" class="visually-hidden" role="status"></p>
 
 <script type="module">
 let THEME_TOKENS = {};
@@ -952,6 +1038,7 @@ let groupMode = typeof state.ui.groupMode === 'boolean' ? state.ui.groupMode : t
 let shortlistOnly = typeof state.ui.shortlistOnly === 'boolean' ? state.ui.shortlistOnly : false;
 let viewMode = state.ui.viewMode || 'selection';
 let previewScheme = state.ui.previewScheme || 'theme';
+let pageThemeId = typeof state.pageThemeId === 'string' ? state.pageThemeId : '';
 let historyMode = 'replace';
 let applyingHistory = false;
 let scrollResults = false;
@@ -1352,6 +1439,57 @@ function inkOn(background, preferred, alternate) {
   return contrastRatio(preferred, background) >= contrastRatio(alternate, background) ? preferred : alternate;
 }
 
+function parseHex(hex) {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map(ch => ch + ch).join('') : clean;
+  return [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16));
+}
+
+function rgbCss(hex, alpha) {
+  const [r, g, b] = parseHex(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function contrastOn(color, backgrounds) {
+  return Math.min(...backgrounds.map(background => contrastRatio(color, background)));
+}
+
+const READABLE_DARK = '#000000';
+const READABLE_LIGHT = '#ffffff';
+
+function readableOn(color, backgrounds, minimum) {
+  if (backgrounds.every(background => contrastRatio(color, background) >= minimum)) return color;
+  const target = contrastOn(READABLE_DARK, backgrounds) >= contrastOn(READABLE_LIGHT, backgrounds) ? READABLE_DARK : READABLE_LIGHT;
+  for (let step = 1; step <= 24; step++) {
+    const next = mix(color, target, step / 24);
+    if (backgrounds.every(background => contrastRatio(next, background) >= minimum)) return next;
+  }
+  return target;
+}
+
+function compatibleSurface(background, surface) {
+  if (Math.abs(luminance(background) - luminance(surface)) <= 0.25) return surface;
+  return luminance(background) < 0.5 ? mix(background, '#ffffff', 0.12) : mix(background, '#000000', 0.08);
+}
+
+function accentButton(accent) {
+  const ink = contrastRatio(READABLE_DARK, accent) >= contrastRatio(READABLE_LIGHT, accent) ? READABLE_DARK : READABLE_LIGHT;
+  if (contrastRatio(ink, accent) >= 4.5) return { fill: accent, ink };
+  const toward = ink === READABLE_LIGHT ? '#000000' : '#ffffff';
+  for (let step = 1; step <= 24; step++) {
+    const fill = mix(accent, toward, step / 24);
+    if (contrastRatio(ink, fill) >= 4.5) return { fill, ink };
+  }
+  return { fill: toward, ink };
+}
+
+function semanticPair(hue, surface, dark) {
+  const inkBase = dark ? mix(hue, '#ffffff', 0.72) : mix(hue, '#000000', 0.45);
+  const background = dark ? mix(surface, hue, 0.38) : mix(surface, hue, 0.18);
+  const ink = readableOn(inkBase, [background], 4.5);
+  return { ink, background, border: mix(ink, background, 0.4) };
+}
+
 function themeTokens(theme) {
   const type = typeProfile(theme);
   const radius = theme.tags.includes('brutalist') ? '6px' : theme.tags.includes('luxury') ? '18px' : '12px';
@@ -1399,6 +1537,191 @@ function applyPreviewScheme(tokens) {
     gradient: tokens.text,
     border: mix(tokens.text, tokens.background, 0.22)
   };
+}
+
+function pageChromeVars(tokens) {
+  const background = tokens.background;
+  const surface = compatibleSurface(background, tokens.surface);
+  const accent = tokens.accent;
+  const dark = luminance(background) < 0.5;
+  const canvas = dark ? mix(surface, '#ffffff', 0.08) : mix(surface, '#ffffff', 0.42);
+  const panel = surface;
+  const panel2 = mix(surface, background, 0.4);
+  const soft = mix(background, surface, 0.5);
+  const headerTop = dark ? mix(surface, '#ffffff', 0.14) : mix(canvas, '#ffffff', 0.35);
+  const cardTop = dark ? mix(surface, '#ffffff', 0.1) : mix(canvas, '#ffffff', 0.45);
+  const cardBot = mix(surface, background, dark ? 0.38 : 0.26);
+  const surfaces = [background, canvas, panel, panel2, soft, headerTop, cardTop, cardBot];
+  const text = readableOn(tokens.text, surfaces, 4.5);
+  const text2 = readableOn(mix(text, background, 0.2), surfaces, 4.5);
+  const muted = readableOn(tokens.muted || mix(text, background, 0.35), surfaces, 4.5);
+  const line = readableOn(mix(background, text, 0.45), [canvas, panel, background, soft], 3);
+  const lineStrong = readableOn(mix(background, text, 0.62), [canvas, panel, background], 3);
+  const button = accentButton(accent);
+  const hoverToward = button.ink === READABLE_LIGHT ? '#000000' : '#ffffff';
+  const hover = contrastRatio(button.ink, mix(button.fill, hoverToward, 0.14)) >= 4.5
+    ? mix(button.fill, hoverToward, 0.14)
+    : button.fill;
+  const focus = contrastOn(accent, surfaces) >= 3 ? accent : readableOn(text, surfaces, 3);
+  const ok = semanticPair('#2f7d32', panel, dark);
+  const warn = semanticPair('#a56b12', panel, dark);
+  const danger = semanticPair('#a33b32', panel, dark);
+  const metaBg = dark ? mix(panel, accent, 0.32) : mix(canvas, accent, 0.16);
+  const meta = readableOn(mix(accent, dark ? '#ffffff' : '#000000', 0.35), [metaBg], 4.5);
+  const shadow = dark ? '0, 0, 0' : parseHex(mix(background, '#000000', 0.7)).join(', ');
+  const accentBorder = contrastRatio(button.fill, panel) >= 3 && contrastRatio(button.fill, canvas) >= 3
+    ? 'transparent'
+    : lineStrong;
+  return {
+    '--bg': background,
+    '--bg-top': dark ? mix(background, accent, 0.16) : mix(background, accent, 0.08),
+    '--bg-glow': rgbCss(accent, dark ? 0.34 : 0.18),
+    '--canvas': canvas,
+    '--panel': panel,
+    '--panel-2': panel2,
+    '--soft': soft,
+    '--surface-bg': panel,
+    '--toolbar-bg': panel,
+    '--toolbar-line': line,
+    '--control-bg': canvas,
+    '--chip-bg': canvas,
+    '--text': text,
+    '--text-2': text2,
+    '--muted': muted,
+    '--accent': accent,
+    '--accent-2': tokens.accentAlt || accent,
+    '--accent-fill': button.fill,
+    '--on-accent': button.ink,
+    '--accent-hover': hover,
+    '--accent-border': accentBorder,
+    '--line': line,
+    '--line-strong': lineStrong,
+    '--hairline': rgbCss(text, dark ? 0.28 : 0.16),
+    '--hairline-strong': rgbCss(text, dark ? 0.4 : 0.24),
+    '--dashed': rgbCss(text, 0.45),
+    '--focus': focus,
+    '--focus-contrast': luminance(focus) > 0.5 ? '#14110e' : '#ffffff',
+    '--warn': warn.ink,
+    '--danger': danger.ink,
+    '--shadow-soft': `0 12px 28px rgba(${shadow}, ${dark ? 0.4 : 0.1})`,
+    '--shadow-panel': `0 22px 48px rgba(${shadow}, ${dark ? 0.52 : 0.16})`,
+    '--inset-highlight': dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.55)',
+    '--card-grad': `linear-gradient(180deg, ${cardTop}, ${cardBot})`,
+    '--header-grad': `linear-gradient(180deg, ${headerTop}, ${panel2})`,
+    '--detail-grad': `linear-gradient(180deg, ${canvas}, ${panel})`,
+    '--tip-grad': `linear-gradient(180deg, ${rgbCss(accent, 0.2)}, ${canvas})`,
+    '--active-ring': rgbCss(accent, 0.55),
+    '--tag-bg': canvas,
+    '--tag-line': line,
+    '--meta-bg': metaBg,
+    '--meta': meta,
+    '--meta-line': rgbCss(meta, 0.35),
+    '--status-bg': canvas,
+    '--ok-bg': ok.background,
+    '--ok': ok.ink,
+    '--ok-line': ok.border,
+    '--ok-bg-strong': ok.background,
+    '--ok-line-strong': ok.border,
+    '--warn-bg': warn.background,
+    '--warn-ink': warn.ink,
+    '--warn-line': warn.border,
+    '--danger-bg': danger.background,
+    '--danger-ink': danger.ink,
+    '--danger-line': danger.border,
+    '--swatch-line': line,
+    '--preview-inset': dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.55)',
+    '--tip-line': rgbCss(accent, 0.45),
+    '--tip-btn-bg': canvas,
+    '--detail-box-bg': canvas,
+    '--compare-label-bg': panel2,
+    '--compare-cell-bg': canvas,
+    '--notice-bg': warn.background,
+    '--notice-ink': warn.ink,
+    '--scrim': dark ? 'rgba(0,0,0,0.72)' : rgbCss(mix(text, '#000000', 0.55), 0.5)
+  };
+}
+
+function syncThemeColor(color) {
+  const existing = document.querySelector('meta[name="theme-color"]');
+  if (!color) {
+    existing?.remove();
+    return;
+  }
+  const meta = existing || document.head.appendChild(Object.assign(document.createElement('meta'), { name: 'theme-color' }));
+  meta.content = color;
+}
+
+function announcePageTheme(name) {
+  const live = document.getElementById('pageThemeLive');
+  if (!live) return;
+  live.textContent = name ? `Page look set to ${name}` : 'Page look reset to default';
+}
+
+function applyPageTheme(themeId, options = {}) {
+  const theme = THEME_DATA.find(item => item.id === themeId);
+  if (!theme) {
+    clearPageTheme(options);
+    return;
+  }
+  const tokens = applyPreviewScheme(themeTokens(theme));
+  const root = document.documentElement;
+  Object.entries(pageChromeVars(tokens)).forEach(([key, value]) => root.style.setProperty(key, value));
+  root.dataset.pageTheme = theme.id;
+  root.style.colorScheme = luminance(tokens.background) < 0.5 ? 'dark' : 'light';
+  pageThemeId = theme.id;
+  state.pageThemeId = theme.id;
+  syncThemeColor(tokens.background);
+  if (options.announce) announcePageTheme(theme.name);
+  if (options.persist !== false) persistState();
+}
+
+function clearPageTheme(options = {}) {
+  const root = document.documentElement;
+  Object.keys(pageChromeVars(themeTokens(THEME_DATA[0]))).forEach(key => root.style.removeProperty(key));
+  delete root.dataset.pageTheme;
+  root.style.colorScheme = '';
+  const hadTheme = !!pageThemeId;
+  pageThemeId = '';
+  delete state.pageThemeId;
+  syncThemeColor('');
+  if (options.announce && hadTheme) announcePageTheme('');
+  if (options.persist !== false) persistState();
+}
+
+function resetPageTheme() {
+  if (!pageThemeId) return;
+  clearPageTheme({ announce: true, persist: false });
+  render();
+}
+
+function selectTheme(id) {
+  const theme = THEME_DATA.find(item => item.id === id);
+  if (!theme) return;
+  const changed = selectedId !== id || pageThemeId !== id;
+  selectedId = id;
+  state.selectedId = id;
+  applyPageTheme(id, { announce: changed, persist: false });
+  render();
+}
+
+function cyclePreviewScheme() {
+  previewScheme = previewScheme === 'theme' ? 'light' : previewScheme === 'light' ? 'dark' : 'theme';
+  if (pageThemeId) applyPageTheme(pageThemeId, { persist: false });
+  persistState();
+  render();
+}
+
+function syncPageThemeControls() {
+  const theme = pageThemeId ? THEME_DATA.find(item => item.id === pageThemeId) : null;
+  const status = document.getElementById('pageThemeStatus');
+  if (status) status.innerHTML = `Page <strong>${theme ? escapeHtml(theme.name) : 'Default'}</strong>`;
+  document.querySelectorAll('[data-page-theme-reset]').forEach(button => {
+    button.classList.toggle('is-active', !!theme);
+    button.setAttribute('aria-describedby', 'pageThemeStatus');
+    button.title = theme
+      ? `Return the page from ${theme.name} to the default look`
+      : 'The page is using the default look';
+  });
 }
 
 function exportPalette(theme) {
@@ -1621,7 +1944,10 @@ function renderSummary(visible) {
   const maybeCount = THEME_DATA.filter(theme => getRecord(theme).status === 'maybe').length;
   const archiveCount = THEME_DATA.filter(theme => getRecord(theme).status === 'archive').length;
   const compareCount = getCompareThemes().length;
+  const pageTheme = pageThemeId ? THEME_DATA.find(item => item.id === pageThemeId) : null;
   summaryEl.innerHTML = `
+    <button class="ghost-btn page-theme-reset${pageTheme ? ' is-active' : ''}" type="button" data-page-theme-reset>Default Look</button>
+    <div class="stat" id="pageThemeStatus">Page <strong>${pageTheme ? escapeHtml(pageTheme.name) : 'Default'}</strong></div>
     <div class="stat"><strong>${visible.length}</strong> visible</div>
     <div class="stat"><strong>${THEME_DATA.length}</strong> total themes</div>
     <div class="stat"><strong>${shortlistCount}</strong> shortlisted</div>
@@ -1906,11 +2232,7 @@ function renderDetail(theme) {
   detailEl.querySelector('#copyTailwind').addEventListener('click', (event) => {
     copyText(tailwindSnippet(theme), event.currentTarget, 'Copy Tailwind');
   });
-  detailEl.querySelector('#previewSchemeToggle').addEventListener('click', () => {
-    previewScheme = previewScheme === 'theme' ? 'light' : previewScheme === 'light' ? 'dark' : 'theme';
-    persistState();
-    render();
-  });
+  detailEl.querySelector('#previewSchemeToggle').addEventListener('click', cyclePreviewScheme);
 }
 
 function labelize(value) {
@@ -2033,10 +2355,7 @@ function bindCardActions() {
         render();
         return;
       }
-      selectedId = id;
-      state.selectedId = id;
-      persistState();
-      render();
+      selectTheme(id);
     });
   });
 }
@@ -2054,6 +2373,7 @@ function render() {
   renderCompare();
   renderCards(visible);
   renderDetail(selected);
+  syncPageThemeControls();
   groupToggleEl.textContent = groupMode ? 'Grouped' : 'Flat List';
   shortlistToggleEl.textContent = shortlistOnly ? 'Shortlist Only' : 'All Themes';
   viewModeToggleEl.textContent = viewMode === 'selection' ? 'Selection Mode' : viewMode === 'gallery' ? 'Gallery Mode' : 'Focus Mode';
@@ -2074,6 +2394,7 @@ function exportState() {
     exportedAt: new Date().toISOString(),
     compareIds: state.compareIds,
     selectedId,
+    pageThemeId: pageThemeId || '',
     collapsedFamilies: state.collapsedFamilies,
     previewCopy: state.previewCopy,
     ui: {
@@ -2157,6 +2478,10 @@ function importState(file) {
         state.ui.previewHintDismissed = !!parsed.ui.previewHintDismissed;
       }
       if (parsed.selectedId) selectedId = parsed.selectedId;
+      if (typeof parsed.pageThemeId === 'string') {
+        if (THEME_DATA.some(theme => theme.id === parsed.pageThemeId)) applyPageTheme(parsed.pageThemeId, { persist: false });
+        else clearPageTheme({ persist: false });
+      }
       persistState();
       render();
     } catch {
@@ -2224,6 +2549,9 @@ importFileEl.addEventListener('change', (event) => {
 });
 clearFiltersEl.addEventListener('click', clearFilters);
 resetViewEl.addEventListener('click', resetView);
+document.addEventListener('click', (event) => {
+  if (event.target.closest('[data-page-theme-reset]')) resetPageTheme();
+});
 
 const moreActionsEl = document.getElementById('moreActions');
 const moreMenuEl = document.getElementById('moreMenu');
@@ -2276,10 +2604,7 @@ function moveSelection(delta) {
   const currentIndex = cards.findIndex(card => card.dataset.themeId === selectedId);
   const nextIndex = Math.min(cards.length - 1, Math.max(0, (currentIndex < 0 ? 0 : currentIndex) + delta));
   const next = cards[nextIndex];
-  selectedId = next.dataset.themeId;
-  state.selectedId = selectedId;
-  persistState();
-  render();
+  selectTheme(next.dataset.themeId);
   document.querySelector(`#groups .card[data-theme-id="${CSS.escape(selectedId)}"]`)?.focus();
 }
 
@@ -2315,7 +2640,14 @@ document.addEventListener('keydown', (event) => {
     if (searchEl.value) {
       searchEl.value = '';
       onFilterInput();
+      return;
     }
+    if (!moreMenuEl.hidden) {
+      moreMenuEl.hidden = true;
+      moreActionsEl.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    if (pageThemeId) resetPageTheme();
     return;
   }
   if (fieldTarget(event.target)) return;
@@ -2358,10 +2690,7 @@ document.addEventListener('keydown', (event) => {
     const card = document.activeElement?.closest?.('#groups .card');
     if (!card) return;
     event.preventDefault();
-    selectedId = card.dataset.themeId;
-    state.selectedId = selectedId;
-    persistState();
-    render();
+    selectTheme(card.dataset.themeId);
     detailEl.scrollIntoView({ block: 'nearest' });
     return;
   }
@@ -2399,9 +2728,7 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (key === 'd' && !event.shiftKey) {
-    previewScheme = previewScheme === 'theme' ? 'light' : previewScheme === 'light' ? 'dark' : 'theme';
-    persistState();
-    render();
+    cyclePreviewScheme();
     return;
   }
   if (key === '0') { clearFilters(); return; }
@@ -2425,6 +2752,12 @@ else if (state.filters && typeof state.filters === 'object') {
   });
 }
 applyingHistory = false;
+
+if (pageThemeId && THEME_DATA.some(theme => theme.id === pageThemeId)) applyPageTheme(pageThemeId, { persist: false });
+else {
+  pageThemeId = '';
+  delete state.pageThemeId;
+}
 
 render();
 </script>
