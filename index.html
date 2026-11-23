@@ -29,6 +29,27 @@
   @property --surface-bg { syntax: "<color>"; inherits: true; initial-value: rgba(250, 243, 232, 0.96); }
   @property --control-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.86); }
   @property --focus { syntax: "<color>"; inherits: true; initial-value: #b9703f; }
+  @property --accent-2 { syntax: "<color>"; inherits: true; initial-value: #5f7451; }
+  @property --accent-hover { syntax: "<color>"; inherits: true; initial-value: #814926; }
+  @property --focus-contrast { syntax: "<color>"; inherits: true; initial-value: #fffaf2; }
+  @property --toolbar-line { syntax: "<color>"; inherits: true; initial-value: rgba(74, 56, 34, 0.08); }
+  @property --chip-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.78); }
+  @property --hairline { syntax: "<color>"; inherits: true; initial-value: rgba(110, 84, 50, 0.08); }
+  @property --tag-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.82); }
+  @property --meta { syntax: "<color>"; inherits: true; initial-value: #784521; }
+  @property --meta-bg { syntax: "<color>"; inherits: true; initial-value: rgba(155, 93, 51, 0.1); }
+  @property --ok { syntax: "<color>"; inherits: true; initial-value: #41523a; }
+  @property --ok-bg { syntax: "<color>"; inherits: true; initial-value: rgba(95, 116, 81, 0.12); }
+  @property --warn-ink { syntax: "<color>"; inherits: true; initial-value: #81520b; }
+  @property --warn-bg { syntax: "<color>"; inherits: true; initial-value: rgba(185, 122, 29, 0.12); }
+  @property --danger-ink { syntax: "<color>"; inherits: true; initial-value: #8d3c2a; }
+  @property --danger-bg { syntax: "<color>"; inherits: true; initial-value: rgba(171, 75, 52, 0.1); }
+  @property --notice-ink { syntax: "<color>"; inherits: true; initial-value: #5c3d08; }
+  @property --notice-bg { syntax: "<color>"; inherits: true; initial-value: rgba(185, 122, 29, 0.16); }
+  @property --scrim { syntax: "<color>"; inherits: true; initial-value: rgba(47, 36, 25, 0.46); }
+  @property --compare-label-bg { syntax: "<color>"; inherits: true; initial-value: #f1e3d1; }
+  @property --compare-cell-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.74); }
+  @property --detail-box-bg { syntax: "<color>"; inherits: true; initial-value: rgba(255, 250, 242, 0.72); }
   :root{
     --bg:#efe5d6;
     --canvas:#fffaf2;
@@ -50,6 +71,15 @@
     --danger:#ab4b34;
     --focus:#b9703f;
     --focus-contrast:#fffaf2;
+    --mi-press:80ms;
+    --mi-fast:120ms;
+    --mi-base:160ms;
+    --mi-theme:180ms;
+    --mi-shake:180ms;
+    --ease-out:cubic-bezier(0.2, 0, 0, 1);
+    --ease-press:cubic-bezier(0.3, 0, 0.5, 1);
+    --ease-snap:cubic-bezier(0.34, 1.3, 0.64, 1);
+    --press-scale:.97;
     --shadow-soft:0 12px 28px rgba(72,49,24,0.08);
     --shadow-panel:0 22px 48px rgba(72,49,24,0.12);
     --bg-glow:rgba(182,145,99,0.14);
@@ -98,7 +128,7 @@
   }
   @media (prefers-reduced-motion: no-preference){
     :root{
-      transition:--bg .18s ease,--bg-top .18s ease,--bg-glow .18s ease,--canvas .18s ease,--panel .18s ease,--panel-2 .18s ease,--soft .18s ease,--text .18s ease,--text-2 .18s ease,--muted .18s ease,--accent .18s ease,--accent-fill .18s ease,--on-accent .18s ease,--line .18s ease,--line-strong .18s ease,--toolbar-bg .18s ease,--surface-bg .18s ease,--control-bg .18s ease,--focus .18s ease;
+      transition:--bg var(--mi-theme) var(--ease-out),--bg-top var(--mi-theme) var(--ease-out),--bg-glow var(--mi-theme) var(--ease-out),--canvas var(--mi-theme) var(--ease-out),--panel var(--mi-theme) var(--ease-out),--panel-2 var(--mi-theme) var(--ease-out),--soft var(--mi-theme) var(--ease-out),--text var(--mi-theme) var(--ease-out),--text-2 var(--mi-theme) var(--ease-out),--muted var(--mi-theme) var(--ease-out),--accent var(--mi-theme) var(--ease-out),--accent-2 var(--mi-theme) var(--ease-out),--accent-fill var(--mi-theme) var(--ease-out),--accent-hover var(--mi-theme) var(--ease-out),--on-accent var(--mi-theme) var(--ease-out),--line var(--mi-theme) var(--ease-out),--line-strong var(--mi-theme) var(--ease-out),--toolbar-bg var(--mi-theme) var(--ease-out),--toolbar-line var(--mi-theme) var(--ease-out),--surface-bg var(--mi-theme) var(--ease-out),--control-bg var(--mi-theme) var(--ease-out),--chip-bg var(--mi-theme) var(--ease-out),--focus var(--mi-theme) var(--ease-out),--focus-contrast var(--mi-theme) var(--ease-out),--tag-bg var(--mi-theme) var(--ease-out),--meta var(--mi-theme) var(--ease-out),--meta-bg var(--mi-theme) var(--ease-out),--ok var(--mi-theme) var(--ease-out),--ok-bg var(--mi-theme) var(--ease-out),--warn-ink var(--mi-theme) var(--ease-out),--warn-bg var(--mi-theme) var(--ease-out),--danger-ink var(--mi-theme) var(--ease-out),--danger-bg var(--mi-theme) var(--ease-out),--notice-ink var(--mi-theme) var(--ease-out),--notice-bg var(--mi-theme) var(--ease-out),--scrim var(--mi-theme) var(--ease-out),--compare-label-bg var(--mi-theme) var(--ease-out),--compare-cell-bg var(--mi-theme) var(--ease-out),--detail-box-bg var(--mi-theme) var(--ease-out);
     }
   }
   *{box-sizing:border-box}
@@ -129,9 +159,11 @@
     border-radius:12px;
     padding:10px 14px;
     text-decoration:none;
-    transition:background .15s,border-color .15s,transform .15s;
+    transition:transform var(--mi-press) var(--ease-press),background-color var(--mi-fast) var(--ease-out),border-color var(--mi-fast) var(--ease-out),color var(--mi-fast) var(--ease-out);
   }
-  .link-btn:hover,.ghost-btn:hover,.primary-btn:hover,.icon-btn:hover{background:var(--panel-2);border-color:var(--line-strong)}
+  @media (hover:hover) and (pointer:fine){
+    .link-btn:hover,.ghost-btn:hover,.primary-btn:hover,.icon-btn:hover{background:var(--panel-2);border-color:var(--line-strong)}
+  }
   .primary-btn{background:var(--accent-fill);border-color:var(--accent-border);color:var(--on-accent)}
   .primary-btn:hover{background:var(--accent-hover);color:var(--on-accent)}
   .ghost-btn{background:transparent;color:var(--text-2)}
@@ -268,9 +300,12 @@
     gap:10px;
     min-height:220px;
     box-shadow:var(--shadow-soft);
-    transition:border-color .15s,transform .15s,background .15s;
+    transition:transform var(--mi-press) var(--ease-press),border-color var(--mi-fast) var(--ease-out),background-color var(--mi-fast) var(--ease-out),box-shadow var(--mi-base) var(--ease-out);
   }
-  .card:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+  @media (hover:hover) and (pointer:fine){
+    .card:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+  }
+  .card:active{transform:scale(.99)}
   .card.active{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--active-ring),var(--shadow-soft)}
   .card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
   .code{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -813,9 +848,43 @@
     .detail-grid{grid-template-columns:1fr}
     .cards{grid-template-columns:1fr}
   }
+  .ghost-btn,.primary-btn,.link-btn,.icon-btn,.action-row button,.more-menu button,.preset-row button,.group-toggle,.preview-tip-actions button{
+    transition:transform var(--mi-press) var(--ease-press),background-color var(--mi-fast) var(--ease-out),border-color var(--mi-fast) var(--ease-out),color var(--mi-fast) var(--ease-out);
+  }
+  :is(.ghost-btn,.link-btn,.icon-btn,.action-row button,.more-menu button,.preset-row button,.group-toggle,.preview-tip-actions button):active{
+    transform:scale(var(--press-scale));
+    background-color:color-mix(in srgb, var(--accent) 10%, var(--control-bg));
+  }
+  .primary-btn:active,.page-theme-reset.is-active:active{transform:scale(var(--press-scale));background:var(--accent-hover)}
+  .action-row button:active{transform:scale(.96)}
+  .group-toggle:active{transform:scale(.92)}
+  @keyframes mi-pop{50%{transform:scale(1.06)}}
+  @keyframes mi-flash{from{background-color:var(--ok-bg)}}
+  @keyframes mi-shake{20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}}
+  @keyframes mi-in{from{opacity:0;transform:translateY(-4px) scale(.98)}}
+  .is-confirmed{background-color:var(--ok-bg);animation:mi-flash var(--mi-base) var(--ease-out)}
+  .status-pill.is-confirmed{animation:mi-pop 140ms var(--ease-snap)}
+  .is-error{animation:mi-shake var(--mi-shake) var(--ease-out);outline:2px solid var(--danger);outline-offset:2px}
+  .empty.is-unmatched{border-color:var(--warn-line)}
+  .more-menu:not([hidden]){animation:mi-in var(--mi-fast) var(--ease-out);transform-origin:top right}
+  .help-dialog{animation:mi-in var(--mi-base) var(--ease-out)}
+  .toast{
+    position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;
+    max-width:min(420px, calc(100% - 24px));
+    padding:10px 14px;border-radius:999px;
+    background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);
+    box-shadow:var(--shadow-panel);font-size:13px;
+  }
+  .toast.is-error{background:var(--danger-bg);color:var(--danger-ink);border-color:var(--danger-line)}
+  .toast[hidden]{display:none}
+  @media (hover:none){
+    .card:hover{transform:none}
+  }
   @media (prefers-reduced-motion: reduce){
-    :root{transition:none}
+    :root{--press-scale:1;transition:none}
     *,*::before,*::after{transition:none !important;animation:none !important}
+    .is-error{outline:2px solid var(--danger);outline-offset:2px}
+    .is-confirmed{background-color:var(--ok-bg)}
   }
 </style>
 </head>
@@ -936,11 +1005,12 @@
   </div>
 </div>
 <p id="pageThemeLive" class="visually-hidden" role="status"></p>
+<div id="toast" class="toast" role="status" hidden></div>
 
 <script type="module">
 let THEME_TOKENS = {};
 try {
-  const tokenResponse = await fetch(new URL('./data/theme-tokens.json', import.meta.url));
+  const tokenResponse = await fetch(new URL('./data/theme-tokens.json', import.meta.url), { signal: AbortSignal.timeout(2500) });
   if (tokenResponse.ok) {
     const tokenData = await tokenResponse.json();
     if (tokenData && typeof tokenData === 'object' && !Array.isArray(tokenData)) THEME_TOKENS = tokenData;
@@ -1032,12 +1102,16 @@ const groupDescriptions = {
   'Classic / Luxury / Heritage':'Traditional high-trust light systems for heritage, legal, finance, and formal brands.'
 };
 
+const RECORD_STATUSES = new Set(['unreviewed', 'shortlist', 'maybe', 'archive']);
+const RECORD_FITS = new Set(['', 'strong', 'possible', 'stretch']);
+const VIEW_MODES = new Set(['selection', 'gallery', 'focus']);
+const SORTS = new Set(['family', 'name', 'mood', 'style', 'color', 'status']);
 const state = loadState();
 let selectedId = state.selectedId || 't27';
 state.ui = state.ui && typeof state.ui === 'object' ? state.ui : {};
 let groupMode = typeof state.ui.groupMode === 'boolean' ? state.ui.groupMode : true;
 let shortlistOnly = typeof state.ui.shortlistOnly === 'boolean' ? state.ui.shortlistOnly : false;
-let viewMode = state.ui.viewMode || 'selection';
+let viewMode = state.ui.viewMode === 'gallery' || state.ui.viewMode === 'focus' ? state.ui.viewMode : 'selection';
 let previewScheme = state.ui.previewScheme || 'theme';
 let pageThemeId = typeof state.pageThemeId === 'string' ? state.pageThemeId : '';
 let historyMode = 'replace';
@@ -1068,24 +1142,129 @@ const jumpNavEl = document.getElementById('jumpNav');
 const workspacePanelEl = document.getElementById('workspacePanel');
 const viewModeToggleEl = document.getElementById('viewModeToggle');
 
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function cleanText(value, max) {
+  return typeof value === 'string' ? value.slice(0, max) : '';
+}
+
+function knownThemeId(id) {
+  return typeof id === 'string' && THEME_DATA.some(theme => theme.id === id);
+}
+
+function cleanRecord(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  return {
+    status: RECORD_STATUSES.has(raw.status) ? raw.status : 'unreviewed',
+    note: cleanText(raw.note, 2000),
+    project: cleanText(raw.project, 200),
+    fit: RECORD_FITS.has(raw.fit) ? raw.fit : '',
+    selected: !!raw.selected
+  };
+}
+
+function cleanPreviewCopy(raw) {
+  const copy = {};
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return copy;
+  for (const theme of THEME_DATA) {
+    const item = raw[theme.id];
+    if (!item || typeof item !== 'object' || Array.isArray(item)) continue;
+    const next = {};
+    if (typeof item.headline === 'string') next.headline = item.headline.slice(0, 240);
+    if (typeof item.subtitle === 'string') next.subtitle = item.subtitle.slice(0, 240);
+    if (typeof item.body === 'string') next.body = item.body.slice(0, 2000);
+    if (Object.keys(next).length) copy[theme.id] = next;
+  }
+  return copy;
+}
+
+function cleanCompareIds(raw) {
+  const slots = [null, null, null, null];
+  if (Array.isArray(raw)) {
+    raw.slice(0, 4).forEach((id, index) => {
+      if (knownThemeId(id) && !slots.includes(id)) slots[index] = id;
+    });
+  }
+  while (slots.length && slots[slots.length - 1] == null) slots.pop();
+  return slots;
+}
+
+function sanitizeState(raw) {
+  const source = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  const next = {};
+  for (const theme of THEME_DATA) {
+    if (!Object.prototype.hasOwnProperty.call(source, theme.id)) continue;
+    const record = cleanRecord(source[theme.id]);
+    if (!record) continue;
+    if (record.status === 'unreviewed' && !record.note && !record.project && !record.fit) continue;
+    next[theme.id] = record;
+  }
+  next.compareIds = cleanCompareIds(source.compareIds);
+  const families = source.collapsedFamilies;
+  next.collapsedFamilies = {};
+  if (families && typeof families === 'object' && !Array.isArray(families)) {
+    for (const [key, value] of Object.entries(families)) {
+      if (typeof key === 'string' && typeof value === 'boolean') next.collapsedFamilies[key] = value;
+    }
+  }
+  next.previewCopy = cleanPreviewCopy(source.previewCopy);
+  const ui = source.ui && typeof source.ui === 'object' && !Array.isArray(source.ui) ? source.ui : {};
+  next.ui = {
+    groupMode: typeof ui.groupMode === 'boolean' ? ui.groupMode : true,
+    shortlistOnly: typeof ui.shortlistOnly === 'boolean' ? ui.shortlistOnly : false,
+    viewMode: VIEW_MODES.has(ui.viewMode) ? ui.viewMode : 'selection',
+    previewScheme: ui.previewScheme === 'light' || ui.previewScheme === 'dark' ? ui.previewScheme : 'theme',
+    previewHintDismissed: !!ui.previewHintDismissed
+  };
+  const filters = source.filters && typeof source.filters === 'object' && !Array.isArray(source.filters) ? source.filters : {};
+  next.filters = {
+    q: cleanText(filters.q, 200),
+    family: cleanText(filters.family, 160),
+    mood: cleanText(filters.mood, 40),
+    status: RECORD_STATUSES.has(filters.status) ? filters.status : '',
+    sort: SORTS.has(filters.sort) ? filters.sort : 'family',
+    shortlist: !!filters.shortlist
+  };
+  next.selectedId = knownThemeId(source.selectedId) ? source.selectedId : 't27';
+  next.pageThemeId = knownThemeId(source.pageThemeId) ? source.pageThemeId : '';
+  return next;
+}
+
 function loadState() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const parsed = JSON.parse(readStorage(STORAGE_KEY) || '{}');
+    return sanitizeState(parsed);
   } catch {
-    return {};
+    return sanitizeState({});
   }
 }
 
 function persistState() {
   state.ui = {
-    groupMode,
-    shortlistOnly,
-    viewMode,
-    previewScheme,
+    groupMode: !!groupMode,
+    shortlistOnly: !!shortlistOnly,
+    viewMode: VIEW_MODES.has(viewMode) ? viewMode : 'selection',
+    previewScheme: previewScheme === 'light' || previewScheme === 'dark' ? previewScheme : 'theme',
     previewHintDismissed: !!state.ui.previewHintDismissed
   };
   state.filters = currentFilters();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  state.compareIds = cleanCompareIds(state.compareIds);
+  writeStorage(STORAGE_KEY, JSON.stringify(state));
   if (!applyingHistory) writeFiltersToUrl(historyMode);
   historyMode = 'replace';
 }
@@ -1167,46 +1346,60 @@ function buildCollapsedFamilies(expandedThemeId = selectedId) {
 }
 
 function getRecord(theme) {
-  return state[theme.id] || { status:'unreviewed', note:'', project:'', fit:'', selected:false };
+  return cleanRecord(state[theme.id]) || { status:'unreviewed', note:'', project:'', fit:'', selected:false };
 }
 
 function setRecord(themeId, patch) {
-  state[themeId] = { ...getRecord({ id: themeId }), ...patch };
+  if (!knownThemeId(themeId)) return;
+  const next = cleanRecord({ ...getRecord({ id: themeId }), ...(patch && typeof patch === 'object' ? patch : {}) });
+  state[themeId] = next;
   state.selectedId = selectedId;
   persistState();
 }
 
 function getCompareThemes() {
-  return state.compareIds
+  return cleanCompareIds(state.compareIds)
+    .filter(Boolean)
     .map(id => THEME_DATA.find(theme => theme.id === id))
     .filter(Boolean);
 }
 
+function compareColumns() {
+  return cleanCompareIds(state.compareIds).map(id => id ? THEME_DATA.find(theme => theme.id === id) || null : null);
+}
+
 function toggleCompare(themeId) {
-  const ids = new Set(state.compareIds);
-  if (ids.has(themeId)) {
-    ids.delete(themeId);
-  } else if (ids.size >= 4) {
+  if (!knownThemeId(themeId)) return false;
+  const slots = [null, null, null, null];
+  cleanCompareIds(state.compareIds).forEach((id, index) => { slots[index] = id; });
+  const existing = slots.indexOf(themeId);
+  if (existing >= 0) slots[existing] = null;
+  else if (slots.filter(Boolean).length >= 4) {
     showCompareNotice('Compare holds 4 themes. Remove one before adding a fifth.');
     return false;
   } else {
-    ids.add(themeId);
+    slots[slots.indexOf(null)] = themeId;
   }
-  state.compareIds = [...ids];
+  state.compareIds = slots;
   persistState();
   return true;
 }
 
 function assignCompareSlot(themeId, index) {
-  const next = state.compareIds.filter(id => id !== themeId);
-  if (index < next.length) next.splice(index, 1, themeId);
-  else if (next.length < 4) next.push(themeId);
-  else {
-    showCompareNotice('Compare holds 4 themes. Remove one before adding a fifth.');
-    return false;
-  }
-  state.compareIds = next.slice(0, 4);
+  if (!knownThemeId(themeId) || index < 0 || index > 3) return false;
+  const slots = [null, null, null, null];
+  cleanCompareIds(state.compareIds).forEach((id, slot) => {
+    if (id !== themeId) slots[slot] = id;
+  });
+  const displaced = slots[index];
+  slots[index] = themeId;
+  state.compareIds = slots;
   persistState();
+  if (displaced) {
+    const name = THEME_DATA.find(theme => theme.id === displaced)?.name || 'That theme';
+    showCompareNotice(`${name} left slot ${index + 1}.`);
+    return 'evicted';
+  }
   return true;
 }
 
@@ -1300,7 +1493,7 @@ function colorForToken(token) {
 }
 
 function hexColor(value) {
-  return typeof value === 'string' && /^#[0-9a-f]{6}$/.test(value);
+  return typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value);
 }
 
 function realTokenEntry(theme) {
@@ -1345,7 +1538,29 @@ function defaultPreviewCopy(theme) {
 }
 
 function getPreviewCopy(theme) {
-  return { ...defaultPreviewCopy(theme), ...(state.previewCopy[theme.id] || {}) };
+  const base = defaultPreviewCopy(theme);
+  const extra = state.previewCopy && state.previewCopy[theme.id];
+  if (!extra || typeof extra !== 'object' || Array.isArray(extra)) return base;
+  return {
+    headline: typeof extra.headline === 'string' ? extra.headline : base.headline,
+    subtitle: typeof extra.subtitle === 'string' ? extra.subtitle : base.subtitle,
+    body: typeof extra.body === 'string' ? extra.body : base.body
+  };
+}
+
+function paintPreviewCopy(theme) {
+  const copy = getPreviewCopy(theme);
+  const large = detailEl.querySelector('.preview-large');
+  if (large) {
+    const title = large.querySelector('.preview-title');
+    const subtitle = large.querySelector('.preview-subtitle');
+    const body = large.querySelector('.preview-copy p');
+    if (title) title.textContent = copy.headline;
+    if (subtitle) subtitle.textContent = copy.subtitle;
+    if (body) body.textContent = copy.body;
+  }
+  const cardTitle = document.querySelector(`#groups .card[data-theme-id="${CSS.escape(theme.id)}"] .preview-title`);
+  if (cardTitle) cardTitle.textContent = copy.headline;
 }
 
 function setPreviewCopy(themeId, patch) {
@@ -1750,16 +1965,54 @@ function tailwindSnippet(theme) {
   return `// ${theme.name} (${theme.code})\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n${lines}\n      }\n    }\n  }\n};\n`;
 }
 
+function showToast(message, kind = 'ok') {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.hidden = false;
+  toast.textContent = message;
+  toast.classList.toggle('is-error', kind === 'error');
+  toast.classList.toggle('is-confirmed', kind !== 'error');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => { toast.hidden = true; }, 1400);
+}
+
+function feedback(selector, cls = 'is-confirmed', ms = 180) {
+  requestAnimationFrame(() => {
+    document.querySelectorAll(selector).forEach(el => {
+      el.classList.remove(cls);
+      void el.offsetWidth;
+      el.classList.add(cls);
+      setTimeout(() => el.classList.remove(cls), ms);
+    });
+  });
+}
+
 async function copyText(text, button, label) {
   try {
     await navigator.clipboard.writeText(text);
     if (button) {
-      button.textContent = 'Copied';
-      setTimeout(() => { button.textContent = label; }, 1200);
+      button.textContent = 'Copied ✓';
+      button.classList.add('is-confirmed');
+      setTimeout(() => {
+        button.textContent = label;
+        button.classList.remove('is-confirmed');
+      }, 1200);
+    } else {
+      showToast('Copied ✓');
     }
   } catch {
+    if (button) feedbackElement(button);
+    showToast('Clipboard blocked', 'error');
     window.prompt('Copy text', text);
   }
+}
+
+function feedbackElement(el) {
+  if (!el) return;
+  el.classList.remove('is-error');
+  void el.offsetWidth;
+  el.classList.add('is-error');
+  setTimeout(() => el.classList.remove('is-error'), 180);
 }
 
 function typeProfile(theme) {
@@ -1848,7 +2101,7 @@ function previewMarkup(theme, large = false) {
         <div class="preview-top">
           <div class="preview-brand">
             <span class="preview-logo" style="background:${t.accent}"></span>
-              <span>${theme.family}</span>
+              <span>${escapeHtml(theme.family)}</span>
           </div>
           <span class="preview-chip" style="background:${t.surface};color:${t.text};border-color:${t.border}">${primaryStyle(theme) || 'mixed'}</span>
         </div>
@@ -1870,9 +2123,9 @@ function previewMarkup(theme, large = false) {
           <div class="specimen-lg" style="color:${bodyColor};font-family:${t.displayFont};font-weight:${Math.max(600, t.displayWeight - 50)};letter-spacing:${t.displaySpacing}">Readable hierarchy with a strong display voice</div>
           <div class="specimen-md" style="color:${bodyColor};font-family:${t.bodyFont};font-weight:${t.bodyWeight};letter-spacing:${t.bodySpacing}">The quick brown fox jumps over the lazy dog. 0123456789. Use this section to judge letterforms, spacing, body readability, and whether the theme feels editorial, product-like, luxurious, or experimental.</div>
         </div>
-        <div class="preview-font-note" style="color:${bodyColor}">${t.note}</div>
+        <div class="preview-font-note" style="color:${bodyColor}">${escapeHtml(t.note)}</div>
         <div class="preview-card" style="background:${t.surface};color:${t.text};border-color:${t.accentAlt}">
-          Sample card · ${theme.family}
+          Sample card · ${escapeHtml(theme.family)}
         </div>
         ${t.realTokens ? `<div class="swatch-hex" style="color:${t.text}">${t.background} · ${t.surface} · ${t.text} · ${t.accent} · ${t.muted} · ${t.accentAlt}</div>` : ''}
       </div>
@@ -1885,7 +2138,7 @@ function previewMarkup(theme, large = false) {
         <div class="preview-top">
           <div class="preview-brand">
             <span class="preview-logo" style="background:${t.accent}"></span>
-            <span>${theme.name}</span>
+            <span>${escapeHtml(theme.name)}</span>
           </div>
           <span class="preview-chip" style="background:${t.surface};color:${t.text};border-color:${t.border}">${primaryStyle(theme) || 'mixed'}</span>
         </div>
@@ -1896,7 +2149,7 @@ function previewMarkup(theme, large = false) {
           <span class="preview-btn" style="background:${t.surface};color:${t.text};border-color:${t.accentAlt}">Secondary</span>
         </div>
         <div class="preview-card" style="background:${t.surface};color:${t.text};border-color:${t.accentAlt}">
-          Sample card · ${theme.family}
+          Sample card · ${escapeHtml(theme.family)}
         </div>
         ${t.realTokens ? `<div class="swatch-hex" style="color:${t.text}">${t.background} · ${t.surface} · ${t.text} · ${t.accent}</div>` : ''}
       </div>
@@ -1961,7 +2214,7 @@ function renderSummary(visible) {
 function renderJumpNav(themes) {
   const families = [...new Set(themes.map(theme => theme.family))];
   jumpNavEl.innerHTML = families.map(family => `
-    <a href="#family-${slugify(family)}">${family}</a>
+    <a href="#family-${slugify(family)}">${escapeHtml(family)}</a>
   `).join('');
 }
 
@@ -1984,11 +2237,12 @@ function renderWorkspace() {
         : `<div class="workspace-empty">No shortlisted themes yet. Mark any theme as shortlist and it will surface here automatically.</div>`}
     </div>
   `;
+  bindCardActions(workspacePanelEl);
 }
 
 function renderCompare() {
-  const themes = getCompareThemes();
-  if (!themes.length) {
+  const themes = compareColumns();
+  if (!themes.some(Boolean)) {
     comparePanelEl.hidden = true;
     comparePanelEl.innerHTML = '';
     return;
@@ -1997,20 +2251,23 @@ function renderCompare() {
     ['Theme', theme => `
       <div class="compare-theme">
         <div>
-          <div class="code">${theme.code}</div>
-          <strong>${theme.name}</strong>
+          <div class="code">${escapeHtml(theme.code)}</div>
+          <strong>${escapeHtml(theme.name)}</strong>
         </div>
         <button type="button" data-remove-compare="${theme.id}">Remove</button>
       </div>
     `],
     ['Preview', theme => `<div class="compare-preview-cell">${previewMarkup(theme)}</div>`],
-    ['Family', theme => theme.family],
-    ['Description', theme => theme.description],
+    ['Family', theme => escapeHtml(theme.family)],
+    ['Description', theme => escapeHtml(theme.description)],
     ['Primary Mood', theme => primaryMood(theme) || 'n/a'],
     ['Primary Style', theme => primaryStyle(theme) || 'n/a'],
     ['Primary Color', theme => primaryColor(theme) || 'n/a'],
-    ['Best For', theme => theme.bestFor.map(item => `<span class="meta-pill">${item}</span>`).join('')],
-    ['Status', theme => `<span class="status-pill status-${getRecord(theme).status}">${labelize(getRecord(theme).status)}</span>`],
+    ['Best For', theme => theme.bestFor.map(item => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('')],
+    ['Status', theme => {
+      const status = getRecord(theme).status;
+      return `<span class="status-pill status-${status}">${labelize(status)}</span>`;
+    }],
     ['Project', theme => escapeHtml(getRecord(theme).project || '—')],
     ['Fit', theme => escapeHtml(getRecord(theme).fit || '—')],
     ['Note', theme => escapeHtml(getRecord(theme).note || '—')]
@@ -2029,7 +2286,7 @@ function renderCompare() {
     <div class="compare-grid" style="--compare-count:${themes.length}">
       ${rows.map(([label, renderValue]) => `
         <div class="compare-label">${label}</div>
-        ${themes.map(theme => `<div class="compare-cell">${renderValue(theme)}</div>`).join('')}
+        ${themes.map(theme => `<div class="compare-cell">${theme ? renderValue(theme) : '—'}</div>`).join('')}
       `).join('')}
     </div>
   `;
@@ -2054,7 +2311,7 @@ function renderDetail(theme) {
   const record = getRecord(theme);
   detailEl.innerHTML = `
     <div>
-      <div class="code">${theme.code}</div>
+      <div class="code">${escapeHtml(theme.code)}</div>
       <h3>${escapeHtml(theme.name)}</h3>
       <p>${escapeHtml(theme.description)}</p>
     </div>
@@ -2068,7 +2325,7 @@ function renderDetail(theme) {
       <button id="detailShortlist" class="ghost-btn" type="button">${record.status === 'shortlist' ? 'Unshortlist' : 'Mark Shortlist'}</button>
       <button id="detailMaybe" class="ghost-btn" type="button">Maybe</button>
       <button id="detailArchive" class="ghost-btn" type="button">Archive</button>
-      <button id="detailCompare" class="ghost-btn" type="button">${state.compareIds.includes(theme.id) ? 'Remove From Compare' : 'Add To Compare'}</button>
+      <button id="detailCompare" class="ghost-btn" type="button">${cleanCompareIds(state.compareIds).includes(theme.id) ? 'Remove From Compare' : 'Add To Compare'}</button>
     </div>
     <div class="swatch-row">${paletteSwatches(theme)}</div>
     <div class="detail-actions">
@@ -2112,7 +2369,7 @@ function renderDetail(theme) {
         </div>
       </div>
     </div>
-    <div class="mini-list">${theme.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+    <div class="mini-list">${theme.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
     <div class="detail-grid">
       <div class="detail-box">
         <span class="field-label">Family</span>
@@ -2143,7 +2400,7 @@ function renderDetail(theme) {
     </div>
     <div class="detail-box">
       <span class="field-label">Best For</span>
-      <div class="mini-list">${theme.bestFor.map(item => `<span class="meta-pill">${item}</span>`).join('')}</div>
+      <div class="mini-list">${theme.bestFor.map(item => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('')}</div>
     </div>
     <div class="detail-box">
       <label for="detailNote">Organizer Note</label>
@@ -2160,44 +2417,31 @@ function renderDetail(theme) {
   });
   detailEl.querySelector('#previewHeadline').addEventListener('input', (event) => {
     setPreviewCopy(theme.id, { headline: event.target.value });
-    rerenderPreservingInput('previewHeadline');
+    paintPreviewCopy(theme);
   });
   detailEl.querySelector('#previewSubtitle').addEventListener('input', (event) => {
     setPreviewCopy(theme.id, { subtitle: event.target.value });
-    rerenderPreservingInput('previewSubtitle');
+    paintPreviewCopy(theme);
   });
   detailEl.querySelector('#previewBody').addEventListener('input', (event) => {
     setPreviewCopy(theme.id, { body: event.target.value });
-    rerenderPreservingInput('previewBody');
+    paintPreviewCopy(theme);
   });
-  detailEl.querySelector('#presetDefault').addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'default'));
+  const applyPreset = (mode) => {
+    setPreviewCopy(theme.id, previewPreset(theme, getRecord(theme), mode));
     render();
-  });
-  detailEl.querySelector('#presetPitch').addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'pitch'));
-    render();
-  });
-  detailEl.querySelector('#presetPortfolio').addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'portfolio'));
-    render();
-  });
-  detailEl.querySelector('#presetProduct').addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'product'));
-    render();
-  });
+    feedback('.preview-large', 'is-confirmed');
+  };
+  detailEl.querySelector('#presetDefault').addEventListener('click', () => applyPreset('default'));
+  detailEl.querySelector('#presetPitch').addEventListener('click', () => applyPreset('pitch'));
+  detailEl.querySelector('#presetPortfolio').addEventListener('click', () => applyPreset('portfolio'));
+  detailEl.querySelector('#presetProduct').addEventListener('click', () => applyPreset('product'));
   detailEl.querySelector('#resetPreviewCopy').addEventListener('click', () => {
     resetPreviewCopy(theme.id);
     render();
   });
-  detailEl.querySelector('#previewTipPitch')?.addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'pitch'));
-    render();
-  });
-  detailEl.querySelector('#previewTipProduct')?.addEventListener('click', () => {
-    setPreviewCopy(theme.id, previewPreset(theme, record, 'product'));
-    render();
-  });
+  detailEl.querySelector('#previewTipPitch')?.addEventListener('click', () => applyPreset('pitch'));
+  detailEl.querySelector('#previewTipProduct')?.addEventListener('click', () => applyPreset('product'));
   detailEl.querySelector('#dismissPreviewTip')?.addEventListener('click', () => {
     state.ui.previewHintDismissed = true;
     persistState();
@@ -2212,8 +2456,12 @@ function renderDetail(theme) {
     renderCompare();
   });
   detailEl.querySelector('#detailCompare').addEventListener('click', () => {
-    toggleCompare(theme.id);
+    const added = toggleCompare(theme.id);
     render();
+    if (!added) {
+      feedback('#detailCompare', 'is-error');
+      feedback('#compareNotice', 'is-error');
+    }
   });
   detailEl.querySelector('#detailShortlist').addEventListener('click', () => {
     setRecord(theme.id, { status: record.status === 'shortlist' ? 'unreviewed' : 'shortlist' });
@@ -2237,7 +2485,7 @@ function renderDetail(theme) {
 }
 
 function labelize(value) {
-  return value.replace(/_/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase());
+  return String(value ?? '').replace(/_/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase());
 }
 
 function slugify(value) {
@@ -2245,7 +2493,7 @@ function slugify(value) {
 }
 
 function escapeHtml(value) {
-  return value
+  return String(value ?? '')
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
@@ -2258,33 +2506,34 @@ function escapeAttr(value) {
 function themeCard(theme, options = {}) {
   const record = getRecord(theme);
   const isActive = selectedId === theme.id;
-  const statusClass = `status-${record.status}`;
+  const status = RECORD_STATUSES.has(record.status) ? record.status : 'unreviewed';
   const showPreview = options.preview !== false;
   const tabIndex = options.roving === false ? -1 : (isActive ? 0 : -1);
+  const inCompare = cleanCompareIds(state.compareIds).includes(theme.id);
   return `
-    <article class="card ${isActive ? 'active' : ''}" data-theme-id="${theme.id}" tabindex="${tabIndex}">
+    <article class="card ${isActive ? 'active' : ''}" data-theme-id="${escapeAttr(theme.id)}" tabindex="${tabIndex}">
       <div class="card-top">
         <div>
-          <div class="code">${theme.code}</div>
-          <div class="name">${theme.name}</div>
+          <div class="code">${escapeHtml(theme.code)}</div>
+          <div class="name">${escapeHtml(theme.name)}</div>
         </div>
-        <span class="status-pill ${statusClass}">${labelize(record.status)}</span>
+        <span class="status-pill status-${status}">${labelize(status)}</span>
       </div>
-      <div class="desc">${theme.description}</div>
+      <div class="desc">${escapeHtml(theme.description)}</div>
       ${showPreview ? previewMarkup(theme) : ''}
       ${theme.repo ? `<a href="${escapeAttr(theme.repo)}" target="_blank" rel="noreferrer noopener">Repository</a>` : ''}
       <div class="swatch-row">${paletteSwatches(theme)}</div>
       <div class="meta-row">
-        <span class="meta-pill">${theme.family}</span>
-        <span class="meta-pill">${primaryStyle(theme) || 'mixed'}</span>
+        <span class="meta-pill">${escapeHtml(theme.family)}</span>
+        <span class="meta-pill">${escapeHtml(primaryStyle(theme) || 'mixed')}</span>
       </div>
-      <div class="tag-row">${theme.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
-      ${record.note ? `<div class="desc">Note: ${escapeHtml(record.note).slice(0, 120)}</div>` : ''}
+      <div class="tag-row">${theme.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+      ${record.note ? `<div class="desc">Note: ${escapeHtml(record.note.slice(0, 120))}</div>` : ''}
       <div class="action-row">
         <button type="button" data-action="select">${isActive ? 'Selected' : 'Inspect'}</button>
-        <button type="button" data-action="shortlist" class="${record.status === 'shortlist' ? 'shortlisted' : 'secondary'}">${record.status === 'shortlist' ? 'Shortlisted' : 'Shortlist'}</button>
+        <button type="button" data-action="shortlist" class="${status === 'shortlist' ? 'shortlisted' : 'secondary'}">${status === 'shortlist' ? 'Shortlisted' : 'Shortlist'}</button>
         <button type="button" data-action="maybe" class="secondary">Maybe</button>
-        <button type="button" data-action="compare" class="secondary">${state.compareIds.includes(theme.id) ? 'In Compare' : 'Compare'}</button>
+        <button type="button" data-action="compare" class="secondary">${inCompare ? 'In Compare' : 'Compare'}</button>
       </div>
     </article>
   `;
@@ -2292,7 +2541,7 @@ function themeCard(theme, options = {}) {
 
 function renderCards(themes) {
   if (!themes.length) {
-    groupsEl.innerHTML = '<div class="empty">No themes match this view. Try clearing a filter or switching out of shortlist mode.</div>';
+    groupsEl.innerHTML = '<div class="empty is-unmatched">No themes match this view. Try clearing a filter or switching out of shortlist mode.</div>';
     return;
   }
 
@@ -2311,7 +2560,7 @@ function renderCards(themes) {
     <section id="family-${slugify(family)}" class="group ${state.collapsedFamilies[family] ? 'collapsed' : ''} ${viewMode === 'focus' && !familyThemes.some(theme => theme.id === selectedId) ? 'focus-hidden' : ''}" data-family="${escapeAttr(family)}">
       <div class="group-header">
         <div>
-          <h2>${family}</h2>
+          <h2>${escapeHtml(family)}</h2>
           <p>${groupDescriptions[family] || 'Theme family'}</p>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
@@ -2334,26 +2583,33 @@ function renderCards(themes) {
   });
 }
 
-function bindCardActions() {
-  groupsEl.querySelectorAll('.card').forEach(card => {
+function bindCardActions(root = groupsEl) {
+  root.querySelectorAll('.card').forEach(card => {
     const id = card.dataset.themeId;
     const theme = THEME_DATA.find(item => item.id === id);
+    if (!theme) return;
     card.addEventListener('click', (event) => {
+      if (event.target.closest('a')) return;
       const action = event.target.closest('[data-action]')?.dataset.action;
       if (action === 'shortlist') {
         const current = getRecord(theme).status;
-        setRecord(id, { status: current === 'shortlist' ? 'unreviewed' : 'shortlist' });
+        const next = current === 'shortlist' ? 'unreviewed' : 'shortlist';
+        setRecord(id, { status: next });
         render();
+        feedback(`.card[data-theme-id="${CSS.escape(id)}"] .status-pill`, 'is-confirmed', 140);
         return;
       }
       if (action === 'maybe') {
         setRecord(id, { status: 'maybe' });
         render();
+        feedback(`.card[data-theme-id="${CSS.escape(id)}"] .status-pill`, 'is-confirmed', 140);
         return;
       }
       if (action === 'compare') {
-        toggleCompare(id);
+        const added = toggleCompare(id);
         render();
+        if (!added) feedback(`.card[data-theme-id="${CSS.escape(id)}"] [data-action="compare"]`, 'is-error');
+        else feedback(`.card[data-theme-id="${CSS.escape(id)}"] [data-action="compare"]`);
         return;
       }
       selectTheme(id);
@@ -2361,7 +2617,24 @@ function bindCardActions() {
   });
 }
 
+function focusSelector() {
+  const el = document.activeElement;
+  if (!el || el === document.body || el === document.documentElement) return '';
+  if (el.id) return `#${CSS.escape(el.id)}`;
+  const card = el.closest('.card');
+  const action = el.closest('[data-action]');
+  if (card?.dataset.themeId && action?.dataset.action) {
+    return `.card[data-theme-id="${CSS.escape(card.dataset.themeId)}"] [data-action="${CSS.escape(action.dataset.action)}"]`;
+  }
+  const toggle = el.closest('[data-toggle-family]');
+  if (toggle?.dataset.toggleFamily) return `[data-toggle-family="${CSS.escape(toggle.dataset.toggleFamily)}"]`;
+  const remove = el.closest('[data-remove-compare]');
+  if (remove?.dataset.removeCompare) return `[data-remove-compare="${CSS.escape(remove.dataset.removeCompare)}"]`;
+  return '';
+}
+
 function render() {
+  const restore = focusSelector();
   const focusId = document.activeElement?.closest?.('#groups .card')?.dataset.themeId;
   const visible = sortThemes(filterThemes());
   const selected = THEME_DATA.find(theme => theme.id === selectedId) || visible[0] || THEME_DATA.find(theme => theme.id === 't27') || THEME_DATA[0];
@@ -2378,7 +2651,9 @@ function render() {
   groupToggleEl.textContent = groupMode ? 'Grouped' : 'Flat List';
   shortlistToggleEl.textContent = shortlistOnly ? 'Shortlist Only' : 'All Themes';
   viewModeToggleEl.textContent = viewMode === 'selection' ? 'Selection Mode' : viewMode === 'gallery' ? 'Gallery Mode' : 'Focus Mode';
-  if (focusId) {
+  const restored = restore ? document.querySelector(restore) : null;
+  if (restored) restored.focus({ preventScroll: true });
+  else if (focusId) {
     document.querySelector(`#groups .card[data-theme-id="${CSS.escape(focusId)}"]`)?.focus({ preventScroll: true });
   }
   if (scrollResults) {
@@ -2420,7 +2695,9 @@ function exportState() {
   link.href = url;
   link.download = 'theme-organizer-state.json';
   link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 0);
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  feedback('#exportState');
+  showToast('Exported');
 }
 
 async function copyShortlist() {
@@ -2441,52 +2718,96 @@ async function copyShortlist() {
   const text = shortlist || 'No shortlisted themes yet.';
   try {
     await navigator.clipboard.writeText(text);
-    copyShortlistEl.textContent = 'Copied';
-    setTimeout(() => { copyShortlistEl.textContent = 'Copy Shortlist'; }, 1200);
+    copyShortlistEl.textContent = 'Copied ✓';
+    copyShortlistEl.classList.add('is-confirmed');
+    showToast('Copied ✓');
+    setTimeout(() => {
+      copyShortlistEl.textContent = 'Copy Shortlist';
+      copyShortlistEl.classList.remove('is-confirmed');
+    }, 1200);
   } catch {
+    feedbackElement(copyShortlistEl);
+    showToast('Clipboard blocked', 'error');
     window.prompt('Copy shortlist text', text);
   }
 }
 
+function rejectImport(message) {
+  showToast(message || 'Could not import that file.', 'error');
+  feedback('#importState', 'is-error');
+  feedback('#compareNotice', 'is-error');
+  showCompareNotice(message || 'Could not import that file.');
+}
+
 function importState(file) {
   const reader = new FileReader();
+  reader.onerror = () => rejectImport('Could not read that file.');
   reader.onload = () => {
     try {
-      const parsed = JSON.parse(reader.result);
+      const parsed = JSON.parse(String(reader.result || ''));
+      if (!parsed || typeof parsed !== 'object') throw new Error('Invalid shape');
       const importedThemes = Array.isArray(parsed) ? parsed : parsed.themes;
       if (!Array.isArray(importedThemes)) throw new Error('Invalid shape');
-      importedThemes.forEach(item => {
-        if (!item?.id) return;
-        setRecord(item.id, {
-          status: item.status || 'unreviewed',
-          note: item.note || '',
-          project: item.project || '',
-          fit: item.fit || ''
-        });
-      });
-      state.compareIds = Array.isArray(parsed.compareIds) ? parsed.compareIds.slice(0,4) : state.compareIds;
-      state.collapsedFamilies = parsed.collapsedFamilies && typeof parsed.collapsedFamilies === 'object'
-        ? parsed.collapsedFamilies
-        : state.collapsedFamilies;
-      state.previewCopy = parsed.previewCopy && typeof parsed.previewCopy === 'object'
-        ? parsed.previewCopy
+      const records = {};
+      let accepted = 0;
+      for (const item of importedThemes) {
+        if (!item || typeof item !== 'object' || typeof item.id !== 'string') throw new Error('Bad record');
+        if (!knownThemeId(item.id)) continue;
+        if (item.status != null && !RECORD_STATUSES.has(item.status)) throw new Error('Bad status');
+        if (item.fit != null && !RECORD_FITS.has(item.fit)) throw new Error('Bad fit');
+        for (const key of ['note', 'project']) {
+          if (item[key] != null && typeof item[key] !== 'string') throw new Error('Bad text');
+        }
+        records[item.id] = cleanRecord(item);
+        accepted += 1;
+      }
+      if (parsed.previewCopy && typeof parsed.previewCopy === 'object' && !Array.isArray(parsed.previewCopy)) {
+        for (const copy of Object.values(parsed.previewCopy)) {
+          if (!copy || typeof copy !== 'object' || Array.isArray(copy)) throw new Error('Bad copy');
+          for (const key of ['headline', 'subtitle', 'body']) {
+            if (copy[key] != null && typeof copy[key] !== 'string') throw new Error('Bad copy');
+          }
+        }
+      }
+      if (!accepted) throw new Error('No themes');
+      const nextCompare = Array.isArray(parsed.compareIds) ? cleanCompareIds(parsed.compareIds) : cleanCompareIds(state.compareIds);
+      const nextPreview = parsed.previewCopy && typeof parsed.previewCopy === 'object'
+        ? cleanPreviewCopy(parsed.previewCopy)
         : state.previewCopy;
-      if (parsed.ui && typeof parsed.ui === 'object') {
-        groupMode = typeof parsed.ui.groupMode === 'boolean' ? parsed.ui.groupMode : groupMode;
-        shortlistOnly = typeof parsed.ui.shortlistOnly === 'boolean' ? parsed.ui.shortlistOnly : shortlistOnly;
-        viewMode = typeof parsed.ui.viewMode === 'string' ? parsed.ui.viewMode : viewMode;
-        previewScheme = parsed.ui.previewScheme === 'light' || parsed.ui.previewScheme === 'dark' ? parsed.ui.previewScheme : previewScheme;
-        state.ui.previewHintDismissed = !!parsed.ui.previewHintDismissed;
+      const nextFamilies = {};
+      if (parsed.collapsedFamilies && typeof parsed.collapsedFamilies === 'object' && !Array.isArray(parsed.collapsedFamilies)) {
+        for (const [key, value] of Object.entries(parsed.collapsedFamilies)) {
+          if (typeof value === 'boolean') nextFamilies[key] = value;
+        }
       }
-      if (parsed.selectedId) selectedId = parsed.selectedId;
-      if (typeof parsed.pageThemeId === 'string') {
-        if (THEME_DATA.some(theme => theme.id === parsed.pageThemeId)) applyPageTheme(parsed.pageThemeId, { persist: false });
-        else clearPageTheme({ persist: false });
-      }
+      const ui = parsed.ui && typeof parsed.ui === 'object' && !Array.isArray(parsed.ui) ? parsed.ui : {};
+      const nextGroup = typeof ui.groupMode === 'boolean' ? ui.groupMode : groupMode;
+      const nextShortlist = typeof ui.shortlistOnly === 'boolean' ? ui.shortlistOnly : shortlistOnly;
+      const nextView = VIEW_MODES.has(ui.viewMode) ? ui.viewMode : viewMode;
+      const nextScheme = ui.previewScheme === 'light' || ui.previewScheme === 'dark' ? ui.previewScheme : previewScheme;
+      const nextHint = ui.previewHintDismissed == null ? !!state.ui.previewHintDismissed : !!ui.previewHintDismissed;
+      const nextSelected = knownThemeId(parsed.selectedId) ? parsed.selectedId : selectedId;
+      const nextPageTheme = typeof parsed.pageThemeId === 'string'
+        ? (knownThemeId(parsed.pageThemeId) ? parsed.pageThemeId : '')
+        : pageThemeId;
+      for (const [id, record] of Object.entries(records)) state[id] = record;
+      state.compareIds = nextCompare;
+      state.previewCopy = nextPreview;
+      if (Object.keys(nextFamilies).length) state.collapsedFamilies = nextFamilies;
+      groupMode = nextGroup;
+      shortlistOnly = nextShortlist;
+      viewMode = nextView;
+      previewScheme = nextScheme;
+      state.ui.previewHintDismissed = nextHint;
+      selectedId = nextSelected;
+      if (nextPageTheme) applyPageTheme(nextPageTheme, { persist: false });
+      else if (typeof parsed.pageThemeId === 'string') clearPageTheme({ persist: false });
       persistState();
       render();
+      showToast(`Imported ${accepted} themes`);
+      feedback('#importState');
     } catch {
-      window.alert('Could not import organizer JSON.');
+      rejectImport('Could not import that file.');
     }
   };
   reader.readAsText(file);
@@ -2561,6 +2882,17 @@ moreActionsEl.addEventListener('click', () => {
   moreMenuEl.hidden = !open;
   moreActionsEl.setAttribute('aria-expanded', String(open));
 });
+document.addEventListener('click', (event) => {
+  if (moreMenuEl.hidden || event.target.closest('.more-wrap')) return;
+  moreMenuEl.hidden = true;
+  moreActionsEl.setAttribute('aria-expanded', 'false');
+});
+moreActionsEl.parentElement.addEventListener('focusout', (event) => {
+  if (moreMenuEl.hidden) return;
+  if (event.relatedTarget && moreActionsEl.parentElement.contains(event.relatedTarget)) return;
+  moreMenuEl.hidden = true;
+  moreActionsEl.setAttribute('aria-expanded', 'false');
+});
 moreMenuEl.addEventListener('click', (event) => {
   const action = event.target.closest('[data-more]')?.dataset.more;
   if (action === 'export') exportState();
@@ -2579,10 +2911,31 @@ filterToggleEl.addEventListener('click', () => {
 
 const helpOverlayEl = document.getElementById('helpOverlay');
 const closeHelpEl = document.getElementById('closeHelp');
+let helpReturnFocus = null;
 function setHelpOpen(open) {
   helpOverlayEl.hidden = !open;
-  if (open) closeHelpEl.focus();
+  document.querySelector('.app')?.toggleAttribute('inert', open);
+  if (open) {
+    helpReturnFocus = document.activeElement;
+    closeHelpEl.focus();
+  } else if (helpReturnFocus && typeof helpReturnFocus.focus === 'function') {
+    helpReturnFocus.focus();
+  }
 }
+helpOverlayEl.addEventListener('keydown', (event) => {
+  if (event.key !== 'Tab' || helpOverlayEl.hidden) return;
+  const focusable = [...helpOverlayEl.querySelectorAll('button, a, input, select, textarea')];
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
 closeHelpEl.addEventListener('click', () => setHelpOpen(false));
 helpOverlayEl.addEventListener('click', (event) => {
   if (event.target === helpOverlayEl) setHelpOpen(false);
@@ -2596,23 +2949,29 @@ function fieldTarget(node) {
 }
 
 function gridCards() {
-  return [...document.querySelectorAll('#groups .card')];
+  return [...document.querySelectorAll('#groups .card')].filter(card => card.offsetParent !== null);
 }
 
 function moveSelection(delta) {
   const cards = gridCards();
   if (!cards.length) return;
   const currentIndex = cards.findIndex(card => card.dataset.themeId === selectedId);
-  const nextIndex = Math.min(cards.length - 1, Math.max(0, (currentIndex < 0 ? 0 : currentIndex) + delta));
-  const next = cards[nextIndex];
-  selectTheme(next.dataset.themeId);
+  const start = currentIndex < 0 ? (delta > 0 ? -1 : cards.length) : currentIndex;
+  const nextIndex = start + delta;
+  if (nextIndex < 0 || nextIndex >= cards.length) {
+    cards[Math.max(currentIndex, 0)]?.focus();
+    return;
+  }
+  selectTheme(cards[nextIndex].dataset.themeId);
   document.querySelector(`#groups .card[data-theme-id="${CSS.escape(selectedId)}"]`)?.focus();
 }
 
 function setStatus(themeId, status) {
+  if (!RECORD_STATUSES.has(status) || !knownThemeId(themeId)) return;
   const current = getRecord({ id: themeId }).status;
   setRecord(themeId, { status: current === status && status === 'shortlist' ? 'unreviewed' : status });
   render();
+  feedback(`.card[data-theme-id="${CSS.escape(themeId)}"] .status-pill`, 'is-confirmed', 140);
 }
 
 window.addEventListener('popstate', () => {
@@ -2646,6 +3005,19 @@ document.addEventListener('keydown', (event) => {
     if (!moreMenuEl.hidden) {
       moreMenuEl.hidden = true;
       moreActionsEl.setAttribute('aria-expanded', 'false');
+      moreActionsEl.focus();
+      return;
+    }
+    if (toolbarEl.classList.contains('is-open')) {
+      toolbarEl.classList.remove('is-open');
+      filterToggleEl.setAttribute('aria-expanded', 'false');
+      filterToggleEl.focus();
+      return;
+    }
+    const notice = document.getElementById('compareNotice');
+    if (notice && !notice.hidden) {
+      notice.hidden = true;
+      notice.textContent = '';
       return;
     }
     if (pageThemeId) resetPageTheme();
@@ -2676,12 +3048,29 @@ document.addEventListener('keydown', (event) => {
   }
   const themeId = selectedId;
   const lower = key.toLowerCase();
-  if (!event.shiftKey && (key === 'j' || key === 'ArrowDown' || key === 'ArrowRight')) {
+  if (!moreMenuEl.hidden && (key === 'ArrowDown' || key === 'ArrowUp')) {
+    event.preventDefault();
+    const items = [...moreMenuEl.querySelectorAll('button')];
+    const index = items.indexOf(document.activeElement);
+    const next = key === 'ArrowDown'
+      ? items[(index + 1) % items.length]
+      : items[(index - 1 + items.length) % items.length];
+    next?.focus();
+    return;
+  }
+  const gridFocused = !!document.activeElement?.closest?.('#groups .card, #groups');
+  if (!event.shiftKey && (key === 'ArrowDown' || key === 'ArrowRight' || key === 'ArrowUp' || key === 'ArrowLeft')) {
+    if (!gridFocused) return;
+    event.preventDefault();
+    moveSelection(key === 'ArrowUp' || key === 'ArrowLeft' ? -1 : 1);
+    return;
+  }
+  if (!event.shiftKey && key === 'j') {
     event.preventDefault();
     moveSelection(1);
     return;
   }
-  if (!event.shiftKey && (key === 'k' || key === 'ArrowUp' || key === 'ArrowLeft')) {
+  if (!event.shiftKey && key === 'k') {
     event.preventDefault();
     moveSelection(-1);
     return;
@@ -2705,13 +3094,16 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (key === 'c' && !event.shiftKey) {
-    toggleCompare(themeId);
+    const added = toggleCompare(themeId);
     render();
+    if (!added) feedback(`.card[data-theme-id="${CSS.escape(themeId)}"] [data-action="compare"]`, 'is-error');
     return;
   }
   if (key >= '1' && key <= '4' && !event.shiftKey) {
-    assignCompareSlot(themeId, Number(key) - 1);
+    const placed = assignCompareSlot(themeId, Number(key) - 1);
     render();
+    if (!placed) feedback('#compareNotice', 'is-error');
+    else feedback('.compare', 'is-confirmed');
     return;
   }
   if (key === 'g' && !event.shiftKey) { groupMode = !groupMode; render(); return; }
@@ -2760,7 +3152,20 @@ else {
   delete state.pageThemeId;
 }
 
-render();
+try {
+  render();
+} catch {
+  try { localStorage.removeItem(STORAGE_KEY); } catch { /* storage may be blocked */ }
+  const fresh = sanitizeState({});
+  for (const key of Object.keys(state)) delete state[key];
+  Object.assign(state, fresh);
+  selectedId = fresh.selectedId;
+  pageThemeId = '';
+  groupMode = true;
+  viewMode = 'selection';
+  shortlistOnly = false;
+  try { render(); } catch { /* keep the shell visible */ }
+}
 document.documentElement.classList.remove('is-booting');
 </script>
 </body>
