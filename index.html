@@ -257,17 +257,56 @@
     box-shadow:inset 0 1px 0 var(--inset-highlight);
   }
   .group-header{
+    display:block;
+    padding:0;
+    background:var(--header-grad);
+    border-bottom:1px solid var(--hairline);
+  }
+  .group-header h2{margin:0;font-size:16px;font-weight:inherit;width:100%}
+  .group-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
+  .group-header:not(:has(.group-toggle)){
     display:flex;
     justify-content:space-between;
     gap:12px;
     align-items:center;
     padding:14px 16px;
-    background:var(--header-grad);
-    border-bottom:1px solid var(--hairline);
   }
-  .group-header h2{margin:0;font-size:16px}
-  .group-header p{margin:4px 0 0;color:var(--text-2);font-size:12px}
   .group-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    width:100%;
+    min-height:44px;
+    margin:0;
+    padding:14px 16px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:inherit;
+    text-align:left;
+    cursor:pointer;
+    font:inherit;
+  }
+  .group-toggle-copy{min-width:0}
+  .group-title{
+    display:block;
+    font-family:"Libre Caslon Display",Georgia,serif;
+    font-size:16px;
+    letter-spacing:-0.02em;
+    line-height:1.2;
+  }
+  .group-desc{
+    display:block;
+    margin-top:4px;
+    color:var(--text-2);
+    font-family:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+  }
+  .group-toggle-meta{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .group-chevron{
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -279,6 +318,10 @@
     color:var(--muted);
     font-size:18px;
     line-height:1;
+  }
+  .group-header .group-toggle:focus-visible{outline:2px solid var(--focus);outline-offset:-3px}
+  @media (hover:hover) and (pointer:fine){
+    .group-toggle:hover{background:color-mix(in srgb, var(--accent) 10%, transparent)}
   }
   .group.collapsed .cards{display:none}
   .group.focus-hidden{display:none}
@@ -857,7 +900,7 @@
   }
   .primary-btn:active,.page-theme-reset.is-active:active{transform:scale(var(--press-scale));background:var(--accent-hover)}
   .action-row button:active{transform:scale(.96)}
-  .group-toggle:active{transform:scale(.92)}
+  .group-toggle:active{transform:scale(var(--press-scale))}
   @keyframes mi-pop{50%{transform:scale(1.06)}}
   @keyframes mi-flash{from{background-color:var(--ok-bg)}}
   @keyframes mi-shake{20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}}
@@ -2559,16 +2602,20 @@ function renderCards(themes) {
   groupsEl.innerHTML = Object.entries(grouped).map(([family, familyThemes]) => `
     <section id="family-${slugify(family)}" class="group ${state.collapsedFamilies[family] ? 'collapsed' : ''} ${viewMode === 'focus' && !familyThemes.some(theme => theme.id === selectedId) ? 'focus-hidden' : ''}" data-family="${escapeAttr(family)}">
       <div class="group-header">
-        <div>
-          <h2>${escapeHtml(family)}</h2>
-          <p>${groupDescriptions[family] || 'Theme family'}</p>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <div class="group-count">${familyThemes.length}</div>
-          <button type="button" class="group-toggle" data-toggle-family="${escapeAttr(family)}" aria-label="${state.collapsedFamilies[family] ? 'Expand' : 'Collapse'} ${escapeAttr(family)}">${state.collapsedFamilies[family] ? '+' : '−'}</button>
-        </div>
+        <h2>
+          <button type="button" class="group-toggle" data-toggle-family="${escapeAttr(family)}" aria-expanded="${state.collapsedFamilies[family] ? 'false' : 'true'}" aria-controls="family-${slugify(family)}-cards">
+            <span class="group-toggle-copy">
+              <span class="group-title">${escapeHtml(family)}</span>
+              <span class="group-desc">${escapeHtml(groupDescriptions[family] || 'Theme family')}</span>
+            </span>
+            <span class="group-toggle-meta">
+              <span class="group-count">${familyThemes.length}</span>
+              <span class="group-chevron" aria-hidden="true">${state.collapsedFamilies[family] ? '+' : '−'}</span>
+            </span>
+          </button>
+        </h2>
       </div>
-      <div class="cards">${familyThemes.map(theme => themeCard(theme, { preview: !state.collapsedFamilies[family] })).join('')}</div>
+      <div class="cards" id="family-${slugify(family)}-cards">${familyThemes.map(theme => themeCard(theme, { preview: !state.collapsedFamilies[family] })).join('')}</div>
     </section>
   `).join('');
   bindCardActions();
