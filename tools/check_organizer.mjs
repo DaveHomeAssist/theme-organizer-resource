@@ -97,6 +97,44 @@ const focus = await page.evaluate(() => {
 });
 if (focus.tag !== 'ARTICLE' || focus.hidden || !focus.id) throw new Error('keyboard focus left the visible grid: ' + JSON.stringify(focus));
 
+const bar = await page.evaluate(() => {
+  const button = document.querySelector('.group-toggle');
+  const header = button.closest('.group-header');
+  const box = button.getBoundingClientRect();
+  const headerBox = header.getBoundingClientRect();
+  return {
+    expanded: button.getAttribute('aria-expanded'),
+    controls: button.getAttribute('aria-controls'),
+    width: Math.round(box.width),
+    headerWidth: Math.round(headerBox.width),
+    height: Math.round(box.height),
+    nested: button.querySelectorAll('button, a, input, select, textarea').length
+  };
+});
+if (bar.nested !== 0) throw new Error('family bar contains nested controls');
+if (bar.height < 44) throw new Error('family bar is shorter than 44px');
+if (bar.width < bar.headerWidth - 2) throw new Error('family bar does not span the header');
+const toggled = await page.evaluate(() => {
+  const button = document.querySelector('.group-toggle');
+  button.scrollIntoView({ block: 'center' });
+  const before = button.getAttribute('aria-expanded');
+  const family = button.dataset.toggleFamily;
+  const rect = button.getBoundingClientRect();
+  const target = document.elementFromPoint(rect.left + 28, rect.top + rect.height / 2);
+  if (!button.contains(target) && target !== button) return { miss: target && (target.className || target.tagName) };
+  button.click();
+  const next = [...document.querySelectorAll('.group-toggle')].find(el => el.dataset.toggleFamily === family);
+  const section = next.closest('.group');
+  return {
+    before,
+    after: next.getAttribute('aria-expanded'),
+    collapsed: section.classList.contains('collapsed')
+  };
+});
+if (toggled.miss) throw new Error('left side of the family bar is not the toggle: ' + toggled.miss);
+if (toggled.before === toggled.after) throw new Error('clicking the family bar did not toggle it: ' + JSON.stringify(toggled));
+if ((toggled.after === 'false') !== toggled.collapsed) throw new Error('collapsed state does not match aria-expanded');
+
 if (errors.length) throw new Error(errors.join('\n'));
-console.log('ok', { rejected: rejected.toast, recovered: recovered.status, workspace: workspace.label, focus: focus.id });
+console.log('ok', { rejected: rejected.toast, recovered: recovered.status, workspace: workspace.label, focus: focus.id, bar: toggled });
 await browser.close();
